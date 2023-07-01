@@ -6,6 +6,7 @@ class LPText extends LPPostComponent {
   final bool isClickable;
   final bool isHeader;
   final TextAlign textAlign;
+  final Alignment alignment;
   final Map<String, dynamic> props = {};
 
   LPText({
@@ -13,12 +14,14 @@ class LPText extends LPPostComponent {
     required this.lpFont,
     required this.isClickable,
     required this.isHeader,
+    this.alignment = Alignment.topLeft,
     this.textAlign = TextAlign.left,
     super.key,
   });
 
   LPText.header1({
     required this.content,
+    this.alignment = Alignment.topLeft,
     this.textAlign = TextAlign.left,
   })  : lpFont = LPFont.header1(),
         isClickable = false,
@@ -26,6 +29,7 @@ class LPText extends LPPostComponent {
 
   LPText.header2({
     required this.content,
+    this.alignment = Alignment.topLeft,
     this.textAlign = TextAlign.left,
   })  : lpFont = LPFont.header2(),
         isClickable = false,
@@ -33,6 +37,7 @@ class LPText extends LPPostComponent {
 
   LPText.header3({
     required this.content,
+    this.alignment = Alignment.topLeft,
     this.textAlign = TextAlign.left,
   })  : lpFont = LPFont.header3(),
         isClickable = false,
@@ -40,14 +45,25 @@ class LPText extends LPPostComponent {
 
   LPText.plainBody({
     required this.content,
+    this.alignment = Alignment.topLeft,
     this.textAlign = TextAlign.left,
     bool isItalic = false,
   })  : lpFont = isItalic ? LPFont.bodyItalic() : LPFont.body(),
         isClickable = false,
         isHeader = false;
 
+  LPText.buttonText({
+    required this.content,
+    this.alignment = Alignment.topLeft,
+    this.textAlign = TextAlign.left,
+    bool isItalic = false,
+  })  : lpFont = LPFont.buttonText(),
+        isClickable = false,
+        isHeader = false;
+
   LPText.verse({
     required this.content,
+    this.alignment = Alignment.topLeft,
     this.textAlign = TextAlign.center,
     bool isItalic = false,
   })  : lpFont = isItalic ? LPFont.verseQuoteItalic() : LPFont.verseQuote(),
@@ -56,12 +72,14 @@ class LPText extends LPPostComponent {
 
   LPText.hyperlink({
     required this.content,
+    this.alignment = Alignment.topLeft,
     this.textAlign = TextAlign.left,
-    required String url,
+    Function? action,
+    String? url,
   })  : lpFont = LPFont.hyperlink(),
         isClickable = true,
         isHeader = false {
-    props.addAll({'url': url});
+    props.addAll({'url': url, 'action': action});
   }
 
   LPText.paragraphBreak()
@@ -69,12 +87,13 @@ class LPText extends LPPostComponent {
         lpFont = LPFont.body(),
         isClickable = false,
         textAlign = TextAlign.left,
-        isHeader = false;
+        isHeader = false,
+        alignment = Alignment.topLeft;
 
   @override
   Widget build(BuildContext context) {
     return Align(
-      alignment: Alignment.topLeft,
+      alignment: alignment,
       child: SelectableText(
         content,
         style: lpFont.textStyle,
@@ -97,7 +116,14 @@ class LPTextSpan extends LPPostComponent {
       if (lpText.isClickable) {
         return TapGestureRecognizer()
           ..onTap = () {
-            window.open(lpText.props['url'], '');
+            if (lpText.props.containsKey('action') &&
+                lpText.props['action'] != null) {
+              (lpText.props['action'] as Function).call();
+            }
+            if (lpText.props.containsKey('url') &&
+                lpText.props['url'] != null) {
+              window.open(lpText.props['url'] as String, '');
+            }
           };
       } else {
         return null;

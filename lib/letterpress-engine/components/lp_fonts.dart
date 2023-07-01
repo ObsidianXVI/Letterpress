@@ -95,6 +95,17 @@ class LPFont {
         ),
         headerLevel = 0;
 
+  LPFont.buttonText()
+      : textStyle = TextStyle(
+          fontFamily: LPFontFamily.body.name,
+          color: LPColorTheme.standard_grey.color,
+          fontSize: 26,
+          fontWeight: FontWeight.w300,
+          letterSpacing: 1,
+          overflow: TextOverflow.fade,
+        ),
+        headerLevel = 0;
+
   LPFont.verseQuote()
       : textStyle = TextStyle(
           fontFamily: LPFontFamily.body.name,
