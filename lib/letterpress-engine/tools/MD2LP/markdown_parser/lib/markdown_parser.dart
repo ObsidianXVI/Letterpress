@@ -3,6 +3,24 @@
 /// More dartdocs go here.
 library;
 
-export 'src/markdown_parser.dart' show MarkdownParser;
+export 'src/markdown_parser.dart'
+    show
+        MarkdownParser,
+        ParserConfigs,
+        Token,
+        PlainText,
+        BoldText,
+        ItalicText,
+        InlineCode,
+        BlockCode,
+        Header1,
+        Header2,
+        Header3,
+        Header4,
+        Header5,
+        Header6,
+        PullQuote,
+        VerseQuote,
+        Callout;
 
 // TODO: Export any libraries intended for clients of this package.
