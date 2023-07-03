@@ -55,15 +55,13 @@ class Header6 extends Token {
 class PullQuote extends Token {
   final String quoteContent;
   final String reference;
-  final List<String> chars;
-  int quoteEnd = 3;
 
-  PullQuote({
+  const PullQuote({
     required super.content,
     required super.lineNo,
     required this.quoteContent,
     required this.reference,
-  }) : chars = content.split('');
+  });
 
   static PullQuote parse(String source, int lineNo) {
     final List<String> chars = source.split('');
