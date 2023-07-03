@@ -3,6 +3,6 @@
 /// More dartdocs go here.
 library;
 
-export 'src/markdown_parser.dart';
+export 'src/markdown_parser.dart' show MarkdownParser;
 
 // TODO: Export any libraries intended for clients of this package.
