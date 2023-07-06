@@ -1,6 +1,7 @@
 library markdown_parser;
 
 part './parser_configs.dart';
+part './parser_component.dart';
 part './token.dart';
 
 class MarkdownParser {
@@ -17,6 +18,16 @@ class MarkdownParser {
       final String line = lines[i].trim();
 
       /// check against line-start syntaxes
+      for (ParserComponent parserComponent in configs.standaloneComponents) {
+        if (parserComponent.trigger(line)) {
+          tokens.add(parserComponent.parse(line, i));
+        }
+      }
+      for (ParserComponent parserComponent in configs.intraLineComponents) {
+        if (parserComponent.trigger(line)) {
+          tokens.add(parserComponent.parse(line, i));
+        }
+      }
       if (line.startsWith('# ')) {
         tokens.add(
           Header1(
@@ -69,7 +80,9 @@ class MarkdownParser {
         );
       } else {
         /// check intra-line syntaxes
-        
+        tokens.add(
+          PlainText(content: line, lineNo: i),
+        );
       }
     }
     return tokens;

@@ -10,49 +10,96 @@ abstract class Token {
   });
 }
 
-class Header1 extends Token {
+abstract class StandaloneToken extends Token {
+  const StandaloneToken({
+    required super.content,
+    required super.lineNo,
+  });
+
+  bool trigger(String line);
+}
+
+abstract class IntraLineToken extends Token {
+  const IntraLineToken({
+    required super.content,
+    required super.lineNo,
+  });
+
+  bool trigger(String char);
+}
+
+abstract class StructuredToken extends Token {
+  final String identifier;
+  final Map<String, Type> params;
+  const StructuredToken({
+    required this.identifier,
+    required this.params,
+    required super.content,
+    required super.lineNo,
+  });
+}
+
+class Header1 extends StandaloneToken {
   const Header1({
     required super.content,
     required super.lineNo,
   });
+
+  @override
+  bool trigger(String line) => line.startsWith('# ');
 }
 
-class Header2 extends Token {
+class Header2 extends StandaloneToken {
   const Header2({
     required super.content,
     required super.lineNo,
   });
+
+  @override
+  bool trigger(String line) => line.startsWith('## ');
 }
 
-class Header3 extends Token {
+class Header3 extends StandaloneToken {
   const Header3({
     required super.content,
     required super.lineNo,
   });
+
+  @override
+  bool trigger(String line) => line.startsWith('### ');
 }
 
-class Header4 extends Token {
+class Header4 extends StandaloneToken {
   const Header4({
     required super.content,
     required super.lineNo,
   });
+
+  @override
+  bool trigger(String line) => line.startsWith('#### ');
 }
 
-class Header5 extends Token {
+class Header5 extends StandaloneToken {
   const Header5({
     required super.content,
     required super.lineNo,
   });
+
+  @override
+  bool trigger(String line) => line.startsWith('##### ');
 }
 
-class Header6 extends Token {
+class Header6 extends StandaloneToken {
   const Header6({
     required super.content,
     required super.lineNo,
   });
+
+  @override
+  bool trigger(String line) => line.startsWith('###### ');
 }
 
-class PullQuote extends Token {
+class PullQuote extends StandaloneToken {
   final String quoteContent;
   final String reference;
 
@@ -62,6 +109,9 @@ class PullQuote extends Token {
     required this.quoteContent,
     required this.reference,
   });
+
+  @override
+  bool trigger(String line) => line.startsWith('> ');
 
   static PullQuote parse(String source, int lineNo) {
     final List<String> chars = source.split('');
@@ -103,7 +153,7 @@ class PullQuote extends Token {
   }
 }
 
-class VerseQuote extends Token {
+class VerseQuote extends StandaloneToken {
   final String verses;
   final String artist;
   final String song;
@@ -119,7 +169,7 @@ class VerseQuote extends Token {
   });
 }
 
-class BlockCode extends Token {
+class BlockCode extends StandaloneToken {
   final String language;
   final String codeContent;
 
@@ -150,38 +200,37 @@ class BlockCode extends Token {
   }
 }
 
-class InlineCode extends Token {
+class InlineCode extends IntraLineToken {
   const InlineCode({
     required super.content,
     required super.lineNo,
   });
 }
 
-class Callout extends Token {
+class Callout extends StandaloneToken {
   const Callout({
     required super.content,
     required super.lineNo,
   });
 }
 
-class PlainText extends Token {
+class PlainText extends IntraLineToken {
   const PlainText({
     required super.content,
     required super.lineNo,
   });
 }
 
-class BoldText extends Token {
+class BoldText extends IntraLineToken {
   const BoldText({
     required super.content,
     required super.lineNo,
   });
 }
 
-class ItalicText extends Token {
+class ItalicText extends IntraLineToken {
   const ItalicText({
     required super.content,
     required super.lineNo,
   });
 }
-

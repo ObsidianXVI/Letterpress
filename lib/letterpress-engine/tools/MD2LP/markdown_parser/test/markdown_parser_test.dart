@@ -3,7 +3,10 @@ import 'package:test/test.dart';
 
 void main(List<String> args) {
   print(MarkdownParser(
-    configs: ParserConfigs(),
+    configs: ParserConfigs(
+      standaloneTokens: [],
+      intraLineTokens: [],
+    ),
   ).parseString(src));
 }
 
