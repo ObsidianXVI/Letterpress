@@ -15,6 +15,8 @@ class MarkdownParser {
     final List<String> lines = source.split('\n');
     for (int i = 0; i < lines.length; i++) {
       final String line = lines[i].trim();
+
+      /// check against line-start syntaxes
       if (line.startsWith('# ')) {
         tokens.add(
           Header1(
@@ -61,6 +63,13 @@ class MarkdownParser {
         tokens.add(
           PullQuote.parse(source, i),
         );
+      } else if (line.startsWith('```')) {
+        tokens.add(
+          BlockCode.parse(source, i),
+        );
+      } else {
+        /// check intra-line syntaxes
+        
       }
     }
     return tokens;

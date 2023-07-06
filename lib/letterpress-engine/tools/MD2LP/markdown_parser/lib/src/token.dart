@@ -121,12 +121,33 @@ class VerseQuote extends Token {
 
 class BlockCode extends Token {
   final String language;
+  final String codeContent;
 
   const BlockCode({
+    required this.language,
+    required this.codeContent,
     required super.content,
     required super.lineNo,
-    required this.language,
   });
+
+  static BlockCode parse(String source, int lineNo) {
+    final List<String> lines = source.split('\n');
+    final String lang = lines.first.trim().replaceAll('```', '');
+    int endIndex = lines.length - 1;
+    for (int i = 1; i < lines.length; i++) {
+      if (lines[i].trim() == '```') {
+        endIndex = i - 1;
+        break;
+      }
+    }
+
+    return BlockCode(
+      content: lines.sublist(0, endIndex + 1).join('\n'),
+      lineNo: lineNo,
+      codeContent: lines.sublist(1, endIndex).join('\n'),
+      language: lang,
+    );
+  }
 }
 
 class InlineCode extends Token {
@@ -163,3 +184,4 @@ class ItalicText extends Token {
     required super.lineNo,
   });
 }
+
