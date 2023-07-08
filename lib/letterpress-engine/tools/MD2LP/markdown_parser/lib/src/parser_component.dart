@@ -84,3 +84,153 @@ class Header6_Parser extends ParserComponent<Header6> {
     );
   }
 }
+
+class PullQuote_Parser extends ParserComponent<PullQuote> {
+  const PullQuote_Parser();
+
+  @override
+  bool trigger(String line) => line.startsWith('> ');
+
+  @override
+  PullQuote parse(String source, int lineNo) {
+    final List<String> chars = source.split('');
+    int quoteEnd = 3;
+    bool prevWasNewline = false;
+    for (int i = 0; i < chars.length; i++) {
+      final String char = chars[i];
+      if (char == '\n') {
+        if (prevWasNewline) {
+          quoteEnd = i;
+          break;
+        } else {
+          prevWasNewline = true;
+        }
+      } else {
+        prevWasNewline = false;
+      }
+    }
+    final String quoteContent = source.substring(2, quoteEnd);
+    String refContent = '';
+    bool inRef = false;
+    for (int i = quoteEnd; i < chars.length; i++) {
+      final String char = chars[i];
+      if (!inRef) {
+        if (char == '—') {
+          inRef = true;
+        } else {
+          refContent = refContent + char;
+        }
+      }
+    }
+
+    return PullQuote(
+      content: quoteContent + refContent,
+      lineNo: lineNo,
+      quoteContent: quoteContent,
+      reference: refContent,
+    );
+  }
+}
+
+class VerseQuote_Parser extends ParserComponent<VerseQuote> {
+  const VerseQuote_Parser();
+
+  @override
+  bool trigger(String line) => line.startsWith('@verse');
+
+  @override
+  VerseQuote parse(String line, int lineNo) {
+    // TODO: implement parse
+    throw UnimplementedError();
+  }
+}
+
+class BlockCode_Parser extends ParserComponent<BlockCode> {
+  const BlockCode_Parser();
+
+  @override
+  bool trigger(String line) => line.startsWith('```');
+
+  @override
+  BlockCode parse(String line, int lineNo) {
+    final List<String> lines = line.split('\n');
+    final String lang = lines.first.trim().replaceAll('```', '');
+    int endIndex = lines.length - 1;
+    for (int i = 1; i < lines.length; i++) {
+      if (lines[i].trim() == '```') {
+        endIndex = i - 1;
+        break;
+      }
+    }
+
+    return BlockCode(
+      content: lines.sublist(0, endIndex + 1).join('\n'),
+      lineNo: lineNo,
+      codeContent: lines.sublist(1, endIndex).join('\n'),
+      language: lang,
+    );
+  }
+}
+
+class Callout_Parser extends ParserComponent<Callout> {
+  const Callout_Parser();
+
+  @override
+  bool trigger(String line) => line.startsWith('@callout');
+
+  @override
+  Callout parse(String line, int lineNo) {
+    // TODO: implement parse
+    throw UnimplementedError();
+  }
+}
+
+class PlainText_Parser extends ParserComponent<PlainText> {
+  const PlainText_Parser();
+
+  @override
+  bool trigger(String line) => true;
+
+  @override
+  PlainText parse(String line, int lineNo) {
+    return PlainText(content: line, lineNo: lineNo);
+  }
+}
+
+class InlineCode_Parser extends ParserComponent<InlineCode> {
+  const InlineCode_Parser();
+
+  @override
+  bool trigger(String line) => line == '`';
+
+  @override
+  InlineCode parse(String line, int lineNo) {
+    // TODO: implement parse
+    throw UnimplementedError();
+  }
+}
+
+class BoldText_Parser extends ParserComponent<BoldText> {
+  const BoldText_Parser();
+
+  @override
+  bool trigger(String line) => line == '*';
+  @override
+  BoldText parse(String line, int lineNo) {
+    // TODO: implement parse
+    throw UnimplementedError();
+  }
+}
+
+class ItalicText_Parser extends ParserComponent<ItalicText> {
+  const ItalicText_Parser();
+
+  @override
+  bool trigger(String line) => line == '*';
+
+  @override
+  ItalicText parse(String line, int lineNo) {
+    // TODO: implement parse
+    throw UnimplementedError();
+  }
+}

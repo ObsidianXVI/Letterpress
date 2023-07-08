@@ -18,17 +18,13 @@ class MarkdownParser {
       final String line = lines[i].trim();
 
       /// check against line-start syntaxes
-      for (ParserComponent parserComponent in configs.standaloneComponents) {
+      for (ParserComponent parserComponent in configs.parserComponents) {
         if (parserComponent.trigger(line)) {
           tokens.add(parserComponent.parse(line, i));
         }
       }
-      for (ParserComponent parserComponent in configs.intraLineComponents) {
-        if (parserComponent.trigger(line)) {
-          tokens.add(parserComponent.parse(line, i));
-        }
-      }
-      if (line.startsWith('# ')) {
+
+      /* if (line.startsWith('# ')) {
         tokens.add(
           Header1(
             content: line.substring(2),
@@ -83,8 +79,9 @@ class MarkdownParser {
         tokens.add(
           PlainText(content: line, lineNo: i),
         );
-      }
+      } */
     }
+
     return tokens;
   }
 }

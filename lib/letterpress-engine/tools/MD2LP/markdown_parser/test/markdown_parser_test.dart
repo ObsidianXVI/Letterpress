@@ -1,13 +1,17 @@
 import 'package:markdown_parser/markdown_parser.dart';
+import 'package:markdown_parser/src/markdown_parser.dart';
 import 'package:test/test.dart';
 
 void main(List<String> args) {
-  print(MarkdownParser(
+  final List<Token> tokens = MarkdownParser(
     configs: ParserConfigs(
-      standaloneTokens: [],
-      intraLineTokens: [],
+      includeCoreTokens: true,
+      parserComponents: [
+        const VerseQuote_Parser(),
+      ],
     ),
-  ).parseString(src));
+  ).parseString(src);
+  for (Token t in tokens) print(t);
 }
 
 final String src = """

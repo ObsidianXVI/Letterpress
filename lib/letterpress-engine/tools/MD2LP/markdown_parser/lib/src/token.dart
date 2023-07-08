@@ -10,24 +10,6 @@ abstract class Token {
   });
 }
 
-abstract class StandaloneToken extends Token {
-  const StandaloneToken({
-    required super.content,
-    required super.lineNo,
-  });
-
-  bool trigger(String line);
-}
-
-abstract class IntraLineToken extends Token {
-  const IntraLineToken({
-    required super.content,
-    required super.lineNo,
-  });
-
-  bool trigger(String char);
-}
-
 abstract class StructuredToken extends Token {
   final String identifier;
   final Map<String, Type> params;
@@ -39,67 +21,49 @@ abstract class StructuredToken extends Token {
   });
 }
 
-class Header1 extends StandaloneToken {
+class Header1 extends Token {
   const Header1({
     required super.content,
     required super.lineNo,
   });
-
-  @override
-  bool trigger(String line) => line.startsWith('# ');
 }
 
-class Header2 extends StandaloneToken {
+class Header2 extends Token {
   const Header2({
     required super.content,
     required super.lineNo,
   });
-
-  @override
-  bool trigger(String line) => line.startsWith('## ');
 }
 
-class Header3 extends StandaloneToken {
+class Header3 extends Token {
   const Header3({
     required super.content,
     required super.lineNo,
   });
-
-  @override
-  bool trigger(String line) => line.startsWith('### ');
 }
 
-class Header4 extends StandaloneToken {
+class Header4 extends Token {
   const Header4({
     required super.content,
     required super.lineNo,
   });
-
-  @override
-  bool trigger(String line) => line.startsWith('#### ');
 }
 
-class Header5 extends StandaloneToken {
+class Header5 extends Token {
   const Header5({
     required super.content,
     required super.lineNo,
   });
-
-  @override
-  bool trigger(String line) => line.startsWith('##### ');
 }
 
-class Header6 extends StandaloneToken {
+class Header6 extends Token {
   const Header6({
     required super.content,
     required super.lineNo,
   });
-
-  @override
-  bool trigger(String line) => line.startsWith('###### ');
 }
 
-class PullQuote extends StandaloneToken {
+class PullQuote extends Token {
   final String quoteContent;
   final String reference;
 
@@ -109,51 +73,9 @@ class PullQuote extends StandaloneToken {
     required this.quoteContent,
     required this.reference,
   });
-
-  @override
-  bool trigger(String line) => line.startsWith('> ');
-
-  static PullQuote parse(String source, int lineNo) {
-    final List<String> chars = source.split('');
-    int quoteEnd = 3;
-    bool prevWasNewline = false;
-    for (int i = 0; i < chars.length; i++) {
-      final String char = chars[i];
-      if (char == '\n') {
-        if (prevWasNewline) {
-          quoteEnd = i;
-          break;
-        } else {
-          prevWasNewline = true;
-        }
-      } else {
-        prevWasNewline = false;
-      }
-    }
-    final String quoteContent = source.substring(2, quoteEnd);
-    String refContent = '';
-    bool inRef = false;
-    for (int i = quoteEnd; i < chars.length; i++) {
-      final String char = chars[i];
-      if (!inRef) {
-        if (char == '—') {
-          inRef = true;
-        } else {
-          refContent = refContent + char;
-        }
-      }
-    }
-
-    return PullQuote(
-      content: quoteContent + refContent,
-      lineNo: lineNo,
-      quoteContent: quoteContent,
-      reference: refContent,
-    );
-  }
 }
 
-class VerseQuote extends StandaloneToken {
+class VerseQuote extends Token {
   final String verses;
   final String artist;
   final String song;
@@ -169,7 +91,7 @@ class VerseQuote extends StandaloneToken {
   });
 }
 
-class BlockCode extends StandaloneToken {
+class BlockCode extends Token {
   final String language;
   final String codeContent;
 
@@ -179,56 +101,37 @@ class BlockCode extends StandaloneToken {
     required super.content,
     required super.lineNo,
   });
-
-  static BlockCode parse(String source, int lineNo) {
-    final List<String> lines = source.split('\n');
-    final String lang = lines.first.trim().replaceAll('```', '');
-    int endIndex = lines.length - 1;
-    for (int i = 1; i < lines.length; i++) {
-      if (lines[i].trim() == '```') {
-        endIndex = i - 1;
-        break;
-      }
-    }
-
-    return BlockCode(
-      content: lines.sublist(0, endIndex + 1).join('\n'),
-      lineNo: lineNo,
-      codeContent: lines.sublist(1, endIndex).join('\n'),
-      language: lang,
-    );
-  }
 }
 
-class InlineCode extends IntraLineToken {
+class InlineCode extends Token {
   const InlineCode({
     required super.content,
     required super.lineNo,
   });
 }
 
-class Callout extends StandaloneToken {
+class Callout extends Token {
   const Callout({
     required super.content,
     required super.lineNo,
   });
 }
 
-class PlainText extends IntraLineToken {
+class PlainText extends Token {
   const PlainText({
     required super.content,
     required super.lineNo,
   });
 }
 
-class BoldText extends IntraLineToken {
+class BoldText extends Token {
   const BoldText({
     required super.content,
     required super.lineNo,
   });
 }
 
-class ItalicText extends IntraLineToken {
+class ItalicText extends Token {
   const ItalicText({
     required super.content,
     required super.lineNo,
