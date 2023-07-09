@@ -1,10 +1,16 @@
 part of markdown_parser;
 
-abstract class ParserComponent<T extends Token> {
-  const ParserComponent();
+abstract class ParserComponent_Old<T extends Token> {
+  const ParserComponent_Old();
 
   T parse(String line, int lineNo);
   bool trigger(String line);
+}
+
+abstract class ParserComponent<T extends Token> {
+  const ParserComponent();
+
+  CursorLocation parse()
 }
 
 class Header1_Parser extends ParserComponent<Header1> {

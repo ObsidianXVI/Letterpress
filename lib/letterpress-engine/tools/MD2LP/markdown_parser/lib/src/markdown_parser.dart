@@ -3,15 +3,20 @@ library markdown_parser;
 part './parser_configs.dart';
 part './parser_component.dart';
 part './token.dart';
+part './global_parser.dart';
+part './cursor.dart';
 
-class MarkdownParser {
+class ParserInstance {
   final ParserConfigs configs;
+  late final GlobalParser mainParser = GlobalParser(parserConfigs: configs);
 
-  const MarkdownParser({
+  ParserInstance({
     required this.configs,
   });
 
-  List<Token> parseString(String source) {
+  List<Token> parserString(String source) => mainParser.parseString(source);
+
+  /* List<Token> parseString(String source) {
     final List<Token> tokens = [];
     final List<String> lines = source.split('\n');
     for (int i = 0; i < lines.length; i++) {
@@ -83,5 +88,5 @@ class MarkdownParser {
     }
 
     return tokens;
-  }
+  } */
 }

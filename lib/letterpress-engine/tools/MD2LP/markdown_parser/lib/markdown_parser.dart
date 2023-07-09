@@ -5,7 +5,7 @@ library;
 
 export 'src/markdown_parser.dart'
     show
-        MarkdownParser,
+        ParserInstance,
         ParserConfigs,
         Token,
         PlainText,
