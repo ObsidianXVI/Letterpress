@@ -10,26 +10,36 @@ abstract class ParserComponent_Old<T extends Token> {
 abstract class ParserComponent<T extends Token> {
   const ParserComponent();
 
-  CursorLocation parse()
+  CursorLocation parse(SourceMap sourceMap, void Function(Token) addToken);
+
+  bool trigger(String source);
 }
 
 class Header1_Parser extends ParserComponent<Header1> {
   const Header1_Parser();
   @override
-  bool trigger(String line) => line.startsWith('# ');
+  bool trigger(String source) => source.startsWith('# ');
+
   @override
-  Header1 parse(String line, int lineNo) {
+  CursorLocation parse(SourceMap sourceMap, void Function(Token) addToken) {
+    
+    // TODO: implement parse
+    throw UnimplementedError();
+  }
+
+/*   @override
+  Header1 parse(SourceMap sourceMap, ) {
     return Header1(
       content: line.substring(2),
       lineNo: lineNo,
     );
-  }
+  } */
 }
 
 class Header2_Parser extends ParserComponent<Header2> {
   const Header2_Parser();
   @override
-  bool trigger(String line) => line.startsWith('## ');
+  bool trigger(String source) => source.startsWith('## ');
   @override
   Header2 parse(String line, int lineNo) {
     return Header2(
