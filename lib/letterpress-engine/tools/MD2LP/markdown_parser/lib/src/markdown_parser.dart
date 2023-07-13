@@ -1,9 +1,12 @@
 library markdown_parser;
 
+import 'dart:ffi';
+
 part './parser_configs.dart';
 part './parser_component.dart';
 part './token.dart';
 part './global_parser.dart';
+part './structured_parser.dart';
 part './cursor.dart';
 
 class ParserInstance {

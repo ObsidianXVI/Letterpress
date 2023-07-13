@@ -5,12 +5,15 @@ import 'package:test/test.dart';
 void main() {
   final GlobalParser globalParser = GlobalParser(
     parserConfigs: ParserConfigs(
-      lineTriggeredParsers: [],
+      lineTriggeredParsers: [
+        const VerseQuote_Parser(),
+      ],
       charTriggeredParsers: [],
       includeCoreTokens: true,
     ),
   );
   final List<Token> tokens = globalParser.parseString(src);
+  for (Token t in tokens) print(t);
 /*   final SourceMap original = SourceMap(source: src);
   print(original.charAt(original.advanceCursor(3))); */
 }

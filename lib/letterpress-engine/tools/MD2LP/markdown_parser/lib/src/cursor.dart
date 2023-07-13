@@ -34,7 +34,7 @@ class SourceMap {
   });
 
   List<String> get currentLineChars => chars[currentLocation.row];
-  List<List<String>> get charsLeftFromCurrent {
+  List<List<String>> get charMapFromCurrent {
     final List<List<String>> rowsLeft = chars.sublist(currentLocation.row);
     if (rowsLeft.isNotEmpty) {
       rowsLeft.first.removeRange(0, currentLocation.col - 1);
@@ -42,13 +42,29 @@ class SourceMap {
     return rowsLeft;
   }
 
-  String consumeChar() {
+  List<String> get charListFromCurrent {
+    final List<List<String>> rowsLeft = chars.sublist(currentLocation.row);
+    if (rowsLeft.isNotEmpty) {
+      rowsLeft.first.removeRange(0, currentLocation.col - 1);
+    }
+    return [for (List<String> r in rowsLeft) ...r];
+  }
+
+  String consumeChar([int count = 1]) {
     final List<String> consumedChars = [];
     currentLocation += advanceCursor(
-      1,
+      count,
       (List<String> newChars) => consumedChars.addAll(newChars),
     );
     return consumedChars.first;
+  }
+
+  List<String> consumeUntil(String stopChar) {
+    final List<String> consumedChars = [];
+    while (peekChar() != stopChar) {
+      consumedChars.add(consumeChar());
+    }
+    return consumedChars;
   }
 
   String peekChar([int lookAhead = 1]) {

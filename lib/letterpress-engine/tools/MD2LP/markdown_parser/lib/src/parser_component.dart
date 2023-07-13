@@ -1,16 +1,9 @@
 part of markdown_parser;
 
-abstract class ParserComponent_Old<T extends Token> {
-  const ParserComponent_Old();
-
-  T parse(String line, int lineNo);
-  bool trigger(String line);
-}
-
 abstract class ParserComponent<T extends Token> {
   const ParserComponent();
 
-  CursorLocation parse(SourceMap sourceMap, void Function(Token) addToken);
+  T parse(SourceMap sourceMap);
 
   bool trigger(String source);
 }
@@ -21,30 +14,26 @@ class Header1_Parser extends ParserComponent<Header1> {
   bool trigger(String source) => source.startsWith('# ');
 
   @override
-  CursorLocation parse(SourceMap sourceMap, void Function(Token) addToken) {
-    
-    // TODO: implement parse
-    throw UnimplementedError();
-  }
-
-/*   @override
-  Header1 parse(SourceMap sourceMap, ) {
+  Header1 parse(SourceMap sourceMap) {
+    sourceMap.consumeChar(2);
     return Header1(
-      content: line.substring(2),
-      lineNo: lineNo,
+      content: sourceMap.consumeUntil('\n').join(),
+      cursorLocation: sourceMap.currentLocation,
     );
-  } */
+  }
 }
 
 class Header2_Parser extends ParserComponent<Header2> {
   const Header2_Parser();
   @override
   bool trigger(String source) => source.startsWith('## ');
+
   @override
-  Header2 parse(String line, int lineNo) {
+  Header2 parse(SourceMap sourceMap) {
+    sourceMap.consumeChar(3);
     return Header2(
-      content: line.substring(2),
-      lineNo: lineNo,
+      content: sourceMap.consumeUntil('\n').join(),
+      cursorLocation: sourceMap.currentLocation,
     );
   }
 }
@@ -53,11 +42,13 @@ class Header3_Parser extends ParserComponent<Header3> {
   const Header3_Parser();
   @override
   bool trigger(String line) => line.startsWith('### ');
+
   @override
-  Header3 parse(String line, int lineNo) {
+  Header3 parse(SourceMap sourceMap) {
+    sourceMap.consumeChar(4);
     return Header3(
-      content: line.substring(2),
-      lineNo: lineNo,
+      content: sourceMap.consumeUntil('\n').join(),
+      cursorLocation: sourceMap.currentLocation,
     );
   }
 }
@@ -66,11 +57,13 @@ class Header4_Parser extends ParserComponent<Header4> {
   const Header4_Parser();
   @override
   bool trigger(String line) => line.startsWith('#### ');
+
   @override
-  Header4 parse(String line, int lineNo) {
+  Header4 parse(SourceMap sourceMap) {
+    sourceMap.consumeChar(5);
     return Header4(
-      content: line.substring(2),
-      lineNo: lineNo,
+      content: sourceMap.consumeUntil('\n').join(),
+      cursorLocation: sourceMap.currentLocation,
     );
   }
 }
@@ -80,10 +73,11 @@ class Header5_Parser extends ParserComponent<Header5> {
   @override
   bool trigger(String line) => line.startsWith('##### ');
   @override
-  Header5 parse(String line, int lineNo) {
+  Header5 parse(SourceMap sourceMap) {
+    sourceMap.consumeChar(6);
     return Header5(
-      content: line.substring(2),
-      lineNo: lineNo,
+      content: sourceMap.consumeUntil('\n').join(),
+      cursorLocation: sourceMap.currentLocation,
     );
   }
 }
@@ -92,11 +86,13 @@ class Header6_Parser extends ParserComponent<Header6> {
   const Header6_Parser();
   @override
   bool trigger(String line) => line.startsWith('###### ');
+
   @override
-  Header6 parse(String line, int lineNo) {
+  Header6 parse(SourceMap sourceMap) {
+    sourceMap.consumeChar(7);
     return Header6(
-      content: line.substring(2),
-      lineNo: lineNo,
+      content: sourceMap.consumeUntil('\n').join(),
+      cursorLocation: sourceMap.currentLocation,
     );
   }
 }
@@ -108,56 +104,52 @@ class PullQuote_Parser extends ParserComponent<PullQuote> {
   bool trigger(String line) => line.startsWith('> ');
 
   @override
-  PullQuote parse(String source, int lineNo) {
-    final List<String> chars = source.split('');
-    int quoteEnd = 3;
-    bool prevWasNewline = false;
-    for (int i = 0; i < chars.length; i++) {
-      final String char = chars[i];
-      if (char == '\n') {
-        if (prevWasNewline) {
-          quoteEnd = i;
-          break;
-        } else {
-          prevWasNewline = true;
-        }
+  PullQuote parse(SourceMap sourceMap) {
+    sourceMap.consumeChar(2);
+    final List<String> contentChars = [];
+    final List<String> refChars = [];
+
+    void innerParse() {
+      contentChars.addAll(sourceMap.consumeUntil('\n'));
+      if (sourceMap.peekChar() == '—') {
+        sourceMap.consumeChar();
+        contentChars.removeLast();
+        refChars.addAll(sourceMap.consumeUntil('\n'));
       } else {
-        prevWasNewline = false;
-      }
-    }
-    final String quoteContent = source.substring(2, quoteEnd);
-    String refContent = '';
-    bool inRef = false;
-    for (int i = quoteEnd; i < chars.length; i++) {
-      final String char = chars[i];
-      if (!inRef) {
-        if (char == '—') {
-          inRef = true;
-        } else {
-          refContent = refContent + char;
-        }
+        contentChars.clear();
+        innerParse();
       }
     }
 
+    innerParse();
+
     return PullQuote(
-      content: quoteContent + refContent,
-      lineNo: lineNo,
-      quoteContent: quoteContent,
-      reference: refContent,
+      content: "${contentChars.join()}\n${refChars.join()}",
+      quoteContent: contentChars.join(),
+      reference: refChars.join(),
+      cursorLocation: sourceMap.currentLocation,
     );
   }
 }
 
-class VerseQuote_Parser extends ParserComponent<VerseQuote> {
+class VerseQuote_Parser extends ParserComponent<VerseQuote>
+    with StructuredParsing {
   const VerseQuote_Parser();
 
   @override
-  bool trigger(String line) => line.startsWith('@verse');
+  bool trigger(String source) => source.startsWith('@versequote');
 
   @override
-  VerseQuote parse(String line, int lineNo) {
-    // TODO: implement parse
-    throw UnimplementedError();
+  VerseQuote parse(SourceMap sourceMap) {
+    final StructuredToken tok = parseStructured(sourceMap);
+    return VerseQuote(
+      content: tok.content,
+      cursorLocation: tok.cursorLocation,
+      verses: tok.params['verses'],
+      album: tok.params['album'],
+      artist: tok.params['artist'],
+      song: tok.params['song'],
+    );
   }
 }
 
@@ -165,25 +157,20 @@ class BlockCode_Parser extends ParserComponent<BlockCode> {
   const BlockCode_Parser();
 
   @override
-  bool trigger(String line) => line.startsWith('```');
+  bool trigger(String source) => source.startsWith('```');
 
   @override
-  BlockCode parse(String line, int lineNo) {
-    final List<String> lines = line.split('\n');
-    final String lang = lines.first.trim().replaceAll('```', '');
-    int endIndex = lines.length - 1;
-    for (int i = 1; i < lines.length; i++) {
-      if (lines[i].trim() == '```') {
-        endIndex = i - 1;
-        break;
-      }
-    }
+  BlockCode parse(SourceMap sourceMap) {
+    sourceMap.consumeChar(3);
+    final String lang = sourceMap.consumeUntil('\n').join();
+    final String codeContent = sourceMap.consumeUntil('`').join();
+    sourceMap.consumeChar(3);
 
     return BlockCode(
-      content: lines.sublist(0, endIndex + 1).join('\n'),
-      lineNo: lineNo,
-      codeContent: lines.sublist(1, endIndex).join('\n'),
+      content: lang + codeContent,
+      codeContent: codeContent,
       language: lang,
+      cursorLocation: sourceMap.currentLocation,
     );
   }
 }
@@ -195,7 +182,7 @@ class Callout_Parser extends ParserComponent<Callout> {
   bool trigger(String line) => line.startsWith('@callout');
 
   @override
-  Callout parse(String line, int lineNo) {
+  Callout parse(SourceMap sourceMap) {
     // TODO: implement parse
     throw UnimplementedError();
   }
@@ -208,8 +195,11 @@ class PlainText_Parser extends ParserComponent<PlainText> {
   bool trigger(String line) => true;
 
   @override
-  PlainText parse(String line, int lineNo) {
-    return PlainText(content: line, lineNo: lineNo);
+  PlainText parse(SourceMap sourceMap) {
+    return PlainText(
+      content: sourceMap.consumeChar(),
+      cursorLocation: sourceMap.currentLocation,
+    );
   }
 }
 
@@ -220,7 +210,7 @@ class InlineCode_Parser extends ParserComponent<InlineCode> {
   bool trigger(String line) => line == '`';
 
   @override
-  InlineCode parse(String line, int lineNo) {
+  InlineCode parse(SourceMap sourceMap) {
     // TODO: implement parse
     throw UnimplementedError();
   }
@@ -232,7 +222,7 @@ class BoldText_Parser extends ParserComponent<BoldText> {
   @override
   bool trigger(String line) => line == '*';
   @override
-  BoldText parse(String line, int lineNo) {
+  BoldText parse(SourceMap sourceMap) {
     // TODO: implement parse
     throw UnimplementedError();
   }
@@ -245,7 +235,7 @@ class ItalicText_Parser extends ParserComponent<ItalicText> {
   bool trigger(String line) => line == '*';
 
   @override
-  ItalicText parse(String line, int lineNo) {
+  ItalicText parse(SourceMap sourceMap) {
     // TODO: implement parse
     throw UnimplementedError();
   }
