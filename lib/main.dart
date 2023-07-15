@@ -39,50 +39,54 @@ class LetterpressApp extends StatelessWidget {
           width: DimensionTools.getWidth(context),
           height: DimensionTools.getHeight(context),
           color: LPTheme.grey800,
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                LPText.header1(
-                  content: 'Letterpress',
-                  alignment: Alignment.center,
-                ),
-                const SizedBox(height: 120),
-                LPTextSpan(
-                  lpTextComponents: [
-                    LPText.plainBody(content: 'A blogging site by '),
-                    LPText.hyperlink(
-                      content: 'OBSiDIAN',
-                      url: 'https://github.com/ObsidianXVI',
-                    ),
-                    LPText.plainBody(
-                      content: ' about coding, design, and the likes.',
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 30),
-                SizedBox(
-                  width: 300,
-                  height: 100,
-                  child: ListView(
-                    children: List<Widget>.generate(LPRoutes.map.keys.length,
-                        (int i) {
-                      return Center(
-                        child: LPText.hyperlink(
-                          content:
-                              LPRoutes.map.keys.elementAt(i).postConfigs.title,
-                          url: null,
-                          action: () {
-                            Navigator.of(context)
-                                .pushNamed(LPRoutes.map.values.elementAt(i));
-                          },
-                        ),
-                      );
-                    }),
+          child: SelectionArea(
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  LPText.header1(
+                    content: 'Letterpress',
+                    alignment: Alignment.center,
                   ),
-                ),
-              ],
+                  const SizedBox(height: 120),
+                  LPTextSpan(
+                    lpTextComponents: [
+                      LPText.plainBody(content: 'A blogging site by '),
+                      LPText.hyperlink(
+                        content: 'OBSiDIAN',
+                        url: 'https://github.com/ObsidianXVI',
+                      ),
+                      LPText.plainBody(
+                        content: ' about coding, design, and the likes.',
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 30),
+                  SizedBox(
+                    width: 300,
+                    height: 100,
+                    child: ListView(
+                      children: List<Widget>.generate(LPRoutes.map.keys.length,
+                          (int i) {
+                        return Center(
+                          child: LPText.hyperlink(
+                            content: LPRoutes.map.keys
+                                .elementAt(i)
+                                .postConfigs
+                                .title,
+                            url: null,
+                            action: () {
+                              Navigator.of(context)
+                                  .pushNamed(LPRoutes.map.values.elementAt(i));
+                            },
+                          ),
+                        );
+                      }),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

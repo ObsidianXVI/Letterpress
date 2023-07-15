@@ -94,7 +94,7 @@ class LPText extends LPPostComponent {
   Widget build(BuildContext context) {
     return Align(
       alignment: alignment,
-      child: SelectableText(
+      child: Text(
         content,
         style: lpFont.textStyle,
         textAlign: textAlign,
@@ -130,7 +130,7 @@ class LPTextSpan extends LPPostComponent {
       }
     }
 
-    return SelectableText.rich(
+    return Text.rich(
       TextSpan(
         children: List<TextSpan>.generate(
           lpTextComponents.length,
