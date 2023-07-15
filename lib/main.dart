@@ -64,25 +64,76 @@ class LetterpressApp extends StatelessWidget {
                   ),
                   const SizedBox(height: 30),
                   SizedBox(
-                    width: 300,
                     height: 100,
                     child: ListView(
-                      children: List<Widget>.generate(LPRoutes.map.keys.length,
-                          (int i) {
-                        return Center(
-                          child: LPText.hyperlink(
-                            content: LPRoutes.map.keys
-                                .elementAt(i)
-                                .postConfigs
-                                .title,
-                            url: null,
-                            action: () {
-                              Navigator.of(context)
-                                  .pushNamed(LPRoutes.map.values.elementAt(i));
-                            },
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      children: [
+                        Center(
+                          child: SelectionContainer.disabled(
+                            child: Container(
+                              width: 200,
+                              height: 60,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                border: Border.all(color: LPTheme.purple800),
+                              ),
+                              child: TextButton(
+                                onPressed: () {
+                                  Navigator.of(context)
+                                      .pushNamed(LPRoutes.tgif_home);
+                                },
+                                style: TextButton.styleFrom(
+                                  primary: LPTheme.purple800,
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    'TGIF Challenge',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontFamily: LPFontFamily.body.name,
+                                      fontSize: 26,
+                                      fontWeight: FontWeight.w300,
+                                      letterSpacing: 1,
+                                      color: LPTheme.purple800,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
-                        );
-                      }),
+                        ),
+                        const SizedBox(width: 50),
+                        Center(
+                          child: SelectionContainer.disabled(
+                            child: Container(
+                              width: 200,
+                              height: 60,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                border: Border.all(
+                                    color: LPTheme.purple800.withOpacity(0.4)),
+                              ),
+                              child: TextButton(
+                                onPressed: null,
+                                child: Center(
+                                  child: Text(
+                                    'Timelapse Series',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontFamily: LPFontFamily.body.name,
+                                      fontSize: 26,
+                                      fontWeight: FontWeight.w300,
+                                      letterSpacing: 1,
+                                      color: LPTheme.purple800.withOpacity(0.4),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
