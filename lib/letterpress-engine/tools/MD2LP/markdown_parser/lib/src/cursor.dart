@@ -18,6 +18,9 @@ class CursorLocation {
     if (other.row == row && other.col == col) return true;
     return false;
   }
+
+  @override
+  String toString() => "CL<$row, $col>";
 }
 
 class SourceMap {
@@ -27,7 +30,7 @@ class SourceMap {
       source.split('\n').map((String line) => line.split('')).toList();
   late final int totalRows = chars.length;
   late final CursorLocation endLoc =
-      CursorLocation(row: totalRows - 1, col: chars.last.length - 1);
+      CursorLocation(row: totalRows, col: chars.last.length);
 
   SourceMap({
     required this.source,
@@ -52,11 +55,12 @@ class SourceMap {
 
   String consumeChar([int count = 1]) {
     final List<String> consumedChars = [];
-    currentLocation += advanceCursor(
+    currentLocation = advanceCursor(
       count,
       (List<String> newChars) => consumedChars.addAll(newChars),
     );
-    return consumedChars.first;
+    print(consumedChars);
+    return consumedChars.last;
   }
 
   List<String> consumeUntil(String stopChar) {
@@ -82,11 +86,13 @@ class SourceMap {
   ]) {
     List<String> currentRow = chars[currentLocation.row];
     final int rowLength = currentRow.length;
-    if (count < rowLength) {
-      addChars?.call(currentRow.sublist(0, count));
-      return currentLocation + CursorLocation(row: 0, col: count);
+    CursorLocation newLoc = currentLocation;
+    final int currentCol = currentLocation.col;
+    if (currentCol + count < rowLength) {
+      newLoc = currentLocation + CursorLocation(row: 0, col: count);
+      addChars?.call(currentRow.sublist(currentCol, newLoc.col));
+      return newLoc;
     } else {
-      CursorLocation newLoc = currentLocation;
       while (true) {
         newLoc = CursorLocation(row: newLoc.row + 1, col: 0);
         addChars?.call(currentRow);

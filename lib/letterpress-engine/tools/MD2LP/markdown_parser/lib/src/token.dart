@@ -8,6 +8,11 @@ abstract class Token {
     required this.content,
     required this.cursorLocation,
   });
+
+  @override
+  String toString() {
+    return "Tok<$content, $cursorLocation>";
+  }
 }
 
 class StructuredToken extends Token {

@@ -1,0 +1,31 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Letterpress",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "Letterpress (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "Letterpress (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "MD2LP",
+            "request": "launch",
+            "type": "dart",
+            "program": "/Users/OBSiDIAN/Downloads/Shelves/VSCode/Repositories/Letterpress/lib/letterpress-engine/tools/MD2LP/markdown_parser/test/markdown_parser_test.dart"
+        }
+    ]
+}

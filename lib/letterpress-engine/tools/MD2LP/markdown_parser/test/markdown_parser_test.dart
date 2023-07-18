@@ -13,7 +13,9 @@ void main() {
     ),
   );
   final List<Token> tokens = globalParser.parseString(src);
-  for (Token t in tokens) print(t);
+  for (Token t in tokens) {
+    print(t);
+  }
 /*   final SourceMap original = SourceMap(source: src);
   print(original.charAt(original.advanceCursor(3))); */
 }
