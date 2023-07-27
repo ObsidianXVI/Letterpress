@@ -31,8 +31,8 @@ class LPFont {
       : textStyle = TextStyle(
           fontFamily: LPFontFamily.headers.name,
           color: LPColorTheme.standard_grey.color,
-          fontSize: 120,
-          fontWeight: FontWeight.w100,
+          fontSize: 100,
+          fontWeight: FontWeight.w400,
           height: 1.2,
         ),
         headerLevel = -1;
@@ -41,8 +41,8 @@ class LPFont {
       : textStyle = TextStyle(
           fontFamily: LPFontFamily.headers.name,
           color: LPColorTheme.standard_grey.color,
-          fontSize: 140,
-          fontWeight: FontWeight.w500,
+          fontSize: 130,
+          fontWeight: FontWeight.w200,
           height: 1.2,
         ),
         headerLevel = 0;
@@ -52,25 +52,25 @@ class LPFont {
           fontFamily: LPFontFamily.headers.name,
           color: LPColorTheme.header1_grey.color,
           fontSize: 120,
-          fontWeight: FontWeight.w700,
+          fontWeight: FontWeight.w600,
         ),
         headerLevel = 1;
 
   LPFont.header2()
       : textStyle = TextStyle(
           fontFamily: LPFontFamily.headers.name,
-          color: LPColorTheme.header2_grey.color,
+          color: Color.fromARGB(255, 85, 85, 85),
           fontSize: 100,
-          fontWeight: FontWeight.w600,
+          fontWeight: FontWeight.w500,
         ),
         headerLevel = 2;
 
   LPFont.header3()
       : textStyle = TextStyle(
           fontFamily: LPFontFamily.headers.name,
-          color: LPColorTheme.header3_grey.color,
+          color: Color.fromARGB(255, 65, 65, 65),
           fontSize: 80,
-          fontWeight: FontWeight.w500,
+          fontWeight: FontWeight.w400,
         ),
         headerLevel = 3;
 
