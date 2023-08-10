@@ -57,7 +57,8 @@ class LPList extends LPPostComponent {
         itemGeneratorFn = (MapEntry<LPText, int> entry) {
           itemNo += 1;
           return LPText.plainBody(
-            content: "${'   ' * 2 * entry.value}${entry.key.content}",
+            content:
+                "${'   ' * 2 * entry.value}${entry.value}${entry.key.content}",
           );
         };
         break;

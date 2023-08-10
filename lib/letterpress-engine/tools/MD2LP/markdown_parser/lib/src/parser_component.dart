@@ -137,7 +137,10 @@ class VerseQuote_Parser extends ParserComponent<VerseQuote>
   const VerseQuote_Parser();
 
   @override
-  bool trigger(String source) => source.startsWith('@versequote');
+  bool trigger(String source) {
+    if (source.startsWith('@versequote')) print('trigger');
+    return source.startsWith('@versequote');
+  }
 
   @override
   VerseQuote parse(SourceMap sourceMap) {

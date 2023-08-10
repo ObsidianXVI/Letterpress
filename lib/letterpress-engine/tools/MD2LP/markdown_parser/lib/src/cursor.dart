@@ -9,8 +9,14 @@ class CursorLocation {
     required this.col,
   });
 
+  bool hasExceeded(CursorLocation end) =>
+      !(col <= end.row && end.row <= end.row);
+
   operator +(CursorLocation other) =>
       CursorLocation(row: row + other.row, col: col + other.col);
+
+  operator -(CursorLocation other) =>
+      CursorLocation(row: row - other.row, col: col - other.col);
 
   @override
   operator ==(Object other) {
@@ -28,9 +34,8 @@ class SourceMap {
   final String source;
   late final List<List<String>> chars =
       source.split('\n').map((String line) => line.split('')).toList();
-  late final int totalRows = chars.length;
   late final CursorLocation endLoc =
-      CursorLocation(row: totalRows, col: chars.last.length);
+      CursorLocation(row: chars.length - 1, col: chars.last.length - 1);
 
   SourceMap({
     required this.source,
@@ -59,12 +64,13 @@ class SourceMap {
       count,
       (List<String> newChars) => consumedChars.addAll(newChars),
     );
-    print(consumedChars);
     return consumedChars.last;
   }
 
   List<String> consumeUntil(String stopChar) {
     final List<String> consumedChars = [];
+    print(charAt(currentLocation));
+    print(charAt(currentLocation + CursorLocation(row: 0, col: 1)));
     while (peekChar() != stopChar) {
       consumedChars.add(consumeChar());
     }
@@ -93,8 +99,17 @@ class SourceMap {
       addChars?.call(currentRow.sublist(currentCol, newLoc.col));
       return newLoc;
     } else {
+      bool x = false;
+      if (currentLocation.row > 96) {
+        x = true;
+        print(charListFromCurrent);
+        print(charAt(currentLocation));
+      }
       while (true) {
         newLoc = CursorLocation(row: newLoc.row + 1, col: 0);
+        if (newLoc.hasExceeded(endLoc)) {
+          return newLoc - CursorLocation(row: 1, col: 0);
+        }
         addChars?.call(currentRow);
         currentRow.clear();
         currentRow = chars[newLoc.row];

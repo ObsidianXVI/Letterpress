@@ -1,6 +1,5 @@
 library markdown_parser;
 
-import 'dart:ffi';
 
 part './parser_configs.dart';
 part './parser_component.dart';

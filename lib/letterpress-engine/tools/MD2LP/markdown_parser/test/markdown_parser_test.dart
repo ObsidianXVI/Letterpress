@@ -12,7 +12,7 @@ void main() {
       includeCoreTokens: true,
     ),
   );
-  final List<Token> tokens = globalParser.parseString(src);
+  final List<Token> tokens = globalParser.parseString(src.trim());
   for (Token t in tokens) {
     print(t);
   }
