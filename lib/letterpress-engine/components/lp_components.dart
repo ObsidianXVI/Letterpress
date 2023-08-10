@@ -8,6 +8,8 @@ import 'package:letterpress/letterpress-engine/utils/utils.dart';
 // import 'package:octane/octane_ds/octane_ds.dart';
 
 part './lp_core.dart';
+part './lp_module.dart';
+part './lp_post.dart';
 part './lp_fonts.dart';
 part './lp_text.dart';
 part './lp_image.dart';
