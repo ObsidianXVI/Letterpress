@@ -7,7 +7,7 @@ class TurbocalModuleA extends LPModule {
           publicationDate: DateTime.now(),
           lastUpdate: DateTime.now(),
           projectName: '',
-          tags: [],
+          tags: ['flutter', 'calendar', 'flutter-package'],
           includeTableOfContents: true,
           components: <LPPostComponent>[
             LPText.header1(content: 'Overview'),

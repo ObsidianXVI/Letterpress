@@ -14,6 +14,8 @@ class LPPostConfigs {
     required this.includeTableOfContents,
     required this.modules,
   });
+
+  List<String> get allTags => [for (LPModule module in modules) ...module.tags];
 }
 
 abstract class LPPostComponent extends StatelessWidget {
