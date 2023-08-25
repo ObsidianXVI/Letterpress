@@ -115,6 +115,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.9.1"
+  octane:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: main
+      resolved-ref: "414d1de5eb7569835089b3e85198c2cfb9f5bc33"
+      url: "https://github.com/ObsidianXVI/Octane.git"
+    source: git
+    version: "1.0.0+1"
   path:
     dependency: transitive
     description:

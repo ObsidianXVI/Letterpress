@@ -10,7 +10,7 @@ class LetterpressGallery extends StatelessWidget {
         child: Container(
           width: DimensionTools.getWidth(context),
           height: DimensionTools.getHeight(context),
-          color: LPTheme.grey800,
+          color: OctaneTheme.obsidian800,
           child: Padding(
             padding: const EdgeInsets.all(40),
             child: Column(
@@ -42,7 +42,7 @@ class LetterpressGallery extends StatelessWidget {
                               height: 300,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
-                                color: LPTheme.grey600,
+                                color: OctaneTheme.obsidian600,
                               ),
                               child: Padding(
                                 padding: const EdgeInsets.all(20),
@@ -56,7 +56,7 @@ class LetterpressGallery extends StatelessWidget {
                                             post.postConfigs.title,
                                             maxLines: 3,
                                             style: TextStyle(
-                                              color: LPTheme.grey200,
+                                              color: OctaneTheme.obsidian200,
                                               fontSize: 30,
                                               fontFamily:
                                                   LPFontFamily.body.name,
@@ -70,7 +70,7 @@ class LetterpressGallery extends StatelessWidget {
                                             post.postConfigs.description,
                                             maxLines: 3,
                                             style: TextStyle(
-                                              color: LPTheme.grey200,
+                                              color: OctaneTheme.obsidian200,
                                               fontSize: 18,
                                               fontFamily:
                                                   LPFontFamily.body.name,
@@ -91,11 +91,12 @@ class LetterpressGallery extends StatelessWidget {
                                           itemCount:
                                               post.postConfigs.allTags.length,
                                           itemBuilder: (context, i) => Chip(
-                                            backgroundColor: LPTheme.grey400,
+                                            backgroundColor:
+                                                OctaneTheme.obsidian400,
                                             label: Text(
                                               post.postConfigs.allTags[i],
                                               style: TextStyle(
-                                                color: LPTheme.grey600,
+                                                color: OctaneTheme.obsidian600,
                                                 fontSize: 16,
                                                 fontFamily:
                                                     LPFontFamily.body.name,

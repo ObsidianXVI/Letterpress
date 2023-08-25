@@ -10,7 +10,7 @@ class LPDivider extends LPPostComponent {
     return const Divider(
       height: 30,
       thickness: 0.5,
-      color: LPTheme.grey200,
+      color: OctaneTheme.obsidian200,
     );
   }
 }

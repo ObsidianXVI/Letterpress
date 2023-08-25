@@ -87,8 +87,8 @@ class LPPost extends StatelessWidget {
       child: Theme(
         data: ThemeData(
           textSelectionTheme: TextSelectionThemeData(
-            selectionColor: LPTheme.grey400.withOpacity(0.3),
-            selectionHandleColor: LPTheme.grey400,
+            selectionColor: OctaneTheme.obsidian400.withOpacity(0.3),
+            selectionHandleColor: OctaneTheme.obsidian400,
           ),
         ),
         child: SelectionArea(

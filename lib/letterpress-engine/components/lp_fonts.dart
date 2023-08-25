@@ -9,14 +9,14 @@ enum LPFontFamily {
 }
 
 enum LPColorTheme {
-  background_grey(LPTheme.grey800),
-  standard_grey(LPTheme.grey200),
-  header1_grey(LPTheme.grey400),
-  header2_grey(LPTheme.grey500),
-  header3_grey(LPTheme.grey600),
-  hyperlink_purple(LPTheme.purple800),
-  inline_code_cyan(LPTheme.blue800),
-  lyrics_quote_red(LPTheme.red800),
+  background_grey(OctaneTheme.obsidian800),
+  standard_grey(OctaneTheme.obsidian200),
+  header1_grey(OctaneTheme.obsidian400),
+  header2_grey(OctaneTheme.obsidian500),
+  header3_grey(OctaneTheme.obsidian600),
+  hyperlink_purple(OctaneTheme.purple800),
+  inline_code_cyan(OctaneTheme.blue800),
+  lyrics_quote_red(OctaneTheme.red800),
   ;
 
   final Color color;

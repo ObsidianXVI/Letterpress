@@ -9,7 +9,7 @@ class LetterpressApp extends StatelessWidget {
         child: Container(
             width: DimensionTools.getWidth(context),
             height: DimensionTools.getHeight(context),
-            color: LPTheme.grey800,
+            color: OctaneTheme.obsidian800,
             child: Stack(
               children: [
                 const Positioned.fill(
@@ -62,7 +62,7 @@ class LetterpressApp extends StatelessWidget {
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(5),
                                       border: Border.all(
-                                          color: LPTheme.purple800
+                                          color: OctaneTheme.purple800
                                               .withOpacity(0.4)),
                                     ),
                                     child: TextButton(
@@ -76,7 +76,7 @@ class LetterpressApp extends StatelessWidget {
                                             fontSize: 26,
                                             fontWeight: FontWeight.w300,
                                             letterSpacing: 1,
-                                            color: LPTheme.purple800
+                                            color: OctaneTheme.purple800
                                                 .withOpacity(0.4),
                                           ),
                                         ),
@@ -93,8 +93,8 @@ class LetterpressApp extends StatelessWidget {
                                     height: 60,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(5),
-                                      border:
-                                          Border.all(color: LPTheme.purple800),
+                                      border: Border.all(
+                                          color: OctaneTheme.purple800),
                                     ),
                                     child: TextButton(
                                       onPressed: () {
@@ -102,7 +102,7 @@ class LetterpressApp extends StatelessWidget {
                                             .pushNamed(LPRoutes.lp_gallery);
                                       },
                                       style: TextButton.styleFrom(
-                                        primary: LPTheme.purple800,
+                                        primary: OctaneTheme.purple800,
                                       ),
                                       child: Center(
                                         child: Text(
@@ -113,7 +113,7 @@ class LetterpressApp extends StatelessWidget {
                                             fontSize: 26,
                                             fontWeight: FontWeight.w300,
                                             letterSpacing: 1,
-                                            color: LPTheme.purple800,
+                                            color: OctaneTheme.purple800,
                                           ),
                                         ),
                                       ),
