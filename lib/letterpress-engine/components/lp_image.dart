@@ -6,6 +6,8 @@ class LPImage extends LPPostComponent {
   final double height;
 
   const LPImage({
+    super.leftSideNotes,
+    super.rightSideNotes,
     required this.url,
     required this.width,
     required this.height,
