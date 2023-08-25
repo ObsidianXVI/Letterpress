@@ -107,7 +107,7 @@ class LPText extends LPPostComponent {
         alignment = Alignment.topLeft;
 
   @override
-  Widget render(BuildContext context) {
+  Widget build(BuildContext context) {
     return Align(
       alignment: alignment,
       child: Text(
@@ -129,7 +129,7 @@ class LPTextSpan extends LPPostComponent {
   });
 
   @override
-  Widget render(BuildContext context) {
+  Widget build(BuildContext context) {
     TapGestureRecognizer? gestureRecog(LPText lpText) {
       if (lpText.isClickable) {
         return TapGestureRecognizer()

@@ -30,7 +30,7 @@ class TurbocalModuleA extends LPModule {
                   content:
                       ", but look at how similar it is in quality to its competitors' equivalents:",
                 ),
-              ]..insertTableOfContents(0),
+              ],
             ),
             const LPImage(
               url:

@@ -10,6 +10,8 @@ class LPModule extends StatelessWidget {
   final String projectName;
   final bool renderWithPost;
   static const SizedBox componentDivider = SizedBox(height: 30);
+  static const double colGutter = 40;
+  static const double margin = 20;
 
   const LPModule({
     required this.title,
@@ -24,13 +26,18 @@ class LPModule extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double fullWidth = DimensionTools.getWidth(context);
+    final double availableWidth = fullWidth - 2 * margin;
+    final double mainColWidth = availableWidth * 0.6;
+    final double sideColWidth = availableWidth * 0.2;
+
     final List<Widget> widgets = [];
     if (!renderWithPost) {
       widgets.addAll([
         const SizedBox(height: 20),
         Center(
           child: Container(
-            width: DimensionTools.getWidth(context),
+            width: fullWidth,
             height: DimensionTools.getHeight(context),
             child: Center(
               child: SelectableText.rich(
@@ -45,24 +52,50 @@ class LPModule extends StatelessWidget {
           ),
         ),
         const LPDivider(),
+        LPTableOfContents(
+          postComponents: components
+              .whereType<LPText>()
+              .where(((LPText text) => (text.isHeader)))
+              .toList(),
+        ),
       ]);
     }
 
     for (LPPostComponent postComponent in components) {
       widgets.addAll([
         componentDivider,
-        postComponent,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(right: colGutter),
+              child: Container(
+                width: sideColWidth - colGutter,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: postComponent.leftSideNotes,
+                ),
+              ),
+            ),
+            Container(
+              width: mainColWidth,
+              child: postComponent,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: colGutter),
+              child: Container(
+                width: sideColWidth - colGutter,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: postComponent.rightSideNotes,
+                ),
+              ),
+            ),
+          ],
+        ),
       ]);
-    }
-
-    if (!renderWithPost) {
-      final LPTableOfContents tableOfContents = LPTableOfContents(
-        postComponents: widgets
-            .whereType<LPText>()
-            .where(((LPText text) => (text.isHeader)))
-            .toList(),
-      );
-      widgets.insert(1, tableOfContents);
     }
 
     if (!renderWithPost) {

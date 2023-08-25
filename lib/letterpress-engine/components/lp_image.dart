@@ -15,7 +15,7 @@ class LPImage extends LPPostComponent {
   });
 
   @override
-  Widget render(BuildContext context) {
+  Widget build(BuildContext context) {
     return Center(
       child: Container(
         width: width,

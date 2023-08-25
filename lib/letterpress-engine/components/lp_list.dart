@@ -22,7 +22,7 @@ class LPList extends LPPostComponent {
   });
 
   @override
-  Widget render(BuildContext context) {
+  Widget build(BuildContext context) {
     final List<Widget> children = [];
 
     final LPText Function(MapEntry<LPText, int>) itemGeneratorFn;
@@ -45,22 +45,24 @@ class LPList extends LPPostComponent {
         break;
       case LPListType.chaptered:
         int itemNo = 0;
-        final int maxDepth = indentLevels.entries
-            .reduce(
-              (value, element) =>
-                  value.key.lpFont.headerLevel > element.key.lpFont.headerLevel
+        final int maxDepth = indentLevels.entries.isNotEmpty
+            ? indentLevels.entries
+                .reduce(
+                  (value, element) => value.key.lpFont.headerLevel >
+                          element.key.lpFont.headerLevel
                       ? element
                       : value,
-            )
-            .key
-            .lpFont
-            .headerLevel;
+                )
+                .key
+                .lpFont
+                .headerLevel
+            : 0;
         List<int> chapterCode = List<int>.generate(maxDepth, (index) => 0);
         itemGeneratorFn = (MapEntry<LPText, int> entry) {
           itemNo += 1;
           return LPText.plainBody(
             content:
-                "${'   ' * 2 * entry.value}${entry.value}${entry.key.content}",
+                "${'   ' * 2 * entry.value}${entry.value}: ${entry.key.content}",
           );
         };
         break;

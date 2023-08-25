@@ -9,6 +9,8 @@ import 'package:letterpress/main.dart';
 part './lp_home.dart';
 part './lp_post_view.dart';
 part './lp_gallery.dart';
+part 'lp_blogules.dart';
+part './lp_blogule_view.dart';
 
 abstract class Routable {
   final String base;

@@ -23,15 +23,20 @@ class LPVerseQuote extends LPQuote {
   });
 
   @override
-  Widget render(BuildContext context) {
+  Widget build(BuildContext context) {
     return Center(
       child: Container(
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              LPText.verse(content: verses.join('\n')),
+              LPText.verse(
+                alignment: Alignment.topCenter,
+                content: verses.join('\n'),
+              ),
+              const SizedBox(height: 30),
               LPText.hyperlink(
+                alignment: Alignment.bottomCenter,
                 content: reference,
                 url: reference,
                 textAlign: TextAlign.center,

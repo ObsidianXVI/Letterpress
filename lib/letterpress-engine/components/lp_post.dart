@@ -29,54 +29,6 @@ abstract class LPPostComponent extends StatelessWidget {
     this.rightSideNotes = const [],
     super.key,
   });
-
-  Widget render(BuildContext context);
-
-  @override
-  Widget build(BuildContext context) {
-    const double colGutter = 40;
-    const double margin = 20;
-    final double fullWidth = DimensionTools.getWidth(context);
-    final double availableWidth = fullWidth - 2 * margin;
-    final double mainColWidth = availableWidth * 0.6;
-    final double sideColWidth = availableWidth * 0.2;
-    return Container(
-      width: double.infinity,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          if (leftSideNotes.isNotEmpty)
-            Padding(
-              padding: const EdgeInsets.only(right: colGutter),
-              child: Container(
-                width: sideColWidth - colGutter,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: leftSideNotes,
-                ),
-              ),
-            ),
-          Container(
-            width: mainColWidth,
-            child: render(context),
-          ),
-          if (rightSideNotes.isNotEmpty)
-            Padding(
-              padding: const EdgeInsets.only(left: colGutter),
-              child: Container(
-                width: sideColWidth - colGutter,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: rightSideNotes,
-                ),
-              ),
-            ),
-        ],
-      ),
-    );
-  }
 }
 
 class LPPost extends StatelessWidget {

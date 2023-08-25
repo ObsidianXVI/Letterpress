@@ -61,42 +61,6 @@ class LetterpressApp extends StatelessWidget {
                                     height: 60,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(5),
-                                      border:
-                                          Border.all(color: LPTheme.purple800),
-                                    ),
-                                    child: TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context)
-                                            .pushNamed(LPRoutes.tgif_home);
-                                      },
-                                      style: TextButton.styleFrom(
-                                        primary: LPTheme.purple800,
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          'TGIF Challenge',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontFamily: LPFontFamily.body.name,
-                                            fontSize: 26,
-                                            fontWeight: FontWeight.w300,
-                                            letterSpacing: 1,
-                                            color: LPTheme.purple800,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 50),
-                              Center(
-                                child: SelectionContainer.disabled(
-                                  child: Container(
-                                    width: 200,
-                                    height: 60,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
                                       border: Border.all(
                                           color: LPTheme.purple800
                                               .withOpacity(0.4)),
