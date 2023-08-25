@@ -80,22 +80,19 @@ class LPModule extends StatelessWidget {
     }
 
     return Center(
-      child: Padding(
-        padding: const EdgeInsets.only(left: 200, right: 200),
-        child: Theme(
-          data: ThemeData(
-            textSelectionTheme: TextSelectionThemeData(
-              selectionColor: LPTheme.grey400.withOpacity(0.3),
-              selectionHandleColor: LPTheme.grey400,
-            ),
+      child: Theme(
+        data: ThemeData(
+          textSelectionTheme: TextSelectionThemeData(
+            selectionColor: LPTheme.grey400.withOpacity(0.3),
+            selectionHandleColor: LPTheme.grey400,
           ),
-          child: SelectionArea(
-            selectionControls: materialTextSelectionControls,
-            child: Center(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: widgets,
-                ),
+        ),
+        child: SelectionArea(
+          selectionControls: materialTextSelectionControls,
+          child: Center(
+            child: SingleChildScrollView(
+              child: Column(
+                children: widgets,
               ),
             ),
           ),

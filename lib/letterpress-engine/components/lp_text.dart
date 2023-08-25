@@ -10,6 +10,8 @@ class LPText extends LPPostComponent {
   final Map<String, dynamic> props = {};
 
   LPText({
+    super.leftSideNotes,
+    super.rightSideNotes,
     required this.content,
     required this.lpFont,
     required this.isClickable,
@@ -20,6 +22,8 @@ class LPText extends LPPostComponent {
   });
 
   LPText.header1({
+    super.leftSideNotes,
+    super.rightSideNotes,
     required this.content,
     this.alignment = Alignment.topLeft,
     this.textAlign = TextAlign.left,
@@ -28,6 +32,8 @@ class LPText extends LPPostComponent {
         isHeader = true;
 
   LPText.header2({
+    super.leftSideNotes,
+    super.rightSideNotes,
     required this.content,
     this.alignment = Alignment.topLeft,
     this.textAlign = TextAlign.left,
@@ -36,6 +42,8 @@ class LPText extends LPPostComponent {
         isHeader = true;
 
   LPText.header3({
+    super.leftSideNotes,
+    super.rightSideNotes,
     required this.content,
     this.alignment = Alignment.topLeft,
     this.textAlign = TextAlign.left,
@@ -44,6 +52,8 @@ class LPText extends LPPostComponent {
         isHeader = true;
 
   LPText.plainBody({
+    super.leftSideNotes,
+    super.rightSideNotes,
     required this.content,
     this.alignment = Alignment.topLeft,
     this.textAlign = TextAlign.left,
@@ -53,6 +63,8 @@ class LPText extends LPPostComponent {
         isHeader = false;
 
   LPText.buttonText({
+    super.leftSideNotes,
+    super.rightSideNotes,
     required this.content,
     this.alignment = Alignment.topLeft,
     this.textAlign = TextAlign.left,
@@ -62,6 +74,8 @@ class LPText extends LPPostComponent {
         isHeader = false;
 
   LPText.verse({
+    super.leftSideNotes,
+    super.rightSideNotes,
     required this.content,
     this.alignment = Alignment.topLeft,
     this.textAlign = TextAlign.center,
@@ -71,6 +85,8 @@ class LPText extends LPPostComponent {
         isHeader = false;
 
   LPText.hyperlink({
+    super.leftSideNotes,
+    super.rightSideNotes,
     required this.content,
     this.alignment = Alignment.topLeft,
     this.textAlign = TextAlign.left,
@@ -91,7 +107,7 @@ class LPText extends LPPostComponent {
         alignment = Alignment.topLeft;
 
   @override
-  Widget build(BuildContext context) {
+  Widget render(BuildContext context) {
     return Align(
       alignment: alignment,
       child: Text(
@@ -108,10 +124,12 @@ class LPTextSpan extends LPPostComponent {
 
   LPTextSpan({
     required this.lpTextComponents,
+    super.leftSideNotes,
+    super.rightSideNotes,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget render(BuildContext context) {
     TapGestureRecognizer? gestureRecog(LPText lpText) {
       if (lpText.isClickable) {
         return TapGestureRecognizer()

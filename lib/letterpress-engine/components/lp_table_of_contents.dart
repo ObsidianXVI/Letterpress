@@ -7,7 +7,7 @@ class LPTableOfContents extends LPPostComponent {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget render(BuildContext context) {
     final Map<LPText, int> indentLevels = Map.fromIterables(
       postComponents.map((LPText lpText) => lpText),
       postComponents.map((LPText lpText) => lpText.lpFont.headerLevel),

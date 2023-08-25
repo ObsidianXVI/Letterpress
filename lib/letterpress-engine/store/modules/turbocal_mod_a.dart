@@ -3,10 +3,10 @@ import 'package:letterpress/letterpress-engine/components/lp_components.dart';
 class TurbocalModuleA extends LPModule {
   TurbocalModuleA({required bool renderWithPost})
       : super(
-          title: '',
+          title: 'turbocal_mod_a',
           publicationDate: DateTime.now(),
           lastUpdate: DateTime.now(),
-          projectName: '',
+          projectName: 'projectName',
           tags: ['flutter', 'calendar', 'flutter-package'],
           includeTableOfContents: true,
           components: <LPPostComponent>[
@@ -37,6 +37,10 @@ class TurbocalModuleA extends LPModule {
                   'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
               width: 500,
               height: 500,
+              leftSideNotes: [
+                LPSideNoteComment(text: "I definitely did this"),
+                LPSideNoteComment(text: "Yep"),
+              ],
             ),
             LPText.plainBody(content: 'Surely flutter can do much better?'),
             LPText.header1(content: 'Definition'),
@@ -54,7 +58,13 @@ class TurbocalModuleA extends LPModule {
             LPText.plainBody(
                 content:
                     "Hopping over to FigJam, let's get started ideating (or, to be more precise, identifying the features from Google Calendar that we would like to implement in TurboCal)."),
-            LPText.header1(content: "Designing"),
+            LPText.header1(
+              content: "Designing",
+              rightSideNotes: const [
+                LPSideNoteComment(text: "I definitely did this"),
+                LPSideNoteComment(text: "Yep"),
+              ],
+            ),
             LPText.plainBody(
                 content:
                     "We are actually going to skip the UI design stage, and get straight to thinking about the implementation, because our interface will look 99% like Google Calendar."),

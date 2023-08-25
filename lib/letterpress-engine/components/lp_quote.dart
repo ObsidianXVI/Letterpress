@@ -2,6 +2,8 @@ part of letterpress.ds;
 
 abstract class LPQuote extends LPPostComponent {
   const LPQuote({
+    super.leftSideNotes,
+    super.rightSideNotes,
     super.key,
   });
 }
@@ -12,6 +14,8 @@ class LPVerseQuote extends LPQuote {
   final String url;
 
   const LPVerseQuote({
+    super.leftSideNotes,
+    super.rightSideNotes,
     required this.verses,
     required this.reference,
     required this.url,
@@ -19,10 +23,9 @@ class LPVerseQuote extends LPQuote {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget render(BuildContext context) {
     return Center(
       child: Container(
-        width: double.infinity,
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

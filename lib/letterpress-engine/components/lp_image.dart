@@ -6,6 +6,8 @@ class LPImage extends LPPostComponent {
   final double height;
 
   const LPImage({
+    super.leftSideNotes,
+    super.rightSideNotes,
     required this.url,
     required this.width,
     required this.height,
@@ -13,7 +15,7 @@ class LPImage extends LPPostComponent {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget render(BuildContext context) {
     return Center(
       child: Container(
         width: width,

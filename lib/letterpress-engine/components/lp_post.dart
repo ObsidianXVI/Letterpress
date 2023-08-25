@@ -2,6 +2,7 @@ part of letterpress.ds;
 
 class LPPostConfigs {
   final String title;
+  final String description;
   final DateTime publicationDate;
   final DateTime lastUpdate;
   final bool includeTableOfContents;
@@ -9,6 +10,7 @@ class LPPostConfigs {
 
   const LPPostConfigs({
     required this.title,
+    required this.description,
     required this.publicationDate,
     required this.lastUpdate,
     required this.includeTableOfContents,
@@ -19,7 +21,62 @@ class LPPostConfigs {
 }
 
 abstract class LPPostComponent extends StatelessWidget {
-  const LPPostComponent({super.key});
+  final List<LPSideNoteComponent> leftSideNotes;
+  final List<LPSideNoteComponent> rightSideNotes;
+
+  const LPPostComponent({
+    this.leftSideNotes = const [],
+    this.rightSideNotes = const [],
+    super.key,
+  });
+
+  Widget render(BuildContext context);
+
+  @override
+  Widget build(BuildContext context) {
+    const double colGutter = 40;
+    const double margin = 20;
+    final double fullWidth = DimensionTools.getWidth(context);
+    final double availableWidth = fullWidth - 2 * margin;
+    final double mainColWidth = availableWidth * 0.6;
+    final double sideColWidth = availableWidth * 0.2;
+    return Container(
+      width: double.infinity,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          if (leftSideNotes.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.only(right: colGutter),
+              child: Container(
+                width: sideColWidth - colGutter,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: leftSideNotes,
+                ),
+              ),
+            ),
+          Container(
+            width: mainColWidth,
+            child: render(context),
+          ),
+          if (rightSideNotes.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.only(left: colGutter),
+              child: Container(
+                width: sideColWidth - colGutter,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: rightSideNotes,
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
 }
 
 class LPPost extends StatelessWidget {
@@ -33,26 +90,25 @@ class LPPost extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> widgets = [];
-    widgets.addAll([
-      Center(
-        child: Container(
-          width: DimensionTools.getWidth(context),
-          height: DimensionTools.getHeight(context),
-          child: Center(
-            child: SelectableText.rich(
-              TextSpan(children: [
-                TextSpan(
-                  text: postConfigs.title,
-                  style: LPFont.title().textStyle,
-                ),
-              ]),
+    final List<Widget> widgets = []..addAll([
+        Center(
+          child: Container(
+            width: DimensionTools.getWidth(context),
+            height: DimensionTools.getHeight(context),
+            child: Center(
+              child: SelectableText.rich(
+                TextSpan(children: [
+                  TextSpan(
+                    text: postConfigs.title,
+                    style: LPFont.title().textStyle,
+                  ),
+                ]),
+              ),
             ),
           ),
         ),
-      ),
-      ...postConfigs.modules,
-    ]);
+        ...postConfigs.modules,
+      ]);
 
     final LPTableOfContents tableOfContents = LPTableOfContents(
       postComponents: widgets
@@ -76,22 +132,19 @@ class LPPost extends StatelessWidget {
     ]);
 
     return Center(
-      child: Padding(
-        padding: const EdgeInsets.only(left: 200, right: 200),
-        child: Theme(
-          data: ThemeData(
-            textSelectionTheme: TextSelectionThemeData(
-              selectionColor: LPTheme.grey400.withOpacity(0.3),
-              selectionHandleColor: LPTheme.grey400,
-            ),
+      child: Theme(
+        data: ThemeData(
+          textSelectionTheme: TextSelectionThemeData(
+            selectionColor: LPTheme.grey400.withOpacity(0.3),
+            selectionHandleColor: LPTheme.grey400,
           ),
-          child: SelectionArea(
-            selectionControls: materialTextSelectionControls,
-            child: Center(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: postConfigs.modules,
-                ),
+        ),
+        child: SelectionArea(
+          selectionControls: materialTextSelectionControls,
+          child: Center(
+            child: SingleChildScrollView(
+              child: Column(
+                children: postConfigs.modules,
               ),
             ),
           ),

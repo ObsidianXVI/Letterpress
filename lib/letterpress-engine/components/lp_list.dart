@@ -15,12 +15,14 @@ class LPList extends LPPostComponent {
   final Map<LPText, int> indentLevels;
 
   const LPList({
+    super.leftSideNotes,
+    super.rightSideNotes,
     required this.lpListType,
     required this.indentLevels,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget render(BuildContext context) {
     final List<Widget> children = [];
 
     final LPText Function(MapEntry<LPText, int>) itemGeneratorFn;

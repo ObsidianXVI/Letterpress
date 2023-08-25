@@ -8,7 +8,7 @@ class LPGroup extends LPPostComponent {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget render(BuildContext context) {
     final List<Widget> children = [];
     for (LPPostComponent postComponent in postComponents) {
       children.add(postComponent);

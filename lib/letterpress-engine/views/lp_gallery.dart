@@ -64,6 +64,20 @@ class LetterpressGallery extends StatelessWidget {
                                             ),
                                           ),
                                         ),
+                                        const SizedBox(height: 20),
+                                        Flexible(
+                                          child: Text(
+                                            post.postConfigs.description,
+                                            maxLines: 3,
+                                            style: TextStyle(
+                                              color: LPTheme.grey200,
+                                              fontSize: 18,
+                                              fontFamily:
+                                                  LPFontFamily.body.name,
+                                              fontWeight: FontWeight.w300,
+                                            ),
+                                          ),
+                                        ),
                                       ],
                                     ),
                                     Positioned(
@@ -77,8 +91,17 @@ class LetterpressGallery extends StatelessWidget {
                                           itemCount:
                                               post.postConfigs.allTags.length,
                                           itemBuilder: (context, i) => Chip(
+                                            backgroundColor: LPTheme.grey400,
                                             label: Text(
-                                                post.postConfigs.allTags[i]),
+                                              post.postConfigs.allTags[i],
+                                              style: TextStyle(
+                                                color: LPTheme.grey600,
+                                                fontSize: 16,
+                                                fontFamily:
+                                                    LPFontFamily.body.name,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
                                           ),
                                           separatorBuilder: (context, _) =>
                                               const SizedBox(width: 10),
