@@ -10,6 +10,13 @@
             "type": "dart"
         },
         {
+            "name": "Letterpress Debug",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "deviceId": "chrome",
+        },
+        {
             "name": "Letterpress (profile mode)",
             "request": "launch",
             "type": "dart",

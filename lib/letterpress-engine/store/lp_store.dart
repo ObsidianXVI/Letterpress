@@ -6,7 +6,13 @@ import '../components/lp_components.dart';
 
 class LPStore {
   static final List<LPPost> posts = [turbocal_post];
-  static final List<LPModule> modules = [turbocalModuleA];
+  static final List<LPModule> modules = [
+    turbocalModuleA,
+    turbocalModuleA,
+    turbocalModuleA,
+    turbocalModuleA,
+    turbocalModuleA
+  ];
 }
 
 final LPPost turbocal_post = LPPost(

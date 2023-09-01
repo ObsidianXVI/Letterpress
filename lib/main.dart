@@ -8,6 +8,7 @@ class LPRoutes {
   static const String lp_home = '/';
   static const String lp_gallery = '/gallery';
   static const String lp_blogules = '/blogules';
+  static const String lp_timelapse = '/timelapse';
 
   static final Map<LPPost, String> postUrls = {
     turbocal_post: '/posts/week1-turbocal-complex-calendar-widget-flutter',
@@ -24,6 +25,7 @@ void main() {
       initialRoute: LPRoutes.lp_home,
       routes: {
         LPRoutes.lp_home: (_) => const LetterpressApp(),
+        LPRoutes.lp_timelapse: (_) => const LetterpressTimelapse(),
         LPRoutes.lp_gallery: (_) => const LetterpressGallery(),
         LPRoutes.lp_blogules: (_) => const LetterpressBlogulesView(),
       }

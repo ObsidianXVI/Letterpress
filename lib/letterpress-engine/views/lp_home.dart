@@ -62,22 +62,23 @@ class LetterpressApp extends StatelessWidget {
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(5),
                                       border: Border.all(
-                                          color: OctaneTheme.purple800
-                                              .withOpacity(0.4)),
+                                          color: OctaneTheme.purple800),
                                     ),
                                     child: TextButton(
-                                      onPressed: null,
+                                      onPressed: () {
+                                        Navigator.of(context)
+                                            .pushNamed(LPRoutes.lp_timelapse);
+                                      },
                                       child: Center(
                                         child: Text(
-                                          'Timelapse Series',
+                                          'Timelapse',
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                             fontFamily: LPFontFamily.body.name,
                                             fontSize: 26,
                                             fontWeight: FontWeight.w300,
                                             letterSpacing: 1,
-                                            color: OctaneTheme.purple800
-                                                .withOpacity(0.4),
+                                            color: OctaneTheme.purple800,
                                           ),
                                         ),
                                       ),
