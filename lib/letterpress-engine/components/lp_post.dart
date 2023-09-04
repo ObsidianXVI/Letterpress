@@ -52,7 +52,7 @@ class LPPost extends StatelessWidget {
                 TextSpan(children: [
                   TextSpan(
                     text: postConfigs.title,
-                    style: LPFont.title().textStyle,
+                    style: LPFont.mainTitle().textStyle,
                   ),
                 ]),
               ),

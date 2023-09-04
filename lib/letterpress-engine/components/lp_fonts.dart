@@ -26,100 +26,110 @@ enum LPColorTheme {
 class LPFont {
   final TextStyle textStyle;
   final int headerLevel;
+  final Color? textColor;
 
-  LPFont.postClassTitle()
+  LPFont.mainTitle({this.textColor})
       : textStyle = TextStyle(
           fontFamily: LPFontFamily.headers.name,
-          color: LPColorTheme.standard_grey.color,
+          color: textColor ?? LPColorTheme.standard_grey.color,
+          fontSize: 130,
+          fontWeight: FontWeight.w300,
+          height: 1.2,
+        ),
+        headerLevel = 0;
+
+  LPFont.subTitle({this.textColor})
+      : textStyle = TextStyle(
+          fontFamily: LPFontFamily.headers.name,
+          color: textColor ?? LPColorTheme.standard_grey.color,
           fontSize: 100,
-          fontWeight: FontWeight.w400,
+          fontWeight: FontWeight.w600,
           height: 1.2,
         ),
         headerLevel = -1;
 
-  LPFont.title()
+  LPFont.header1({this.textColor})
       : textStyle = TextStyle(
           fontFamily: LPFontFamily.headers.name,
-          color: LPColorTheme.standard_grey.color,
-          fontSize: 130,
-          fontWeight: FontWeight.w200,
-          height: 1.2,
-        ),
-        headerLevel = 0;
-
-  LPFont.header1()
-      : textStyle = TextStyle(
-          fontFamily: LPFontFamily.headers.name,
-          color: LPColorTheme.header1_grey.color,
+          color: textColor ?? LPColorTheme.header1_grey.color,
           fontSize: 120,
-          fontWeight: FontWeight.w600,
+          fontWeight: FontWeight.w900,
         ),
         headerLevel = 1;
 
-  LPFont.header2()
+  LPFont.header2({this.textColor})
       : textStyle = TextStyle(
           fontFamily: LPFontFamily.headers.name,
-          color: Color.fromARGB(255, 85, 85, 85),
+          color: textColor ?? Color.fromARGB(255, 85, 85, 85),
           fontSize: 100,
-          fontWeight: FontWeight.w500,
+          fontWeight: FontWeight.w900,
         ),
         headerLevel = 2;
 
-  LPFont.header3()
+  LPFont.header3({this.textColor})
       : textStyle = TextStyle(
           fontFamily: LPFontFamily.headers.name,
-          color: Color.fromARGB(255, 65, 65, 65),
+          color: textColor ?? Color.fromARGB(255, 65, 65, 65),
           fontSize: 80,
-          fontWeight: FontWeight.w400,
+          fontWeight: FontWeight.w600,
         ),
         headerLevel = 3;
 
-  LPFont.body()
+  LPFont.header4({this.textColor})
       : textStyle = TextStyle(
           fontFamily: LPFontFamily.body.name,
-          color: LPColorTheme.standard_grey.color,
-          fontSize: 26,
-          fontWeight: FontWeight.w300,
+          color: textColor ?? Color.fromARGB(255, 65, 65, 65),
+          fontSize: 50,
+          fontWeight: FontWeight.w500,
+        ),
+        headerLevel = 3;
+
+  LPFont.body({this.textColor})
+      : textStyle = TextStyle(
+          fontFamily: LPFontFamily.body.name,
+          color: textColor ?? LPColorTheme.standard_grey.color,
+          fontSize: 20,
+          fontWeight: FontWeight.w500,
           letterSpacing: 1,
         ),
         headerLevel = 0;
 
-  LPFont.bodyItalic()
+  LPFont.bodyItalic({this.textColor})
       : textStyle = TextStyle(
           fontFamily: LPFontFamily.body.name,
-          color: LPColorTheme.standard_grey.color,
-          fontSize: 26,
-          fontWeight: FontWeight.w300,
+          color: textColor ?? LPColorTheme.standard_grey.color,
+          fontSize: 20,
+          fontWeight: FontWeight.w500,
           fontStyle: FontStyle.italic,
           letterSpacing: 1,
         ),
         headerLevel = 0;
 
-  LPFont.buttonText()
+  LPFont.buttonText({this.textColor})
       : textStyle = TextStyle(
           fontFamily: LPFontFamily.body.name,
-          color: LPColorTheme.standard_grey.color,
-          fontSize: 26,
-          fontWeight: FontWeight.w300,
+          color: textColor ?? LPColorTheme.standard_grey.color,
+          fontSize: 20,
+          fontWeight: FontWeight.w500,
           letterSpacing: 1,
           overflow: TextOverflow.fade,
         ),
         headerLevel = 0;
 
-  LPFont.verseQuote()
+  LPFont.verseQuote({this.textColor})
       : textStyle = TextStyle(
           fontFamily: LPFontFamily.body.name,
-          color: LPColorTheme.lyrics_quote_red.color,
+          color: textColor ?? LPColorTheme.lyrics_quote_red.color,
           fontSize: 34,
           fontWeight: FontWeight.w400,
           letterSpacing: 1,
         ),
         headerLevel = 0;
 
-  LPFont.verseQuoteItalic()
+  LPFont.verseQuoteItalic({this.textColor})
       : textStyle = TextStyle(
           fontFamily: LPFontFamily.body.name,
-          color: LPColorTheme.lyrics_quote_red.color,
+          color: textColor ?? LPColorTheme.lyrics_quote_red.color,
           fontSize: 34,
           fontWeight: FontWeight.w400,
           fontStyle: FontStyle.italic,
@@ -127,10 +137,10 @@ class LPFont {
         ),
         headerLevel = 0;
 
-  LPFont.hyperlink()
+  LPFont.hyperlink({this.textColor})
       : textStyle = TextStyle(
           fontFamily: LPFontFamily.body.name,
-          color: LPColorTheme.hyperlink_purple.color,
+          color: textColor ?? LPColorTheme.hyperlink_purple.color,
           fontSize: 26,
           fontWeight: FontWeight.w300,
           letterSpacing: 1,

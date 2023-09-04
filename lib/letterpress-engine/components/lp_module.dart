@@ -44,7 +44,7 @@ class LPModule extends StatelessWidget {
                 TextSpan(children: [
                   TextSpan(
                     text: title,
-                    style: LPFont.title().textStyle,
+                    style: LPFont.mainTitle().textStyle,
                   ),
                 ]),
               ),

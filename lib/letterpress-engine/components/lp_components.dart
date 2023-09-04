@@ -19,5 +19,4 @@ part './lp_table_of_contents.dart';
 part './lp_group.dart';
 part './lp_list.dart';
 part './lp_quote.dart';
-part './lp_theme.dart';
 part './lp_sidenote.dart';

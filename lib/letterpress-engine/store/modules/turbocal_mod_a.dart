@@ -1,4 +1,4 @@
-import 'package:letterpress/letterpress-engine/components/lp_components.dart';
+part of letterpress.store;
 
 class TurbocalModuleA extends LPModule {
   TurbocalModuleA({required bool renderWithPost})
@@ -6,7 +6,7 @@ class TurbocalModuleA extends LPModule {
           title: 'turbocal_mod_a',
           publicationDate: DateTime.now(),
           lastUpdate: DateTime.now(),
-          projectName: 'projectName',
+          projectName: 'turbocal',
           tags: ['flutter', 'calendar', 'flutter-package'],
           includeTableOfContents: true,
           components: <LPPostComponent>[
