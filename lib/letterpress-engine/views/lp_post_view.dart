@@ -13,7 +13,7 @@ class LetterpressPostView extends StatelessWidget {
       child: Container(
         width: double.infinity,
         height: double.infinity,
-        color: OctaneTheme.obsidian800,
+        color: OctaneTheme.obsidianD150,
         child: child,
       ),
     );

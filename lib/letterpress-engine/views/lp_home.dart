@@ -8,7 +8,7 @@ class LetterpressApp extends StatelessWidget {
       child: Center(
         child: ViewportDependent(
           child: Container(
-            color: OctaneTheme.obsidian800,
+            color: OctaneTheme.obsidianD150,
             width: double.infinity,
             height: double.infinity,
             child: SingleChildScrollView(
@@ -24,7 +24,7 @@ class LetterpressApp extends StatelessWidget {
                     child: Text(
                       'LET\nTER\nPRESS',
                       style: TextStyle(
-                        color: OctaneTheme.obsidian100,
+                        color: OctaneTheme.obsidianA150,
                         fontFamily: LPFontFamily.headers.name,
                         fontSize: 340,
                         fontWeight: FontWeight.w800,
@@ -39,13 +39,13 @@ class LetterpressApp extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.only(
                           left: 60,
-                          right: 60,
+                          right: 540,
                           top: 30,
                         ),
                         child: Column(
                           children: [
-                            LPText.header1(content: 'About'),
-                            const SizedBox(height: 60),
+                            LPText.mainTitle(content: 'About'),
+                            const SizedBox(height: 50),
                             LPText.plainBody(
                                 content:
                                     "Letterpress is a blog page by OBSiDIAN about coding and design stuff — but with a twist. Posts aren't only arranged chronologically (as a matter of fact, posts aren't even a thing!), but instead, modules are published instead."),
@@ -73,13 +73,7 @@ class LetterpressApp extends StatelessWidget {
                                       child: Text(
                                         'Timelapse',
                                         textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontFamily: LPFontFamily.body.name,
-                                          fontSize: 26,
-                                          fontWeight: FontWeight.w300,
-                                          letterSpacing: 1,
-                                          color: OctaneTheme.purple800,
-                                        ),
+                                        style: LPFont.buttonText().textStyle,
                                       ),
                                     ),
                                   ),
@@ -105,18 +99,69 @@ class LetterpressApp extends StatelessWidget {
                                       child: Text(
                                         'Gallery',
                                         textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontFamily: LPFontFamily.body.name,
-                                          fontSize: 26,
-                                          fontWeight: FontWeight.w300,
-                                          letterSpacing: 1,
-                                          color: OctaneTheme.purple800,
-                                        ),
+                                        style: LPFont.buttonText().textStyle,
                                       ),
                                     ),
                                   ),
                                 ),
                               ],
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  ViewportDependent(
+                    child: Container(
+                      width: double.infinity,
+                      height: double.infinity,
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          left: 60,
+                          right: 540,
+                          top: 30,
+                        ),
+                        child: Column(
+                          children: [
+                            LPText.mainTitle(content: 'Discover'),
+                            const SizedBox(height: 50),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: List<Widget>.generate(3, (i) {
+                                return Center(
+                                  child: Transform.scale(
+                                    scale: i != 1 ? 0.77 : 1,
+                                    child: Container(
+                                      width: 438,
+                                      height: 438,
+                                      decoration: BoxDecoration(
+                                        color: OctaneTheme.obsidianC150,
+                                        borderRadius: BorderRadius.circular(5),
+                                        border: Border.all(
+                                            color: OctaneTheme.obsidianC050),
+                                      ),
+                                      child: Center(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(30),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              LPText.header1(
+                                                  content: "Some Cool Post"),
+                                              const SizedBox(height: 30),
+                                              LPText.plainBody(
+                                                  content: "Some description"),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }),
                             )
                           ],
                         ),

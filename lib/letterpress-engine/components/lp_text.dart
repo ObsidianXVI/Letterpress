@@ -21,6 +21,26 @@ class LPText extends LPPostComponent {
     super.key,
   });
 
+  LPText.mainTitle({
+    super.leftSideNotes,
+    super.rightSideNotes,
+    required this.content,
+    this.alignment = Alignment.topLeft,
+    this.textAlign = TextAlign.left,
+  })  : lpFont = LPFont.mainTitle(),
+        isClickable = false,
+        isHeader = true;
+
+  LPText.subTitle({
+    super.leftSideNotes,
+    super.rightSideNotes,
+    required this.content,
+    this.alignment = Alignment.topLeft,
+    this.textAlign = TextAlign.left,
+  })  : lpFont = LPFont.subTitle(),
+        isClickable = false,
+        isHeader = true;
+
   LPText.header1({
     super.leftSideNotes,
     super.rightSideNotes,
@@ -48,6 +68,16 @@ class LPText extends LPPostComponent {
     this.alignment = Alignment.topLeft,
     this.textAlign = TextAlign.left,
   })  : lpFont = LPFont.header3(),
+        isClickable = false,
+        isHeader = true;
+
+  LPText.header4({
+    super.leftSideNotes,
+    super.rightSideNotes,
+    required this.content,
+    this.alignment = Alignment.topLeft,
+    this.textAlign = TextAlign.left,
+  })  : lpFont = LPFont.header4(),
         isClickable = false,
         isHeader = true;
 

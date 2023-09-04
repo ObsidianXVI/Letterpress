@@ -15,7 +15,7 @@ class LPSideNoteComment extends LPSideNoteComponent {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      color: OctaneTheme.obsidian600,
+      color: OctaneTheme.obsidianC150,
       child: Padding(
         padding: const EdgeInsets.all(5),
         child: Align(

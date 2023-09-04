@@ -23,7 +23,7 @@ void main() {
   runApp(
     MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: '/dev', // LPRoutes.lp_home,
+      initialRoute: LPRoutes.lp_home,
       routes: {
         LPRoutes.lp_home: (_) => const LetterpressApp(),
         LPRoutes.lp_timelapse: (_) => const LetterpressTimelapse(),
@@ -78,42 +78,42 @@ class DevView extends StatelessWidget {
                 children: [
                   Text(
                     'Main Title',
-                    style: LPFont.mainTitle(textColor: OctaneTheme.obsidian800)
+                    style: LPFont.mainTitle(textColor: OctaneTheme.obsidianD150)
                         .textStyle,
                   ),
                   Text(
                     'Sub Title',
-                    style: LPFont.subTitle(textColor: OctaneTheme.obsidian800)
+                    style: LPFont.subTitle(textColor: OctaneTheme.obsidianD150)
                         .textStyle,
                   ),
                   Text(
                     'Header 1',
-                    style: LPFont.header1(textColor: OctaneTheme.obsidian800)
+                    style: LPFont.header1(textColor: OctaneTheme.obsidianD150)
                         .textStyle,
                   ),
                   Text(
                     'Header 2',
-                    style: LPFont.header2(textColor: OctaneTheme.obsidian800)
+                    style: LPFont.header2(textColor: OctaneTheme.obsidianD150)
                         .textStyle,
                   ),
                   Text(
                     'Header 3',
-                    style: LPFont.header3(textColor: OctaneTheme.obsidian800)
+                    style: LPFont.header3(textColor: OctaneTheme.obsidianD150)
                         .textStyle,
                   ),
                   Text(
                     'Header 4',
-                    style: LPFont.header4(textColor: OctaneTheme.obsidian800)
+                    style: LPFont.header4(textColor: OctaneTheme.obsidianD150)
                         .textStyle,
                   ),
                   Text(
                     'Body',
-                    style: LPFont.body(textColor: OctaneTheme.obsidian800)
+                    style: LPFont.body(textColor: OctaneTheme.obsidianD150)
                         .textStyle,
                   ),
                   Text(
                     'Button',
-                    style: LPFont.body(textColor: OctaneTheme.obsidian800)
+                    style: LPFont.body(textColor: OctaneTheme.obsidianD150)
                         .textStyle,
                   ),
                 ],

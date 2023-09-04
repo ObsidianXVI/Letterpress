@@ -119,8 +119,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: main
-      resolved-ref: "414d1de5eb7569835089b3e85198c2cfb9f5bc33"
+      ref: "477d341"
+      resolved-ref: "477d3414542b03d21deeebc4ba9091b2b0531894"
       url: "https://github.com/ObsidianXVI/Octane.git"
     source: git
     version: "1.0.0+1"

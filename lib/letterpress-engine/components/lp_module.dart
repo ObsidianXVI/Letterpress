@@ -116,8 +116,8 @@ class LPModule extends StatelessWidget {
       child: Theme(
         data: ThemeData(
           textSelectionTheme: TextSelectionThemeData(
-            selectionColor: OctaneTheme.obsidian400.withOpacity(0.3),
-            selectionHandleColor: OctaneTheme.obsidian400,
+            selectionColor: OctaneTheme.obsidianB100.withOpacity(0.3),
+            selectionHandleColor: OctaneTheme.obsidianB150,
           ),
         ),
         child: SelectionArea(

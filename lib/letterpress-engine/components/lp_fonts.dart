@@ -9,11 +9,12 @@ enum LPFontFamily {
 }
 
 enum LPColorTheme {
-  background_grey(OctaneTheme.obsidian800),
-  standard_grey(OctaneTheme.obsidian200),
-  header1_grey(OctaneTheme.obsidian400),
-  header2_grey(OctaneTheme.obsidian500),
-  header3_grey(OctaneTheme.obsidian600),
+  background_grey(OctaneTheme.obsidianD150),
+  standard_grey(OctaneTheme.obsidianA150),
+  header1_grey(OctaneTheme.obsidianB000),
+  header2_grey(OctaneTheme.obsidianB050),
+  header3_grey(OctaneTheme.obsidianB100),
+  header4_grey(OctaneTheme.obsidianB150),
   hyperlink_purple(OctaneTheme.purple800),
   inline_code_cyan(OctaneTheme.blue800),
   lyrics_quote_red(OctaneTheme.red800),
@@ -34,7 +35,7 @@ class LPFont {
           color: textColor ?? LPColorTheme.standard_grey.color,
           fontSize: 130,
           fontWeight: FontWeight.w300,
-          height: 1.2,
+          height: 0.75,
         ),
         headerLevel = 0;
 
@@ -44,7 +45,7 @@ class LPFont {
           color: textColor ?? LPColorTheme.standard_grey.color,
           fontSize: 100,
           fontWeight: FontWeight.w600,
-          height: 1.2,
+          height: 0.75,
         ),
         headerLevel = -1;
 
@@ -54,33 +55,37 @@ class LPFont {
           color: textColor ?? LPColorTheme.header1_grey.color,
           fontSize: 120,
           fontWeight: FontWeight.w900,
+          height: 0.75,
         ),
         headerLevel = 1;
 
   LPFont.header2({this.textColor})
       : textStyle = TextStyle(
           fontFamily: LPFontFamily.headers.name,
-          color: textColor ?? Color.fromARGB(255, 85, 85, 85),
+          color: textColor ?? LPColorTheme.header2_grey.color,
           fontSize: 100,
           fontWeight: FontWeight.w900,
+          height: 0.75,
         ),
         headerLevel = 2;
 
   LPFont.header3({this.textColor})
       : textStyle = TextStyle(
           fontFamily: LPFontFamily.headers.name,
-          color: textColor ?? Color.fromARGB(255, 65, 65, 65),
+          color: textColor ?? LPColorTheme.header3_grey.color,
           fontSize: 80,
           fontWeight: FontWeight.w600,
+          height: 0.75,
         ),
         headerLevel = 3;
 
   LPFont.header4({this.textColor})
       : textStyle = TextStyle(
           fontFamily: LPFontFamily.body.name,
-          color: textColor ?? Color.fromARGB(255, 65, 65, 65),
+          color: textColor ?? LPColorTheme.header4_grey.color,
           fontSize: 50,
           fontWeight: FontWeight.w500,
+          height: 0.75,
         ),
         headerLevel = 3;
 
@@ -88,9 +93,10 @@ class LPFont {
       : textStyle = TextStyle(
           fontFamily: LPFontFamily.body.name,
           color: textColor ?? LPColorTheme.standard_grey.color,
-          fontSize: 20,
-          fontWeight: FontWeight.w500,
+          fontSize: 24,
+          fontWeight: FontWeight.w300,
           letterSpacing: 1,
+          height: 1.4,
         ),
         headerLevel = 0;
 
@@ -98,21 +104,23 @@ class LPFont {
       : textStyle = TextStyle(
           fontFamily: LPFontFamily.body.name,
           color: textColor ?? LPColorTheme.standard_grey.color,
-          fontSize: 20,
-          fontWeight: FontWeight.w500,
+          fontSize: 24,
+          fontWeight: FontWeight.w300,
           fontStyle: FontStyle.italic,
           letterSpacing: 1,
+          height: 1.4,
         ),
         headerLevel = 0;
 
   LPFont.buttonText({this.textColor})
       : textStyle = TextStyle(
           fontFamily: LPFontFamily.body.name,
-          color: textColor ?? LPColorTheme.standard_grey.color,
+          color: textColor ?? LPColorTheme.hyperlink_purple.color,
           fontSize: 20,
           fontWeight: FontWeight.w500,
           letterSpacing: 1,
           overflow: TextOverflow.fade,
+          height: 1.4,
         ),
         headerLevel = 0;
 

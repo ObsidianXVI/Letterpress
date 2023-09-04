@@ -12,7 +12,7 @@ class LetterpressTimelapse extends StatelessWidget {
         child: Container(
           width: DimensionTools.getWidth(context),
           height: DimensionTools.getHeight(context),
-          color: OctaneTheme.obsidian800,
+          color: OctaneTheme.obsidianD150,
           child: Padding(
             padding: const EdgeInsets.all(40),
             child: Align(
@@ -55,7 +55,7 @@ class LetterpressTimelineComponentState
               width: 400,
               height: 200,
               decoration: BoxDecoration(
-                color: OctaneTheme.obsidian700,
+                color: OctaneTheme.obsidianC150,
                 borderRadius: BorderRadius.circular(5),
               ),
               child: GestureDetector(
@@ -69,7 +69,7 @@ class LetterpressTimelineComponentState
                     height: 300,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: OctaneTheme.obsidian600,
+                      color: OctaneTheme.obsidianB150,
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(20),
@@ -83,7 +83,7 @@ class LetterpressTimelineComponentState
                                   module.title,
                                   maxLines: 3,
                                   style: TextStyle(
-                                    color: OctaneTheme.obsidian200,
+                                    color: OctaneTheme.obsidianA100,
                                     fontSize: 30,
                                     fontFamily: LPFontFamily.body.name,
                                     fontWeight: FontWeight.w600,
@@ -96,7 +96,7 @@ class LetterpressTimelineComponentState
                                   module.projectName,
                                   maxLines: 3,
                                   style: TextStyle(
-                                    color: OctaneTheme.obsidian200,
+                                    color: OctaneTheme.obsidianA000,
                                     fontSize: 18,
                                     fontFamily: LPFontFamily.body.name,
                                     fontWeight: FontWeight.w300,
@@ -115,11 +115,11 @@ class LetterpressTimelineComponentState
                                 scrollDirection: Axis.horizontal,
                                 itemCount: module.tags.length,
                                 itemBuilder: (context, i) => Chip(
-                                  backgroundColor: OctaneTheme.obsidian400,
+                                  backgroundColor: OctaneTheme.obsidianB000,
                                   label: Text(
                                     module.tags[i],
                                     style: TextStyle(
-                                      color: OctaneTheme.obsidian600,
+                                      color: OctaneTheme.obsidianC000,
                                       fontSize: 16,
                                       fontFamily: LPFontFamily.body.name,
                                       fontWeight: FontWeight.w600,
