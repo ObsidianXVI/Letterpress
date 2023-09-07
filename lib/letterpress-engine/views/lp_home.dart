@@ -130,15 +130,9 @@ class LetterpressApp extends StatelessWidget {
                                 return Center(
                                   child: Transform.scale(
                                     scale: i != 1 ? 0.77 : 1,
-                                    child: Container(
+                                    child: LPCardWidget(
                                       width: 438,
                                       height: 438,
-                                      decoration: BoxDecoration(
-                                        color: OctaneTheme.obsidianC150,
-                                        borderRadius: BorderRadius.circular(5),
-                                        border: Border.all(
-                                            color: OctaneTheme.obsidianC050),
-                                      ),
                                       child: Center(
                                         child: Padding(
                                           padding: const EdgeInsets.all(30),
@@ -148,8 +142,16 @@ class LetterpressApp extends StatelessWidget {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              LPText.header1(
-                                                  content: "Some Cool Post"),
+                                              LPText(
+                                                content: 'Some Cool Post',
+                                                lpFont: LPFont.header1(
+                                                  styleOverride:
+                                                      const TextStyle(
+                                                          height: 0.75),
+                                                ),
+                                                isClickable: false,
+                                                isHeader: true,
+                                              ),
                                               const SizedBox(height: 30),
                                               LPText.plainBody(
                                                   content: "Some description"),

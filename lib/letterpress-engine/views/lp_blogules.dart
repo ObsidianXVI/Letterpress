@@ -21,10 +21,13 @@ class LetterpressBlogulesView extends StatelessWidget {
                   content:
                       'The entire repository of blogules at your fingertips, available for querying.',
                 ),
+                LPText.hyperlink(content: "What is a blogule?", action: () {}),
                 const SizedBox(height: 40),
                 GridView.count(
                   shrinkWrap: true,
                   crossAxisCount: 4,
+                  mainAxisSpacing: 40,
+                  crossAxisSpacing: 40,
                   children: List<Widget>.generate(
                     LPStore.modules.length,
                     (i) {
@@ -44,58 +47,63 @@ class LetterpressBlogulesView extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(10),
                                 color: OctaneTheme.obsidianC150,
                               ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(20),
-                                child: Stack(
-                                  children: [
-                                    Flex(
-                                      direction: Axis.vertical,
-                                      children: [
-                                        Flexible(
-                                          child: Text(
-                                            module.title,
-                                            maxLines: 3,
-                                            style: TextStyle(
-                                              color: OctaneTheme.obsidianB000,
-                                              fontSize: 30,
-                                              fontFamily:
-                                                  LPFontFamily.body.name,
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                          ),
-                                        ),
-                                        const SizedBox(height: 20),
-                                      ],
-                                    ),
-                                    Positioned(
-                                      bottom: 0,
-                                      left: 0,
-                                      child: SizedBox(
-                                        height: 40,
-                                        width: 660,
-                                        child: ListView.separated(
-                                          scrollDirection: Axis.horizontal,
-                                          itemCount: module.tags.length,
-                                          itemBuilder: (context, i) => Chip(
-                                            backgroundColor:
-                                                OctaneTheme.obsidianB050,
-                                            label: Text(
-                                              module.tags[i],
+                              child: LPCardWidget(
+                                width: 800,
+                                height: 300,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(20),
+                                  child: Stack(
+                                    children: [
+                                      Flex(
+                                        direction: Axis.vertical,
+                                        children: [
+                                          Flexible(
+                                            child: Text(
+                                              module.title,
+                                              maxLines: 3,
                                               style: TextStyle(
-                                                color: OctaneTheme.obsidianC150,
-                                                fontSize: 16,
+                                                color: OctaneTheme.obsidianB000,
+                                                fontSize: 30,
                                                 fontFamily:
                                                     LPFontFamily.body.name,
                                                 fontWeight: FontWeight.w600,
                                               ),
                                             ),
                                           ),
-                                          separatorBuilder: (context, _) =>
-                                              const SizedBox(width: 10),
+                                          const SizedBox(height: 20),
+                                        ],
+                                      ),
+                                      Positioned(
+                                        bottom: 0,
+                                        left: 0,
+                                        child: SizedBox(
+                                          height: 40,
+                                          width: 660,
+                                          child: ListView.separated(
+                                            scrollDirection: Axis.horizontal,
+                                            itemCount: module.tags.length,
+                                            itemBuilder: (context, i) => Chip(
+                                              backgroundColor:
+                                                  OctaneTheme.obsidianB050,
+                                              label: Text(
+                                                module.tags[i],
+                                                style: TextStyle(
+                                                  color:
+                                                      OctaneTheme.obsidianC150,
+                                                  fontSize: 16,
+                                                  fontFamily:
+                                                      LPFontFamily.body.name,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                            ),
+                                            separatorBuilder: (context, _) =>
+                                                const SizedBox(width: 10),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
