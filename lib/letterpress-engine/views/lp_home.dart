@@ -118,7 +118,6 @@ class LetterpressApp extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.only(
                           left: 60,
-                          right: 540,
                           top: 30,
                         ),
                         child: Column(
