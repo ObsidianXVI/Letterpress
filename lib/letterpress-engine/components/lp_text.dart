@@ -81,6 +81,17 @@ class LPText extends LPPostComponent {
         isClickable = false,
         isHeader = true;
 
+  LPText.semanticTag1({
+    super.leftSideNotes,
+    super.rightSideNotes,
+    required this.content,
+    this.alignment = Alignment.topLeft,
+    this.textAlign = TextAlign.left,
+    bool isItalic = false,
+  })  : lpFont = LPFont.semanticTag1(),
+        isClickable = false,
+        isHeader = false;
+
   LPText.plainBody({
     super.leftSideNotes,
     super.rightSideNotes,

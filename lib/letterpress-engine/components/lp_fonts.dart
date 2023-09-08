@@ -89,6 +89,17 @@ class LPFont {
         ),
         headerLevel = 3;
 
+  LPFont.semanticTag1({this.textColor, TextStyle? styleOverride})
+      : textStyle = TextStyle(
+          fontFamily: styleOverride?.fontFamily ?? LPFontFamily.body.name,
+          color: styleOverride?.color ?? LPColorTheme.standard_grey.color,
+          fontSize: styleOverride?.fontSize ?? 20,
+          fontWeight: styleOverride?.fontWeight ?? FontWeight.w300,
+          letterSpacing: styleOverride?.letterSpacing ?? 1,
+          height: styleOverride?.height ?? 1.4,
+        ),
+        headerLevel = 0;
+
   LPFont.body({this.textColor, TextStyle? styleOverride})
       : textStyle = TextStyle(
           fontFamily: styleOverride?.fontFamily ?? LPFontFamily.body.name,
