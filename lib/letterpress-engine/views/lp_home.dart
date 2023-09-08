@@ -39,8 +39,8 @@ class LetterpressApp extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.only(
                           left: 60,
-                          right: 540,
-                          top: 30,
+                          right: 440,
+                          top: 60,
                         ),
                         child: Column(
                           children: [
@@ -48,64 +48,28 @@ class LetterpressApp extends StatelessWidget {
                             const SizedBox(height: 50),
                             LPText.plainBody(
                                 content:
-                                    "Letterpress is a blog page by OBSiDIAN about coding and design stuff — but with a twist. Posts aren't only arranged chronologically (as a matter of fact, posts aren't even a thing!), but instead, modules are published instead."),
+                                    "Letterpress is my blog about coding (mostly in Flutter and Dart) and design stuff — but with a twist. I publish blogules — short monographs on very specific topics which I am dabbling with at the moment."),
                             LPText.plainBody(
                                 content:
-                                    "Try either of the following buttons to start exploring Letterpress!"),
+                                    "You could read these blogules to get an understanding of the topic discussed, but sometimes I am able to string together multiple related blogules related to a certain subject, creating what I call a blog post. These allow for more lengthy, detailed reads with a wider scope."),
                             const SizedBox(height: 30),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  width: 200,
-                                  height: 60,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    border: Border.all(
-                                        color: OctaneTheme.purple800),
-                                  ),
-                                  child: TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context)
-                                          .pushNamed(LPRoutes.lp_timelapse);
-                                    },
-                                    child: Center(
-                                      child: Text(
-                                        'Timelapse',
-                                        textAlign: TextAlign.center,
-                                        style: LPFont.buttonText().textStyle,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(width: 40),
-                                Container(
-                                  width: 200,
-                                  height: 60,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    border: Border.all(
-                                        color: OctaneTheme.purple800),
-                                  ),
-                                  child: TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context)
-                                          .pushNamed(LPRoutes.lp_gallery);
-                                    },
-                                    style: TextButton.styleFrom(
-                                      primary: OctaneTheme.purple800,
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        'Gallery',
-                                        textAlign: TextAlign.center,
-                                        style: LPFont.buttonText().textStyle,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            )
+                            LPTextSpan(lpTextComponents: [
+                              LPText.plainBody(content: "On the"),
+                              LPText.hyperlink(
+                                content: " timelapse ",
+                                action: () => Navigator.of(context)
+                                    .pushNamed(LPRoutes.lp_timelapse),
+                              ),
+                              LPText.plainBody(
+                                  content:
+                                      "page, you can find blogules arranged chronologically, and curated posts in the"),
+                              LPText.hyperlink(
+                                content: " gallery",
+                                action: () => Navigator.of(context)
+                                    .pushNamed(LPRoutes.lp_gallery),
+                              ),
+                              LPText.plainBody(content: "."),
+                            ]),
                           ],
                         ),
                       ),
@@ -118,7 +82,7 @@ class LetterpressApp extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.only(
                           left: 60,
-                          top: 30,
+                          top: 60,
                         ),
                         child: Column(
                           children: [

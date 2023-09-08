@@ -12,7 +12,7 @@ class LetterpressGallery extends StatelessWidget {
           height: DimensionTools.getHeight(context),
           color: OctaneTheme.obsidianD150,
           child: Padding(
-            padding: const EdgeInsets.all(40),
+            padding: const EdgeInsets.all(60),
             child: Column(
               children: [
                 LPText.mainTitle(content: 'Gallery'),
