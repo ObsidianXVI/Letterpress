@@ -44,7 +44,9 @@ class LPList extends LPPostComponent {
         };
         break;
       case LPListType.chaptered:
-        int itemNo = 0;
+        int l1No = -1;
+        int l2No = -1;
+        int l3No = -1;
         final int maxDepth = indentLevels.entries.isNotEmpty
             ? indentLevels.entries
                 .reduce(
@@ -57,12 +59,30 @@ class LPList extends LPPostComponent {
                 .lpFont
                 .headerLevel
             : 0;
-        List<int> chapterCode = List<int>.generate(maxDepth, (index) => 0);
         itemGeneratorFn = (MapEntry<LPText, int> entry) {
-          itemNo += 1;
+          final String chapterCode;
+          switch (entry.value) {
+            case 1:
+              l1No += 1;
+              l2No = -1;
+              l3No = -1;
+              chapterCode = l1Chapters[l1No];
+              break;
+            case 2:
+              l2No += 1;
+              chapterCode = l2Chapters[l2No];
+              break;
+            case 3:
+              l3No += 1;
+              chapterCode = l3Chapters[l3No];
+              break;
+            default:
+              l3No += 1;
+              chapterCode = l3Chapters[l3No];
+          }
           return LPText.plainBody(
             content:
-                "${'   ' * 2 * entry.value}${entry.value}: ${entry.key.content}",
+                "${'   ' * 2 * entry.value}$chapterCode: ${entry.key.content}",
           );
         };
         break;
@@ -78,4 +98,76 @@ class LPList extends LPPostComponent {
       children: children,
     );
   }
+
+  static const List<String> l1Chapters = [
+    '0',
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '10',
+    '11',
+    '12',
+    '13',
+    '14',
+    '15',
+    '16',
+    '17',
+    '18',
+    '19',
+    '20',
+    '21',
+    '22',
+    '23',
+    '24',
+    '25',
+    '26'
+  ];
+
+  static const List<String> l2Chapters = [
+    'a',
+    'b',
+    'c',
+    'd',
+    'e',
+    'f',
+    'g',
+    'h',
+    'i',
+    'j',
+    'k',
+    'l',
+    'm',
+    'n',
+    'o',
+    'p',
+    'q',
+    'r',
+    's',
+    't',
+    'u',
+    'v',
+    'w',
+    'x',
+    'y',
+    'z',
+  ];
+
+  static const List<String> l3Chapters = [
+    'i',
+    'ii',
+    'iii',
+    'iv',
+    'v',
+    'vi',
+    'vii',
+    'viii',
+    'ix',
+    'x',
+  ];
 }
