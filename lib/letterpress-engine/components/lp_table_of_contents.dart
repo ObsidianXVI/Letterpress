@@ -15,7 +15,7 @@ class LPTableOfContents extends LPPostComponent {
 
     return LPGroup.vertical(
       postComponents: [
-        LPText.header1(content: 'Table of Contents'),
+        LPText.header1(content: 'Outline'),
         LPList(
           lpListType: LPListType.chaptered,
           indentLevels: indentLevels,

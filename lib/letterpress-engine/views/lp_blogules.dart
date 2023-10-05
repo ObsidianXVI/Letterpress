@@ -47,9 +47,10 @@ class LetterpressBlogulesView extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(10),
                                 color: OctaneTheme.obsidianC150,
                               ),
-                              child: LPCardWidget(
+                              child: LPHoverableCardWidget(
                                 width: 800,
                                 height: 300,
+                                clickable: true,
                                 child: Padding(
                                   padding: const EdgeInsets.all(20),
                                   child: Stack(

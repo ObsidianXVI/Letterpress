@@ -51,7 +51,7 @@ class LetterpressApp extends StatelessWidget {
                                     "Letterpress is my blog about coding (mostly in Flutter and Dart) and design stuff — but with a twist. I publish blogules — short monographs on very specific topics which I am dabbling with at the moment."),
                             LPText.plainBody(
                                 content:
-                                    "You could read these blogules to get an understanding of the topic discussed, but sometimes I am able to string together multiple related blogules related to a certain subject, creating what I call a blog post. These allow for more lengthy, detailed reads with a wider scope."),
+                                    "You could read these blogules to get an understanding of the topic discussed, but sometimes I am able to string together multiple blogules related to a certain subject, creating what I call a blog post. These allow for more lengthy, detailed reads with a wider scope."),
                             const SizedBox(height: 30),
                             LPTextSpan(lpTextComponents: [
                               LPText.plainBody(content: "On the"),

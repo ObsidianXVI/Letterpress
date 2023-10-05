@@ -39,24 +39,33 @@ class LPModule extends StatelessWidget {
           child: Container(
             width: fullWidth,
             height: DimensionTools.getHeight(context),
-            child: Center(
-              child: SelectableText.rich(
-                TextSpan(children: [
-                  TextSpan(
-                    text: title,
-                    style: LPFont.mainTitle().textStyle,
-                  ),
-                ]),
+            child: Padding(
+              padding: const EdgeInsets.all(30),
+              child: Center(
+                child: SelectableText.rich(
+                  TextSpan(children: [
+                    TextSpan(
+                      text: title,
+                      style: LPFont.mainTitle().textStyle,
+                    ),
+                  ]),
+                ),
               ),
             ),
           ),
         ),
         const LPDivider(),
-        LPTableOfContents(
-          postComponents: components
-              .whereType<LPText>()
-              .where(((LPText text) => (text.isHeader)))
-              .toList(),
+        renderComponent(
+          postComponent: LPTableOfContents(
+            postComponents: components
+                .whereType<LPText>()
+                .where(((LPText text) => (text.isHeader)))
+                .toList(),
+          ),
+          sideColWidth: sideColWidth,
+          mainColWidth: mainColWidth,
+          leftSideNotes: const [],
+          rightSideNotes: const [],
         ),
       ]);
     }
@@ -64,36 +73,12 @@ class LPModule extends StatelessWidget {
     for (LPPostComponent postComponent in components) {
       widgets.addAll([
         componentDivider,
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(right: colGutter),
-              child: Container(
-                width: sideColWidth - colGutter,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: postComponent.leftSideNotes,
-                ),
-              ),
-            ),
-            Container(
-              width: mainColWidth,
-              child: postComponent,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: colGutter),
-              child: Container(
-                width: sideColWidth - colGutter,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: postComponent.rightSideNotes,
-                ),
-              ),
-            ),
-          ],
+        renderComponent(
+          postComponent: postComponent,
+          sideColWidth: sideColWidth,
+          mainColWidth: mainColWidth,
+          leftSideNotes: postComponent.leftSideNotes,
+          rightSideNotes: postComponent.rightSideNotes,
         ),
       ]);
     }
@@ -131,6 +116,46 @@ class LPModule extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Widget renderComponent({
+    required LPPostComponent postComponent,
+    required double sideColWidth,
+    required double mainColWidth,
+    required List<LPSideNoteComponent> leftSideNotes,
+    required List<LPSideNoteComponent> rightSideNotes,
+  }) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(right: colGutter),
+          child: Container(
+            width: sideColWidth - colGutter,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: leftSideNotes,
+            ),
+          ),
+        ),
+        Container(
+          width: mainColWidth,
+          child: postComponent,
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: colGutter),
+          child: Container(
+            width: sideColWidth - colGutter,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: rightSideNotes,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
