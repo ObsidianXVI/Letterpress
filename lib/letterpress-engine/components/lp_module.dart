@@ -55,18 +55,19 @@ class LPModule extends StatelessWidget {
           ),
         ),
         const LPDivider(),
-        renderComponent(
-          postComponent: LPTableOfContents(
-            postComponents: components
-                .whereType<LPText>()
-                .where(((LPText text) => (text.isHeader)))
-                .toList(),
+        if (includeTableOfContents)
+          renderComponent(
+            postComponent: LPTableOfContents(
+              postComponents: components
+                  .whereType<LPText>()
+                  .where(((LPText text) => (text.isHeader)))
+                  .toList(),
+            ),
+            sideColWidth: sideColWidth,
+            mainColWidth: mainColWidth,
+            leftSideNotes: const [],
+            rightSideNotes: const [],
           ),
-          sideColWidth: sideColWidth,
-          mainColWidth: mainColWidth,
-          leftSideNotes: const [],
-          rightSideNotes: const [],
-        ),
       ]);
     }
 

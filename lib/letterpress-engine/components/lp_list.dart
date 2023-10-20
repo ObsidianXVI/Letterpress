@@ -100,7 +100,6 @@ class LPList extends LPPostComponent {
   }
 
   static const List<String> l1Chapters = [
-    '0',
     '1',
     '2',
     '3',
