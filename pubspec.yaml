@@ -64,6 +64,7 @@ flutter:
 
   assets:
     - assets/images/letterpress_1.png
+    - assets/images/hyperion/enter_autonomic_computing/
 
   fonts:
     - family: Fraunces_Standard

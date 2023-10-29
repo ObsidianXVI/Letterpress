@@ -11,11 +11,12 @@ class LPRoutes {
   static const String lp_timelapse = '/timelapse';
 
   static final Map<LPPost, String> postUrls = {
-    turbocal_post: '/posts/week1-turbocal-complex-calendar-widget-flutter',
+    // turbocal_post: '/posts/week1-turbocal-complex-calendar-widget-flutter',
   };
   static final Map<LPModule, String> bloguleUrls = {
-    turbocalModuleA: '/blogules/turbocalModuleA',
+    // turbocalModuleA: '/blogules/turbocalModuleA',
     lh_a_formal_intro_to_lh: '/blogules/a_formal_intro_to_lighthouse',
+    enter_autonomic_computing: '/blogules/enter_autonomic_computing',
   };
 }
 

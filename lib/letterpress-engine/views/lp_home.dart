@@ -68,6 +68,14 @@ class LetterpressApp extends StatelessWidget {
                                 action: () => Navigator.of(context)
                                     .pushNamed(LPRoutes.lp_gallery),
                               ),
+                              LPText.plainBody(content: ". "),
+                              LPText.plainBody(
+                                  content:
+                                      "Alternatively, view all of my blogules "),
+                              LPText.hyperlink(
+                                content: "here",
+                                route: "/blogules",
+                              ),
                               LPText.plainBody(content: "."),
                             ]),
                           ],

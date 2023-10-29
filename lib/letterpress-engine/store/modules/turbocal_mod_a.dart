@@ -32,12 +32,12 @@ class TurbocalModuleA extends LPModule {
                 ),
               ],
             ),
-            const LPImage(
+            LPImage.url(
               url:
                   'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
               width: 500,
               height: 500,
-              leftSideNotes: [
+              leftSideNotes: const [
                 LPSideNoteComment(text: "I definitely did this"),
                 LPSideNoteComment(text: "Yep"),
               ],

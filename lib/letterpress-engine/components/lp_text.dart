@@ -133,10 +133,15 @@ class LPText extends LPPostComponent {
     this.textAlign = TextAlign.left,
     Function? action,
     String? url,
+    String? route,
   })  : lpFont = LPFont.hyperlink(),
         isClickable = true,
         isHeader = false {
-    props.addAll({'url': url, 'action': action});
+    props.addAll({
+      'url': url,
+      'action': action,
+      'route': route,
+    });
   }
 
   LPText.paragraphBreak()
@@ -182,6 +187,10 @@ class LPTextSpan extends LPPostComponent {
             if (lpText.props.containsKey('url') &&
                 lpText.props['url'] != null) {
               window.open(lpText.props['url'] as String, '');
+            }
+            if (lpText.props.containsKey('route') &&
+                lpText.props['route'] != null) {
+              Navigator.of(context).pushNamed(lpText.props['route'] as String);
             }
           };
       } else {
