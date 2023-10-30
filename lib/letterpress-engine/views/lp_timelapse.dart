@@ -48,8 +48,8 @@ class LetterpressTimelineComponentState
         diameterRatio: 4,
         perspective: 0.005,
         squeeze: 0.9,
-        children: List<Widget>.generate(LPStore.modules.length, (int i) {
-          final LPModule module = LPStore.modules[i];
+        children: List<Widget>.generate(LPStore.blogules.length, (int i) {
+          final LPModule blogule = LPStore.blogules[i];
           return Center(
             child: Container(
               width: 400,
@@ -60,8 +60,8 @@ class LetterpressTimelineComponentState
               ),
               child: GestureDetector(
                 onTap: () {
-                  Navigator.of(context)
-                      .pushNamed(LPRoutes.postUrls[LPStore.posts[i]]!);
+                  Navigator.of(context).pushNamed(
+                      "${LPRoutes.lp_blogules}/${LPStore.blogules[i].title.urlSafeSlug}");
                 },
                 child: SelectionContainer.disabled(
                   child: Container(
@@ -80,7 +80,7 @@ class LetterpressTimelineComponentState
                             children: [
                               Flexible(
                                 child: Text(
-                                  module.title,
+                                  blogule.title,
                                   maxLines: 3,
                                   style: TextStyle(
                                     color: OctaneTheme.obsidianA100,
@@ -93,7 +93,7 @@ class LetterpressTimelineComponentState
                               const SizedBox(height: 20),
                               Flexible(
                                 child: Text(
-                                  module.projectName,
+                                  blogule.projectName,
                                   maxLines: 3,
                                   style: TextStyle(
                                     color: OctaneTheme.obsidianA000,
@@ -113,11 +113,11 @@ class LetterpressTimelineComponentState
                               width: 660,
                               child: ListView.separated(
                                 scrollDirection: Axis.horizontal,
-                                itemCount: module.tags.length,
+                                itemCount: blogule.tags.length,
                                 itemBuilder: (context, i) => Chip(
                                   backgroundColor: OctaneTheme.obsidianB000,
                                   label: Text(
-                                    module.tags[i],
+                                    blogule.tags[i],
                                     style: TextStyle(
                                       color: OctaneTheme.obsidianC000,
                                       fontSize: 16,

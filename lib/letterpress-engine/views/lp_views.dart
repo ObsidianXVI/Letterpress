@@ -14,17 +14,4 @@ part './lp_gallery.dart';
 part 'lp_blogules.dart';
 part './lp_blogule_view.dart';
 part './lp_timelapse.dart';
-
-abstract class Routable {
-  final String base;
-  final String route;
-  final Widget Function(BuildContext) buildFn;
-
-  const Routable({
-    required this.base,
-    required this.route,
-    required this.buildFn,
-  });
-
-  String toSlug() => base + route;
-}
+part './dev_view.dart';

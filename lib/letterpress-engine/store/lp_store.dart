@@ -8,7 +8,7 @@ part './modules/hyperion/enter_autonomic_computing.dart';
 
 class LPStore {
   static final List<LPPost> posts = [];
-  static final List<LPModule> modules = [
+  static final List<LPModule> blogules = [
     // turbocalModuleA,
     lh_a_formal_intro_to_lh,
     enter_autonomic_computing,

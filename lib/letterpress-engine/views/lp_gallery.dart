@@ -38,7 +38,7 @@ class LetterpressGallery extends StatelessWidget {
                         child: GestureDetector(
                           onTap: () {
                             Navigator.of(context).pushNamed(
-                                LPRoutes.postUrls[LPStore.posts[i]]!);
+                                "posts/${LPStore.posts[i].postConfigs.title.urlSafeSlug}");
                           },
                           child: Padding(
                             padding: const EdgeInsets.all(20),

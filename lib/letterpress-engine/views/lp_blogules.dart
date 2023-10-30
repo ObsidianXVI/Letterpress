@@ -29,15 +29,15 @@ class LetterpressBlogulesView extends StatelessWidget {
                   mainAxisSpacing: 40,
                   crossAxisSpacing: 40,
                   children: List<Widget>.generate(
-                    LPStore.modules.length,
+                    LPStore.blogules.length,
                     (i) {
-                      final LPModule module = LPStore.modules[i];
+                      final LPModule blogule = LPStore.blogules[i];
                       return Align(
                         alignment: Alignment.topLeft,
                         child: GestureDetector(
                           onTap: () {
-                            Navigator.of(context)
-                                .pushNamed(LPRoutes.bloguleUrls[module]!);
+                            Navigator.of(context).pushNamed(
+                                "${LPRoutes.lp_blogules}/${blogule.title.urlSafeSlug}");
                           },
                           child: SelectionContainer.disabled(
                             child: Container(
@@ -60,7 +60,7 @@ class LetterpressBlogulesView extends StatelessWidget {
                                         children: [
                                           Flexible(
                                             child: Text(
-                                              module.title,
+                                              blogule.title,
                                               maxLines: 3,
                                               style: TextStyle(
                                                 color: OctaneTheme.obsidianB000,
@@ -82,12 +82,12 @@ class LetterpressBlogulesView extends StatelessWidget {
                                           width: 660,
                                           child: ListView.separated(
                                             scrollDirection: Axis.horizontal,
-                                            itemCount: module.tags.length,
+                                            itemCount: blogule.tags.length,
                                             itemBuilder: (context, i) => Chip(
                                               backgroundColor:
                                                   OctaneTheme.obsidianB050,
                                               label: Text(
-                                                module.tags[i],
+                                                blogule.tags[i],
                                                 style: TextStyle(
                                                   color:
                                                       OctaneTheme.obsidianC150,

@@ -13,3 +13,8 @@ class DimensionTools {
     return MediaQuery.of(context).size.width;
   }
 }
+
+extension StringUtils on String {
+  String get urlSafeSlug =>
+      toLowerCase().replaceAll(' ', '_').replaceAll(RegExp(r'[^\w\s]+'), '');
+}
