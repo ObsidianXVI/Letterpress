@@ -15,7 +15,8 @@ class Enter_Autonomic_Computing extends LPModule {
                       "It's February 2023. I've had only one mega project so far (my first ever project since I started coding), and that was "),
               LPText.hyperlink(
                 content: 'Lighthouse',
-                route: '/blogules/a_formal_intro_to_lighthouse',
+                route:
+                    '${LPRoutes.lp_blogules}/${lh_a_formal_intro_to_lh.title.urlSafeSlug}',
               ),
               LPText.plainBody(
                   content:

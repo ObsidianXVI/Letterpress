@@ -1,10 +1,14 @@
 library letterpress.store;
 
+import 'package:letterpress/letterpress-engine/utils/utils.dart';
+import 'package:letterpress/main.dart';
+
 import '../components/lp_components.dart';
 
 part './modules/turbocal_mod_a.dart';
 part './modules/lighthouse/a_formal_intro_to_lh.dart';
 part './modules/hyperion/enter_autonomic_computing.dart';
+part './modules/octane/perfekshun.dart';
 
 class LPStore {
   static final List<LPPost> posts = [];
@@ -12,6 +16,7 @@ class LPStore {
     // turbocalModuleA,
     lh_a_formal_intro_to_lh,
     enter_autonomic_computing,
+    perfekshun,
   ];
 }
 
@@ -33,3 +38,4 @@ final LPModule lh_a_formal_intro_to_lh =
     A_Formal_Intro_To_Lh(renderWithPost: false);
 final LPModule enter_autonomic_computing =
     Enter_Autonomic_Computing(renderWithPost: false);
+final LPModule perfekshun = Perfekshun(renderWithPost: false);
