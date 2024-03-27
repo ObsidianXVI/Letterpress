@@ -3,6 +3,8 @@
 /// More dartdocs go here.
 library;
 
+import 'package:markdown/markdown.dart';
+
 export 'src/markdown_parser.dart'
     show
         ParserInstance,

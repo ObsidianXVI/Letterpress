@@ -8,6 +8,7 @@ environment:
 
 # Add regular dependencies here.
 dependencies:
+  markdown: ^7.1.1
   # path: ^1.8.0
 
 dev_dependencies:
