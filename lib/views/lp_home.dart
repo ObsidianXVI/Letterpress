@@ -1,7 +1,30 @@
 part of letterpress.views;
 
-class LetterpressApp extends StatelessWidget {
+class LetterpressApp extends StatefulWidget {
   const LetterpressApp({super.key});
+
+  @override
+  State<StatefulWidget> createState() => LetterpressAppState();
+}
+
+class LetterpressAppState extends State<LetterpressApp> {
+  final ScrollController postCarouselController = ScrollController();
+  final ScrollController bloguleCarouselController = ScrollController();
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      postCarouselController.animateTo(
+          postCarouselController.position.maxScrollExtent,
+          duration: const Duration(seconds: 15),
+          curve: Curves.linear);
+      bloguleCarouselController.animateTo(
+          bloguleCarouselController.position.maxScrollExtent,
+          duration: const Duration(seconds: 15),
+          curve: Curves.linear);
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -110,6 +133,7 @@ I started Letterpress because I wanted to document my thoughts and learning poin
                             ),
                             const SizedBox(height: 60),
                             SingleChildScrollView(
+                              controller: postCarouselController,
                               clipBehavior: Clip.none,
                               scrollDirection: Axis.horizontal,
                               child: Row(
@@ -188,6 +212,7 @@ I started Letterpress because I wanted to document my thoughts and learning poin
                             ),
                             const SizedBox(height: 60),
                             SingleChildScrollView(
+                              controller: bloguleCarouselController,
                               clipBehavior: Clip.none,
                               scrollDirection: Axis.horizontal,
                               child: Row(

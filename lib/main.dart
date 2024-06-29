@@ -50,7 +50,6 @@ void main() {
                 ),
               ),
             ),
-        //'/dev': (_) => const DevView(),
       }
         ..addEntries(
           List<MapEntry<String, Widget Function(BuildContext)>>.generate(
