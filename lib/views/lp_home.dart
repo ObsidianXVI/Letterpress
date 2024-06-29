@@ -2,14 +2,15 @@ part of letterpress.views;
 
 class LetterpressApp extends StatelessWidget {
   const LetterpressApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: OctaneTheme.obsidianD150,
+      color: LPColor.platenWhite_500,
       child: Center(
         child: ViewportSize(
           child: Container(
-            color: OctaneTheme.obsidianD150,
+            color: LPColor.platenWhite_500,
             width: double.infinity,
             height: double.infinity,
             child: SingleChildScrollView(
@@ -25,7 +26,7 @@ class LetterpressApp extends StatelessWidget {
                     child: Text(
                       'LET\nTER\nPRESS',
                       style: TextStyle(
-                        color: OctaneTheme.obsidianA150,
+                        color: LPColor.inkBlue_500,
                         fontFamily: LPFontFamily.headers.name,
                         fontSize: 340,
                         fontWeight: FontWeight.w800,
@@ -33,7 +34,194 @@ class LetterpressApp extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const BlogulesTimeline(),
+                  ViewportSize(
+                    child: Container(
+                      color: LPColor.inkBlue_500,
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          left: 60,
+                          top: 60,
+                          right: 40,
+                        ),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'About',
+                                  style: SectionTitle().apply(
+                                    const TextStyle(
+                                        color: LPColor.rollerBlue_500),
+                                  ),
+                                ),
+                                const SizedBox(height: 40),
+                                SizedBox(
+                                  width: 600,
+                                  child: Text(
+                                    """Letterpress is a blog site by OBSiDIAN about coding and design stuff — but with a twist. More than just a disjoint sequence of short articles on varying subjects, in the Letterpress model, short articles known as Blogules focusing on a particular subject can be published and read individually. However, multiple Blogules can be strung together to create a Post, making for a longer read but providing a broader insight on a specific subject.
+
+I started Letterpress because I wanted to document my thoughts and learning points as I worked on various coding projects. Thus, Blogules tagged with the same project name are also collated into what are known as Journals. Each Journal provides a chronological overview of Blogules belonging to a particular project.""",
+                                    style: BodyB1().apply(
+                                      const TextStyle(
+                                          color: LPColor.gripperBlue_500),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  ViewportSize(
+                    child: Container(
+                      color: LPColor.inkBlue_500,
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          left: 60,
+                          top: 60,
+                          right: 40,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Discover',
+                              style: SectionTitle().apply(
+                                const TextStyle(color: LPColor.rollerBlue_500),
+                              ),
+                            ),
+                            const SizedBox(height: 40),
+                            SizedBox(
+                              width: 600,
+                              child: Text(
+                                "An illuminating set of posts, curated by hand.",
+                                style: BodyB1().apply(
+                                  const TextStyle(
+                                      color: LPColor.gripperBlue_500),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 60),
+                            SingleChildScrollView(
+                              clipBehavior: Clip.none,
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children: [
+                                  PromoCard(
+                                      size: SizeVariant.small,
+                                      title: 'Some Cool Post',
+                                      description:
+                                          'Lorem ipsum dolor sit amet consectetur.',
+                                      onTap: () {}),
+                                  const SizedBox(width: 40),
+                                  PromoCard(
+                                      size: SizeVariant.small,
+                                      title: 'Some Cool Post',
+                                      description:
+                                          'Lorem ipsum dolor sit amet consectetur.',
+                                      onTap: () {}),
+                                  const SizedBox(width: 40),
+                                  PromoCard(
+                                      size: SizeVariant.small,
+                                      title: 'Some Cool Post',
+                                      description:
+                                          'Lorem ipsum dolor sit amet consectetur.',
+                                      onTap: () {}),
+                                  const SizedBox(width: 40),
+                                  PromoCard(
+                                      size: SizeVariant.small,
+                                      title: 'Some Cool Post',
+                                      description:
+                                          'Lorem ipsum dolor sit amet consectetur.',
+                                      onTap: () {}),
+                                  const SizedBox(width: 40),
+                                  PromoCard(
+                                      size: SizeVariant.small,
+                                      title: 'Some Cool Post',
+                                      description:
+                                          'Lorem ipsum dolor sit amet consectetur.',
+                                      onTap: () {}),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  ViewportSize(
+                    child: Container(
+                      color: LPColor.inkBlue_500,
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          left: 60,
+                          top: 60,
+                          right: 40,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Blogules',
+                              style: SectionTitle().apply(
+                                const TextStyle(color: LPColor.rollerBlue_500),
+                              ),
+                            ),
+                            const SizedBox(height: 40),
+                            SizedBox(
+                              width: 600,
+                              child: Text(
+                                "The full repository of blogules available at your fingertips for querying.",
+                                style: BodyB1().apply(
+                                  const TextStyle(
+                                      color: LPColor.gripperBlue_500),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 60),
+                            SingleChildScrollView(
+                              clipBehavior: Clip.none,
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children: [
+                                  for (final blogule in LPStore.blogules) ...[
+                                    PromoCard(
+                                      size: SizeVariant.medium,
+                                      title: blogule.title,
+                                      description: blogule.publicationDate
+                                          .toDateString(),
+                                      onTap: () => Navigator.of(context).pushNamed(
+                                          "${LPRoutes.lp_blogules}/${blogule.title.urlSafeSlug}"),
+                                    ),
+                                    const SizedBox(width: 40),
+                                  ]
+                                ], /* List<PromoCard>.generate(
+                                  LPStore.blogules.length,
+                                  (i) => PromoCard(
+                                    size: SizeVariant.medium,
+                                    title: LPStore.blogules[i].title,
+                                    description: LPStore
+                                        .blogules[i].publicationDate
+                                        .toDateString(),
+                                    onTap: () => Navigator.of(context).pushNamed(
+                                        "${LPRoutes.lp_blogules}/${LPStore.blogules[i].title.urlSafeSlug}"),
+                                  ),
+                                ), */
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
 
 /*                     child: Stack(
                       children: [
