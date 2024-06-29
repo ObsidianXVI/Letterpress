@@ -27,32 +27,7 @@ class ViewScaffoldState extends State<ViewScaffold> {
       }
     });
     return Material(
-      color: OctaneTheme.obsidianD150,
-      child: GestureDetector(
-        onLongPress: () async => await showHotboxDialog(context),
-        child: KeyboardListener(
-          focusNode: widget.focusNode,
-          autofocus: true,
-          onKeyEvent: (KeyEvent event) async {
-            if (event.logicalKey == LogicalKeyboardKey.space) {
-              await showHotboxDialog(context);
-            }
-          },
-          child: widget.child,
-        ),
-      ),
+      child: widget.child,
     );
   }
-
-  Future<void> showHotboxDialog(BuildContext context) async => await showDialog(
-        context: context,
-        barrierColor: Colors.black.withOpacity(0.7),
-        barrierDismissible: true,
-        builder: (context) => OctaneHotbox(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          showReleaseToClickLine: true,
-          hotboxData: HotboxData.none(),
-        ),
-      );
 }

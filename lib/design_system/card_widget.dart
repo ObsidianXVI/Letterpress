@@ -18,9 +18,9 @@ class LPCardWidget extends StatelessWidget {
       width: width,
       height: height,
       decoration: BoxDecoration(
-        color: OctaneTheme.obsidianC150,
+        color: LPColor.inkBlue_500,
         borderRadius: BorderRadius.circular(5),
-        border: Border.all(color: OctaneTheme.obsidianC050),
+        border: Border.all(color: LPColor.rollerBlue_500),
       ),
       child: child,
     );
@@ -64,9 +64,9 @@ class LPHoverableCardWidgetState extends State<LPHoverableCardWidget> {
         duration: const Duration(milliseconds: 150),
         curve: Curves.easeOut,
         decoration: BoxDecoration(
-          color: _hovered ? OctaneTheme.obsidianC100 : OctaneTheme.obsidianC150,
+          color: LPColor.inkBlue_500,
           borderRadius: BorderRadius.circular(5),
-          border: Border.all(color: OctaneTheme.obsidianC050),
+          border: Border.all(color: LPColor.rollerBlue_500),
         ),
         child: widget.child,
       ),
