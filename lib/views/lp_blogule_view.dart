@@ -9,12 +9,14 @@ class LetterpressBloguleView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        width: double.infinity,
-        height: double.infinity,
-        color: OctaneTheme.obsidianD150,
-        child: child,
+    return ViewScaffold(
+      child: Center(
+        child: Container(
+          width: double.infinity,
+          height: double.infinity,
+          color: OctaneTheme.obsidianD150,
+          child: child,
+        ),
       ),
     );
   }

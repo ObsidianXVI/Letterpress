@@ -5,7 +5,7 @@ class LetterpressGallery extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
+    return ViewScaffold(
       child: Center(
         child: Container(
           width: DimensionTools.getWidth(context),

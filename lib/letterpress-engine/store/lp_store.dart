@@ -1,9 +1,8 @@
 library letterpress.store;
 
-import 'package:letterpress/letterpress-engine/utils/utils.dart';
+import 'package:letterpress/design_system/design_system.dart';
+import 'package:letterpress/utils/utils.dart';
 import 'package:letterpress/main.dart';
-
-import '../components/lp_components.dart';
 
 part './modules/turbocal_mod_a.dart';
 part './modules/generic/homage_27_11_23.dart';

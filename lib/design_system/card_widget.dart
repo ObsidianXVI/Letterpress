@@ -73,4 +73,3 @@ class LPHoverableCardWidgetState extends State<LPHoverableCardWidget> {
     );
   }
 }
-
