@@ -1,6 +1,6 @@
 part of letterpress.views;
 
-class LetterpressGallery extends StatelessWidget {
+/* class LetterpressGallery extends StatelessWidget {
   const LetterpressGallery({super.key});
 
   @override
@@ -50,7 +50,7 @@ class LetterpressGallery extends StatelessWidget {
                                     Flexible(
                                         child: LPText(
                                       content: post.postConfigs.title,
-                                      lpFont: LPFont.header4(
+                                      lpFont: header4.(
                                         styleOverride: const TextStyle(
                                             color: OctaneTheme.obsidianA150),
                                       ),
@@ -100,7 +100,7 @@ class LetterpressGallery extends StatelessWidget {
     );
   }
 }
-
+ */
 /**
  * Align(
                         alignment: Alignment.topLeft,

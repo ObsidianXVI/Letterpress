@@ -38,7 +38,6 @@ void main() {
       routes: {
         LPRoutes.lp_home: (_) => const LetterpressApp(),
         LPRoutes.lp_timelapse: (_) => const LetterpressTimelapse(),
-        LPRoutes.lp_gallery: (_) => const LetterpressGallery(),
         LPRoutes.lp_blogules: (_) => const LetterpressBlogulesView(),
         LPRoutes.unknownPlatform: (_) => Material(
               child: Padding(

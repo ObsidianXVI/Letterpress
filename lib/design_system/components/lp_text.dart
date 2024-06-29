@@ -2,7 +2,7 @@ part of letterpress.ds;
 
 class LPText extends LPPostComponent {
   final String content;
-  final LPFont lpFont;
+  final TextStyle lpFont;
   final bool isClickable;
   final bool isHeader;
   final TextAlign textAlign;
@@ -27,17 +27,7 @@ class LPText extends LPPostComponent {
     required this.content,
     this.alignment = Alignment.topLeft,
     this.textAlign = TextAlign.left,
-  })  : lpFont = LPFont.mainTitle(),
-        isClickable = false,
-        isHeader = true;
-
-  LPText.subTitle({
-    super.leftSideNotes,
-    super.rightSideNotes,
-    required this.content,
-    this.alignment = Alignment.topLeft,
-    this.textAlign = TextAlign.left,
-  })  : lpFont = LPFont.subTitle(),
+  })  : lpFont = pieceTitle.apply(),
         isClickable = false,
         isHeader = true;
 
@@ -47,7 +37,7 @@ class LPText extends LPPostComponent {
     required this.content,
     this.alignment = Alignment.topLeft,
     this.textAlign = TextAlign.left,
-  })  : lpFont = LPFont.header1(),
+  })  : lpFont = header1.apply(),
         isClickable = false,
         isHeader = true;
 
@@ -57,7 +47,7 @@ class LPText extends LPPostComponent {
     required this.content,
     this.alignment = Alignment.topLeft,
     this.textAlign = TextAlign.left,
-  })  : lpFont = LPFont.header2(),
+  })  : lpFont = header2.apply(),
         isClickable = false,
         isHeader = true;
 
@@ -67,17 +57,7 @@ class LPText extends LPPostComponent {
     required this.content,
     this.alignment = Alignment.topLeft,
     this.textAlign = TextAlign.left,
-  })  : lpFont = LPFont.header3(),
-        isClickable = false,
-        isHeader = true;
-
-  LPText.header4({
-    super.leftSideNotes,
-    super.rightSideNotes,
-    required this.content,
-    this.alignment = Alignment.topLeft,
-    this.textAlign = TextAlign.left,
-  })  : lpFont = LPFont.header4(),
+  })  : lpFont = header3.apply(),
         isClickable = false,
         isHeader = true;
 
@@ -88,7 +68,7 @@ class LPText extends LPPostComponent {
     this.alignment = Alignment.topLeft,
     this.textAlign = TextAlign.left,
     bool isItalic = false,
-  })  : lpFont = LPFont.semanticTag1(),
+  })  : lpFont = semanticTag.apply(),
         isClickable = false,
         isHeader = false;
 
@@ -99,7 +79,10 @@ class LPText extends LPPostComponent {
     this.alignment = Alignment.topLeft,
     this.textAlign = TextAlign.left,
     bool isItalic = false,
-  })  : lpFont = isItalic ? LPFont.bodyItalic() : LPFont.body(),
+  })  : lpFont = isItalic
+            ? body.apply(const TextStyle(fontStyle: FontStyle.italic))
+            : body.apply(
+                TextStyle(color: LPColor.rollerBlue_500.withOpacity(0.85))),
         isClickable = false,
         isHeader = false;
 
@@ -110,7 +93,8 @@ class LPText extends LPPostComponent {
     this.alignment = Alignment.topLeft,
     this.textAlign = TextAlign.left,
     bool isItalic = false,
-  })  : lpFont = LPFont.buttonText(),
+  })  : lpFont = body
+            .apply(TextStyle(color: LPColor.rollerBlue_500.withOpacity(0.85))),
         isClickable = false,
         isHeader = false;
 
@@ -121,7 +105,8 @@ class LPText extends LPPostComponent {
     this.alignment = Alignment.topLeft,
     this.textAlign = TextAlign.center,
     bool isItalic = false,
-  })  : lpFont = isItalic ? LPFont.verseQuoteItalic() : LPFont.verseQuote(),
+  })  : lpFont = verseQuote.apply(
+            isItalic ? const TextStyle(fontStyle: FontStyle.italic) : null),
         isClickable = false,
         isHeader = false;
 
@@ -134,7 +119,11 @@ class LPText extends LPPostComponent {
     Function? action,
     String? url,
     String? route,
-  })  : lpFont = LPFont.hyperlink(),
+  })  : lpFont = body.apply(const TextStyle(
+          color: LPColor.rollerBlue_500,
+          decoration: TextDecoration.underline,
+          decorationColor: LPColor.rollerBlue_500,
+        )),
         isClickable = true,
         isHeader = false {
     props.addAll({
@@ -146,7 +135,8 @@ class LPText extends LPPostComponent {
 
   LPText.paragraphBreak()
       : content = '\n',
-        lpFont = LPFont.body(),
+        lpFont = body
+            .apply(TextStyle(color: LPColor.rollerBlue_500.withOpacity(0.85))),
         isClickable = false,
         textAlign = TextAlign.left,
         isHeader = false,
@@ -158,7 +148,7 @@ class LPText extends LPPostComponent {
       alignment: alignment,
       child: Text(
         content,
-        style: lpFont.textStyle,
+        style: lpFont,
         textAlign: textAlign,
       ),
     );
@@ -204,7 +194,7 @@ class LPTextSpan extends LPPostComponent {
           lpTextComponents.length,
           (int i) => TextSpan(
             text: lpTextComponents[i].content,
-            style: lpTextComponents[i].lpFont.textStyle,
+            style: lpTextComponents[i].lpFont,
             recognizer: gestureRecog(lpTextComponents[i]),
           ),
         ),

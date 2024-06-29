@@ -7,7 +7,7 @@ enum LPListType {
   ;
 }
 
-class LPList extends LPPostComponent {
+/* class LPList extends LPPostComponent {
   final LPListType lpListType;
 
   /// The key is the hierarchy level of the list item, and is > 0
@@ -170,3 +170,4 @@ class LPList extends LPPostComponent {
     'x',
   ];
 }
+ */

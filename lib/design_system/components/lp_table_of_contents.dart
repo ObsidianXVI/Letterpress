@@ -10,16 +10,16 @@ class LPTableOfContents extends LPPostComponent {
   Widget build(BuildContext context) {
     final Map<LPText, int> indentLevels = Map.fromIterables(
       postComponents.map((LPText lpText) => lpText),
-      postComponents.map((LPText lpText) => lpText.lpFont.headerLevel),
+      postComponents.map((LPText lpText) => 1), //lpText.lpFont.headerLevel
     );
 
     return LPGroup.vertical(
       postComponents: [
         LPText.header1(content: 'Outline'),
-        LPList(
+        /* LPList(
           lpListType: LPListType.chaptered,
           indentLevels: indentLevels,
-        ),
+        ), */
       ],
     );
   }

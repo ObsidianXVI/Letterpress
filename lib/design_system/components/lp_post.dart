@@ -52,7 +52,8 @@ class LPPost extends StatelessWidget {
                 TextSpan(children: [
                   TextSpan(
                     text: postConfigs.title,
-                    style: LPFont.mainTitle().textStyle,
+                    style: pieceTitle
+                        .apply(const TextStyle(color: LPColor.gripperBlue_500)),
                   ),
                 ]),
               ),
@@ -75,11 +76,17 @@ class LPPost extends StatelessWidget {
       const LPDivider(),
       Text(
         "Published: ${postConfigs.publicationDate.toDateString()}",
-        style: LPFont.bodyItalic().textStyle,
+        style: body.apply(TextStyle(
+          fontStyle: FontStyle.italic,
+          color: LPColor.rollerBlue_500.withOpacity(0.8),
+        )),
       ),
       Text(
         "Updated: ${postConfigs.lastUpdate.toDateString()}",
-        style: LPFont.bodyItalic().textStyle,
+        style: body.apply(TextStyle(
+          fontStyle: FontStyle.italic,
+          color: LPColor.rollerBlue_500.withOpacity(0.8),
+        )),
       ),
     ]);
 

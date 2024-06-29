@@ -34,23 +34,54 @@ class LPModule extends StatelessWidget {
     final List<Widget> widgets = [];
     if (!renderWithPost) {
       widgets.addAll([
-        const SizedBox(height: 20),
         Center(
           child: Container(
             width: fullWidth,
+            color: LPColor.inkBlue_500,
             height: DimensionTools.getHeight(context),
-            child: Padding(
-              padding: const EdgeInsets.all(30),
-              child: Center(
-                child: SelectableText.rich(
-                  TextSpan(children: [
-                    TextSpan(
-                      text: title,
-                      style: LPFont.mainTitle().textStyle,
+            child: Stack(
+              children: [
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: ClipRect(
+                    child: BackdropFilter(
+                      filter: ui.ImageFilter.blur(sigmaX: 60, sigmaY: 60),
+                      child: Container(
+                        width: double.infinity,
+                        height: DimensionTools.getHeight(context) * 0.25,
+                        decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              Colors.transparent,
+                              LPColor.inkBlue_700,
+                            ],
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                          ),
+                        ),
+                      ),
                     ),
-                  ]),
+                  ),
                 ),
-              ),
+                Positioned(
+                  left: 30,
+                  bottom: 50,
+                  right: 30,
+                  child: SelectableText.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(
+                          text: title,
+                          style: pieceTitle.apply(
+                              const TextStyle(color: LPColor.gripperBlue_500)),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),
@@ -89,11 +120,17 @@ class LPModule extends StatelessWidget {
         const LPDivider(),
         Text(
           "Published: ${publicationDate.toDateString()}",
-          style: LPFont.bodyItalic().textStyle,
+          style: body.apply(TextStyle(
+            fontStyle: FontStyle.italic,
+            color: LPColor.rollerBlue_500.withOpacity(0.8),
+          )),
         ),
         Text(
           "Updated: ${lastUpdate.toDateString()}",
-          style: LPFont.bodyItalic().textStyle,
+          style: body.apply(TextStyle(
+            fontStyle: FontStyle.italic,
+            color: LPColor.rollerBlue_500.withOpacity(0.8),
+          )),
         ),
       ]);
     }
