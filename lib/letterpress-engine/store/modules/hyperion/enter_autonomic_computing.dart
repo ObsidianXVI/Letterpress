@@ -4,6 +4,7 @@ class Enter_Autonomic_Computing extends LPModule {
   Enter_Autonomic_Computing({required bool renderWithPost})
       : super(
           title: "Enter Autonomic Computing",
+          coverImgName: 'Serendipity',
           lastUpdate: DateTime(2023, 10, 29),
           publicationDate: DateTime(2023, 10, 29),
           tags: [],

@@ -4,6 +4,7 @@ class Homage_27_11_23 extends LPModule {
   Homage_27_11_23({required bool renderWithPost})
       : super(
           title: "27/11/23: Homage",
+          coverImgName: 'Untitled_Artist',
           lastUpdate: DateTime(2023, 11, 27),
           publicationDate: DateTime(2023, 11, 27),
           tags: [],

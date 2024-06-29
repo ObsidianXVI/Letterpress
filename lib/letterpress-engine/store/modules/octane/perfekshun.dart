@@ -4,6 +4,7 @@ class Perfekshun extends LPModule {
   Perfekshun({required bool renderWithPost})
       : super(
           title: "Perfekshun.",
+          coverImgName: 'Grayscales',
           lastUpdate: DateTime(2023, 10, 30),
           publicationDate: DateTime(2023, 10, 30),
           tags: [],

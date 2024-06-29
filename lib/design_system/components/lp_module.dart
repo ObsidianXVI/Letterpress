@@ -2,6 +2,7 @@ part of letterpress.ds;
 
 class LPModule extends StatelessWidget {
   final String title;
+  final String? coverImgName;
   final DateTime publicationDate;
   final DateTime lastUpdate;
   final bool includeTableOfContents;
@@ -22,6 +23,7 @@ class LPModule extends StatelessWidget {
     required this.tags,
     required this.projectName,
     required this.renderWithPost,
+    this.coverImgName,
   });
 
   @override
@@ -41,26 +43,28 @@ class LPModule extends StatelessWidget {
             height: DimensionTools.getHeight(context),
             child: Stack(
               children: [
+                if (coverImgName != null)
+                  Positioned.fill(
+                    child: Image.asset(
+                      'images/covers/$coverImgName.png',
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 Positioned(
                   left: 0,
                   right: 0,
                   bottom: 0,
-                  child: ClipRect(
-                    child: BackdropFilter(
-                      filter: ui.ImageFilter.blur(sigmaX: 60, sigmaY: 60),
-                      child: Container(
-                        width: double.infinity,
-                        height: DimensionTools.getHeight(context) * 0.25,
-                        decoration: const BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              Colors.transparent,
-                              LPColor.inkBlue_700,
-                            ],
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                          ),
-                        ),
+                  child: Container(
+                    width: double.infinity,
+                    height: DimensionTools.getHeight(context) * 0.25,
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.transparent,
+                          LPColor.inkBlue_700,
+                        ],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
                       ),
                     ),
                   ),

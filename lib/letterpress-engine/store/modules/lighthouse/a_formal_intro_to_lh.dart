@@ -4,6 +4,7 @@ class A_Formal_Intro_To_Lh extends LPModule {
   A_Formal_Intro_To_Lh({required bool renderWithPost})
       : super(
           title: "A formal introduction to Lighthouse",
+          coverImgName: 'Caffiend_Crawlin_Out_The_Same_Ditch',
           lastUpdate: DateTime(2023, 10, 29),
           publicationDate: DateTime(2023, 9, 4),
           tags: [],
