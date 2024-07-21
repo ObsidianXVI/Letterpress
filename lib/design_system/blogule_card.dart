@@ -21,10 +21,14 @@ class BloguleCardState extends State<BloguleCard>
         onTap: () => Navigator.of(context).pushNamed(
             "${LPRoutes.lp_blogules}/${widget.blogule.title.urlSafeSlug}"),
         child: Container(
-          width: 400,
-          height: 220,
+          width: Multiplatform.currentPlatform == const DesktopPlatform()
+              ? 400
+              : 200,
+          height: Multiplatform.currentPlatform == const DesktopPlatform()
+              ? 220
+              : 180,
           decoration: BoxDecoration(
-            gradient: cardBackground,
+            color: cardBackground,
             border: cardBorder,
             borderRadius: BorderRadius.circular(5),
           ),

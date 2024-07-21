@@ -21,7 +21,7 @@ class ViewScaffoldState extends State<ViewScaffold> {
   Widget build(BuildContext context) {
     Future.microtask(() {
       Multiplatform.currentPlatform = Multiplatform.platformSelector(
-          document.body!.clientWidth, document.body!.clientHeight);
+          Dimensions.width(), Dimensions.height());
       if (Multiplatform.currentPlatform == const UnknownPlatform()) {
         Navigator.of(context).pushNamed(LPRoutes.unknownPlatform);
       }

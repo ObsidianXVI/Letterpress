@@ -16,12 +16,14 @@ class HeroTitle extends ResponsiveTypeface {
   HeroTitle() {
     styleDelegates.addAll({
       const DesktopPlatform(): TextStyle(
+        color: LPColor.inkBlue_500,
         fontSize: scaled(340, 200),
         fontWeight: FontWeight.w900,
         height: 0.76,
       ),
       const MobilePlatform(): TextStyle(
-        fontSize: scaled(70, 68),
+        color: LPColor.inkBlue_500,
+        fontSize: scaled(200, 68),
         fontWeight: FontWeight.w900,
         height: 0.76,
       ),
@@ -194,7 +196,7 @@ class BodyB1 extends ResponsiveTypeface {
       ),
       const MobilePlatform(): TextStyle(
         letterSpacing: 0.5,
-        fontSize: scaled(24, 20),
+        fontSize: scaled(22, 20),
         fontWeight: FontWeight.w400,
         fontVariations: const [
           ui.FontVariation.opticalSize(24),

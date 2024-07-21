@@ -39,9 +39,18 @@ class PromoCardState extends State<PromoCard> {
           }),
           child: Container(
             width: switch (widget.size) {
-              SizeVariant.small => 438,
-              SizeVariant.medium => 776,
-              SizeVariant.large => 776,
+              SizeVariant.small =>
+                Multiplatform.currentPlatform == const DesktopPlatform()
+                    ? 438
+                    : 340,
+              SizeVariant.medium =>
+                Multiplatform.currentPlatform == const DesktopPlatform()
+                    ? 776
+                    : 540,
+              SizeVariant.large =>
+                Multiplatform.currentPlatform == const DesktopPlatform()
+                    ? 776
+                    : 540,
             },
             height: 438,
             decoration: BoxDecoration(

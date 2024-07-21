@@ -41,19 +41,21 @@ class LetterpressAppState extends State<LetterpressApp> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      top: 10,
-                      left: 10,
-                    ),
-                    child: Text(
-                      'LET\nTER\nPRESS',
-                      style: TextStyle(
-                        color: LPColor.inkBlue_500,
-                        fontFamily: LPFontFamily.headers.name,
-                        fontSize: 340,
-                        fontWeight: FontWeight.w800,
-                        height: 0.8,
+                  ViewportSize(
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        top: Multiplatform.currentPlatform ==
+                                const MobilePlatform()
+                            ? 0
+                            : 10,
+                        left: Multiplatform.currentPlatform ==
+                                const MobilePlatform()
+                            ? 0
+                            : 10,
+                      ),
+                      child: Text(
+                        'LET\nTER\nPRESS',
+                        style: heroTitle.apply(),
                       ),
                     ),
                   ),
@@ -61,10 +63,19 @@ class LetterpressAppState extends State<LetterpressApp> {
                     child: Container(
                       color: LPColor.inkBlue_500,
                       child: Padding(
-                        padding: const EdgeInsets.only(
-                          left: 60,
-                          top: 60,
-                          right: 40,
+                        padding: EdgeInsets.only(
+                          left: Multiplatform.currentPlatform ==
+                                  const DesktopPlatform()
+                              ? scaled(60, 30)
+                              : scaled(20, 16),
+                          top: Multiplatform.currentPlatform ==
+                                  const DesktopPlatform()
+                              ? scaled(60, 30)
+                              : scaled(20, 16),
+                          right: Multiplatform.currentPlatform ==
+                                  const DesktopPlatform()
+                              ? scaled(60, 30)
+                              : scaled(24, 24),
                         ),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,9 +92,17 @@ class LetterpressAppState extends State<LetterpressApp> {
                                         color: LPColor.rollerBlue_500),
                                   ),
                                 ),
-                                const SizedBox(height: 40),
                                 SizedBox(
-                                  width: 600,
+                                  height: Multiplatform.currentPlatform ==
+                                          const DesktopPlatform()
+                                      ? scaled(40, 30)
+                                      : scaled(30, 20),
+                                ),
+                                SizedBox(
+                                  width: Multiplatform.currentPlatform ==
+                                          const DesktopPlatform()
+                                      ? 0.25 * Dimensions.width()
+                                      : Dimensions.width() * 0.89,
                                   child: Text(
                                     """Letterpress is a blog site by OBSiDIAN about coding and design stuff — but with a twist. More than just a disjoint sequence of short articles on varying subjects, in the Letterpress model, short articles known as Blogules focusing on a particular subject can be published and read individually. However, multiple Blogules can be strung together to create a Post, making for a longer read but providing a broader insight on a specific subject.
 
@@ -105,10 +124,19 @@ I started Letterpress because I wanted to document my thoughts and learning poin
                     child: Container(
                       color: LPColor.inkBlue_500,
                       child: Padding(
-                        padding: const EdgeInsets.only(
-                          left: 60,
-                          top: 60,
-                          right: 40,
+                        padding: EdgeInsets.only(
+                          left: Multiplatform.currentPlatform ==
+                                  const DesktopPlatform()
+                              ? scaled(60, 30)
+                              : scaled(20, 16),
+                          top: Multiplatform.currentPlatform ==
+                                  const DesktopPlatform()
+                              ? scaled(60, 30)
+                              : scaled(20, 16),
+                          right: Multiplatform.currentPlatform ==
+                                  const DesktopPlatform()
+                              ? scaled(60, 30)
+                              : scaled(24, 24),
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -184,10 +212,19 @@ I started Letterpress because I wanted to document my thoughts and learning poin
                     child: Container(
                       color: LPColor.inkBlue_500,
                       child: Padding(
-                        padding: const EdgeInsets.only(
-                          left: 60,
-                          top: 60,
-                          right: 40,
+                        padding: EdgeInsets.only(
+                          left: Multiplatform.currentPlatform ==
+                                  const DesktopPlatform()
+                              ? scaled(60, 30)
+                              : scaled(20, 16),
+                          top: Multiplatform.currentPlatform ==
+                                  const DesktopPlatform()
+                              ? scaled(60, 30)
+                              : scaled(20, 16),
+                          right: Multiplatform.currentPlatform ==
+                                  const DesktopPlatform()
+                              ? scaled(60, 30)
+                              : scaled(24, 24),
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,

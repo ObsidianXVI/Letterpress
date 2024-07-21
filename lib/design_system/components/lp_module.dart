@@ -10,11 +10,14 @@ class LPModule extends StatelessWidget {
   final List<String> tags;
   final String projectName;
   final bool renderWithPost;
+  final double gutterRatio =
+      Multiplatform.currentPlatform == const DesktopPlatform() ? 0.3 : 0.1;
+  late final double colGutter = Dimensions.width() * gutterRatio;
+
   static const SizedBox componentDivider = SizedBox(height: 30);
-  static const double colGutter = 40;
   static const double margin = 20;
 
-  const LPModule({
+  LPModule({
     required this.title,
     required this.publicationDate,
     required this.lastUpdate,
@@ -29,8 +32,9 @@ class LPModule extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double fullWidth = DimensionTools.getWidth(context);
-    final double availableWidth = fullWidth - 2 * margin;
-    final double mainColWidth = availableWidth * 0.6;
+    final double availableWidth = fullWidth - colGutter;
+    final double mainColWidth = availableWidth *
+        (Multiplatform.currentPlatform == const DesktopPlatform() ? 0.6 : 1);
     final double sideColWidth = availableWidth * 0.2;
 
     final List<Widget> widgets = [];
@@ -70,9 +74,9 @@ class LPModule extends StatelessWidget {
                   ),
                 ),
                 Positioned(
-                  left: 30,
+                  left: gutterRatio * Dimensions.width(),
                   bottom: 50,
-                  right: 30,
+                  right: gutterRatio * Dimensions.width(),
                   child: SelectableText.rich(
                     TextSpan(
                       children: [
@@ -171,32 +175,34 @@ class LPModule extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(right: colGutter),
-          child: Container(
-            width: sideColWidth - colGutter,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: leftSideNotes,
+        if (Multiplatform.currentPlatform == const DesktopPlatform())
+          Padding(
+            padding: EdgeInsets.only(right: colGutter),
+            child: Container(
+              width: sideColWidth - colGutter,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: leftSideNotes,
+              ),
             ),
           ),
-        ),
         Container(
           width: mainColWidth,
           child: postComponent,
         ),
-        Padding(
-          padding: const EdgeInsets.only(left: colGutter),
-          child: Container(
-            width: sideColWidth - colGutter,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: rightSideNotes,
+        if (Multiplatform.currentPlatform == const DesktopPlatform())
+          Padding(
+            padding: EdgeInsets.only(left: colGutter * gutterRatio),
+            child: Container(
+              width: sideColWidth - colGutter,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: rightSideNotes,
+              ),
             ),
           ),
-        ),
       ],
     );
   }

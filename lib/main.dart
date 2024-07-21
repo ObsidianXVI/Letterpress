@@ -16,6 +16,7 @@ class LPRoutes {
 }
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   Multiplatform.init(
     platformSelector: (width, height) {
       if (1200 <= width && width <= 1600) {
