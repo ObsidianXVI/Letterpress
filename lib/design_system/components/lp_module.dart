@@ -45,62 +45,6 @@ class LPModule extends StatelessWidget {
     final List<Widget> widgets = [];
     if (!renderWithPost) {
       widgets.addAll([
-        Center(
-          child: Container(
-            width: vpWidth,
-            color: LPColor.inkBlue_500,
-            height: DimensionTools.getHeight(context),
-            child: Stack(
-              children: [
-                if (coverImgName != null)
-                  Positioned.fill(
-                    child: Image.asset(
-                      'images/covers/$coverImgName.png',
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                Positioned(
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  child: Container(
-                    width: double.infinity,
-                    height: DimensionTools.getHeight(context) * 0.25,
-                    decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Colors.transparent,
-                          LPColor.inkBlue_700,
-                        ],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                      ),
-                    ),
-                  ),
-                ),
-                Positioned(
-                  left: colGutter,
-                  bottom: 50,
-                  right: colGutter,
-                  child: SelectableText.rich(
-                    TextSpan(
-                      children: [
-                        TextSpan(
-                          text: title,
-                          style: pieceTitle.apply(
-                            const TextStyle(
-                              color: LPColor.gripperBlue_500,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
         // const LPDivider(),
         if (includeTableOfContents)
           renderComponent(
@@ -162,10 +106,75 @@ class LPModule extends StatelessWidget {
           ),
         ),
         child: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              children: widgets,
-            ),
+          child: Stack(
+            children: [
+              if (coverImgName != null)
+                Positioned.fill(
+                  child: Image.asset(
+                    'images/covers/$coverImgName.png',
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              SingleChildScrollView(
+                child: Container(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        width: vpWidth,
+                        height: DimensionTools.getHeight(context),
+                        child: Stack(
+                          children: [
+                            Positioned(
+                              left: 0,
+                              right: 0,
+                              bottom: 0,
+                              child: Container(
+                                width: double.infinity,
+                                height:
+                                    DimensionTools.getHeight(context) * 0.25,
+                                decoration: const BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Colors.transparent,
+                                      LPColor.inkBlue_700,
+                                    ],
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              left: colGutter,
+                              bottom: 50,
+                              right: colGutter,
+                              child: SelectableText.rich(
+                                TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: title,
+                                      style: pieceTitle.apply(
+                                        const TextStyle(
+                                          color: LPColor.gripperBlue_500,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        color: LPColor.inkBlue_700,
+                        child: Column(children: widgets),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),
