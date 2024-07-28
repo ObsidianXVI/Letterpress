@@ -191,7 +191,7 @@ class BodyB1 extends ResponsiveTypeface {
         fontWeight: FontWeight.w400,
         letterSpacing: 0.5,
         fontVariations: const [ui.FontVariation.opticalSize(24)],
-        height: 1.35,
+        height: 1.4,
         fontFamily: 'Fraunces_Soft',
       ),
       const MobilePlatform(): TextStyle(
@@ -201,7 +201,7 @@ class BodyB1 extends ResponsiveTypeface {
         fontVariations: const [
           ui.FontVariation.opticalSize(24),
         ],
-        height: 1.35,
+        height: 1.37,
         fontFamily: 'Fraunces_Soft',
       ),
     });

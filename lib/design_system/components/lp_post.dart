@@ -74,14 +74,14 @@ class LPPost extends StatelessWidget {
 
     widgets.addAll([
       const LPDivider(),
-      Text(
+      SelectableText(
         "Published: ${postConfigs.publicationDate.toDateString()}",
         style: body.apply(TextStyle(
           fontStyle: FontStyle.italic,
           color: LPColor.rollerBlue_500.withOpacity(0.8),
         )),
       ),
-      Text(
+      SelectableText(
         "Updated: ${postConfigs.lastUpdate.toDateString()}",
         style: body.apply(TextStyle(
           fontStyle: FontStyle.italic,
@@ -98,13 +98,10 @@ class LPPost extends StatelessWidget {
             selectionHandleColor: OctaneTheme.obsidianA000,
           ),
         ),
-        child: SelectionArea(
-          selectionControls: materialTextSelectionControls,
-          child: Center(
-            child: SingleChildScrollView(
-              child: Column(
-                children: postConfigs.modules,
-              ),
+        child: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              children: postConfigs.modules,
             ),
           ),
         ),

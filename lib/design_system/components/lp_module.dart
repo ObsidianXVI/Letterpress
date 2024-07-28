@@ -11,11 +11,8 @@ class LPModule extends StatelessWidget {
   final String projectName;
   final bool renderWithPost;
   final double gutterRatio =
-      Multiplatform.currentPlatform == const DesktopPlatform() ? 0.3 : 0.1;
-  late final double colGutter = Dimensions.width() * gutterRatio;
-
+      Multiplatform.currentPlatform == const DesktopPlatform() ? 0.1 : 0.05;
   static const SizedBox componentDivider = SizedBox(height: 30);
-  static const double margin = 20;
 
   LPModule({
     required this.title,
@@ -31,18 +28,26 @@ class LPModule extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double fullWidth = DimensionTools.getWidth(context);
-    final double availableWidth = fullWidth - colGutter;
-    final double mainColWidth = availableWidth *
+    late final double vpWidth = DimensionTools.getWidth(context);
+
+    /// Automatically decided gutter to include between content and edges of the screen,
+    /// based on the platform.
+    late final double colGutter = Dimensions.width() * gutterRatio;
+    final double contentWidth = vpWidth - colGutter * 2;
+
+    /// The width for available for the body text. Equal to [contentWidth] on mobile.
+    final double mainColWidth = contentWidth *
         (Multiplatform.currentPlatform == const DesktopPlatform() ? 0.6 : 1);
-    final double sideColWidth = availableWidth * 0.2;
+
+    /// The width for each "side notes" column
+    final double sideColWidth = contentWidth * 0.2;
 
     final List<Widget> widgets = [];
     if (!renderWithPost) {
       widgets.addAll([
         Center(
           child: Container(
-            width: fullWidth,
+            width: vpWidth,
             color: LPColor.inkBlue_500,
             height: DimensionTools.getHeight(context),
             child: Stack(
@@ -74,16 +79,19 @@ class LPModule extends StatelessWidget {
                   ),
                 ),
                 Positioned(
-                  left: gutterRatio * Dimensions.width(),
+                  left: colGutter,
                   bottom: 50,
-                  right: gutterRatio * Dimensions.width(),
+                  right: colGutter,
                   child: SelectableText.rich(
                     TextSpan(
                       children: [
                         TextSpan(
                           text: title,
                           style: pieceTitle.apply(
-                              const TextStyle(color: LPColor.gripperBlue_500)),
+                            const TextStyle(
+                              color: LPColor.gripperBlue_500,
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -93,7 +101,7 @@ class LPModule extends StatelessWidget {
             ),
           ),
         ),
-        const LPDivider(),
+        // const LPDivider(),
         if (includeTableOfContents)
           renderComponent(
             postComponent: LPTableOfContents(
@@ -106,6 +114,7 @@ class LPModule extends StatelessWidget {
             mainColWidth: mainColWidth,
             leftSideNotes: const [],
             rightSideNotes: const [],
+            colGutter: colGutter,
           ),
       ]);
     }
@@ -119,6 +128,7 @@ class LPModule extends StatelessWidget {
           mainColWidth: mainColWidth,
           leftSideNotes: postComponent.leftSideNotes,
           rightSideNotes: postComponent.rightSideNotes,
+          colGutter: colGutter,
         ),
       ]);
     }
@@ -151,13 +161,10 @@ class LPModule extends StatelessWidget {
             selectionHandleColor: OctaneTheme.obsidianB150,
           ),
         ),
-        child: SelectionArea(
-          selectionControls: materialTextSelectionControls,
-          child: Center(
-            child: SingleChildScrollView(
-              child: Column(
-                children: widgets,
-              ),
+        child: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              children: widgets,
             ),
           ),
         ),
@@ -171,6 +178,7 @@ class LPModule extends StatelessWidget {
     required double mainColWidth,
     required List<LPSideNoteComponent> leftSideNotes,
     required List<LPSideNoteComponent> rightSideNotes,
+    required double colGutter,
   }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -178,7 +186,7 @@ class LPModule extends StatelessWidget {
         if (Multiplatform.currentPlatform == const DesktopPlatform())
           Padding(
             padding: EdgeInsets.only(right: colGutter),
-            child: Container(
+            child: SizedBox(
               width: sideColWidth - colGutter,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -187,13 +195,13 @@ class LPModule extends StatelessWidget {
               ),
             ),
           ),
-        Container(
+        SizedBox(
           width: mainColWidth,
           child: postComponent,
         ),
         if (Multiplatform.currentPlatform == const DesktopPlatform())
           Padding(
-            padding: EdgeInsets.only(left: colGutter * gutterRatio),
+            padding: EdgeInsets.only(left: colGutter),
             child: Container(
               width: sideColWidth - colGutter,
               child: Column(

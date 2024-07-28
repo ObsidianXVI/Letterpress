@@ -38,7 +38,7 @@ class LPVerseQuote extends LPQuote {
               LPText.hyperlink(
                 alignment: Alignment.bottomCenter,
                 content: reference,
-                url: reference,
+                url: url,
                 textAlign: TextAlign.center,
               ),
             ],

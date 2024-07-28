@@ -101,7 +101,7 @@ class LetterpressAppState extends State<LetterpressApp> {
                                 SizedBox(
                                   width: Multiplatform.currentPlatform ==
                                           const DesktopPlatform()
-                                      ? 0.25 * Dimensions.width()
+                                      ? 0.45 * Dimensions.width()
                                       : Dimensions.width() * 0.89,
                                   child: Text(
                                     """Letterpress is a blog site by OBSiDIAN about coding and design stuff — but with a twist. More than just a disjoint sequence of short articles on varying subjects, in the Letterpress model, short articles known as Blogules focusing on a particular subject can be published and read individually. However, multiple Blogules can be strung together to create a Post, making for a longer read but providing a broader insight on a specific subject.

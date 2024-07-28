@@ -72,11 +72,12 @@ class PromoCardState extends State<PromoCard> {
                   : null,
             ),
             child: Padding(
-              padding: const EdgeInsets.only(left: 30, right: 30, top: 30),
+              padding: const EdgeInsets.all(30),
               child: Column(
                 children: [
                   Text(
                     widget.title,
+                    textAlign: TextAlign.left,
                     style: (switch (widget.size) {
                       SizeVariant.small => mediumFunky,
                       SizeVariant.medium => bigFunky,
@@ -84,7 +85,7 @@ class PromoCardState extends State<PromoCard> {
                     })
                         .apply(const TextStyle(color: LPColor.gripperBlue_500)),
                   ),
-                  const SizedBox(height: 40),
+                  const Spacer(flex: 1),
                   Text(
                     widget.description,
                     style: body

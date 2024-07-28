@@ -146,11 +146,31 @@ class LPText extends LPPostComponent {
   Widget build(BuildContext context) {
     return Align(
       alignment: alignment,
-      child: Text(
-        content,
-        style: lpFont,
-        textAlign: textAlign,
-      ),
+      child: isClickable
+          ? MouseRegion(
+              cursor: SystemMouseCursors.click,
+              child: GestureDetector(
+                onTap: () {
+                  if (props['route'] != null) {
+                    Navigator.of(context).pushNamed(props['route']);
+                  } else if (props['action'] != null) {
+                    (props['action'] as Function).call();
+                  } else if (props['url'] != null) {
+                    window.open(props['url'], 'launching...');
+                  }
+                },
+                child: Text(
+                  content,
+                  style: lpFont,
+                  textAlign: textAlign,
+                ),
+              ),
+            )
+          : SelectableText(
+              content,
+              style: lpFont,
+              textAlign: textAlign,
+            ),
     );
   }
 }
