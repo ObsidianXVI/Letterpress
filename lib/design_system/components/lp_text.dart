@@ -119,8 +119,8 @@ class LPText extends LPPostComponent {
     Function? action,
     String? url,
     String? route,
-  })  : lpFont = body.apply(const TextStyle(
-          color: LPColor.rollerBlue_500,
+  })  : lpFont = body.apply(TextStyle(
+          color: LPColor.gripperBlue_400.withOpacity(0.8),
           decoration: TextDecoration.underline,
           decorationColor: LPColor.rollerBlue_500,
         )),
