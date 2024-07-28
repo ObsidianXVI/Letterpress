@@ -15,7 +15,7 @@ class LetterpressBloguleView extends StatelessWidget {
           width: double.infinity,
           height: double.infinity,
           color: LPColor.inkBlue_700,
-          child: child,
+          child: LPRenderer(article: child),
         ),
       ),
     );

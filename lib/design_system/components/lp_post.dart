@@ -60,7 +60,7 @@ class LPPost extends StatelessWidget {
             ),
           ),
         ),
-        ...postConfigs.modules,
+        //...postConfigs.modules,
       ]);
 
     final LPTableOfContents tableOfContents = LPTableOfContents(
@@ -101,7 +101,7 @@ class LPPost extends StatelessWidget {
         child: Center(
           child: SingleChildScrollView(
             child: Column(
-              children: postConfigs.modules,
+              children: [], //postConfigs.modules,
             ),
           ),
         ),

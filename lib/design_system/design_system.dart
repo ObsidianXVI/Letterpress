@@ -12,6 +12,7 @@ import 'package:letterpress/main.dart';
 import 'package:octane/octane_ds/octane_ds.dart';
 import 'package:project_redline/multi_platform/multi_platform.dart';
 import 'package:project_redline/project_redline.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 part './color_system.dart';
 part 'type_system.dart';
@@ -19,6 +20,7 @@ part './card_widget.dart';
 part './meta_tag.dart';
 part './blogule_card.dart';
 part './view_scaffold.dart';
+part './components/lp_renderer.dart';
 part './components/blogules_timeline.dart';
 part './components/promo_card.dart';
 part './components/lp_core.dart';
