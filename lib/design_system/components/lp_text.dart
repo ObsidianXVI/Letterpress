@@ -79,10 +79,14 @@ class LPText extends LPPostComponent {
     this.alignment = Alignment.topLeft,
     this.textAlign = TextAlign.left,
     bool isItalic = false,
-  })  : lpFont = isItalic
-            ? body.apply(const TextStyle(fontStyle: FontStyle.italic))
-            : body.apply(
-                TextStyle(color: LPColor.rollerBlue_500.withOpacity(0.85))),
+    bool isBold = false,
+  })  : lpFont = body.apply(
+          TextStyle(
+            color: LPColor.rollerBlue_500.withOpacity(0.85),
+            fontStyle: isItalic ? FontStyle.italic : null,
+            fontWeight: isBold ? FontWeight.w600 : null,
+          ),
+        ),
         isClickable = false,
         isHeader = false;
 
