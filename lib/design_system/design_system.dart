@@ -34,5 +34,7 @@ part './components/lp_divider.dart';
 part './components/lp_table_of_contents.dart';
 part './components/lp_group.dart';
 part './components/lp_list.dart';
-part './components/lp_quote.dart';
+part './components/lp_verse_quote.dart';
 part './components/lp_sidenote.dart';
+part './components/lp_code_block.dart';
+part './components/lp_pull_quote.dart';

@@ -39,6 +39,7 @@ dependencies:
     sdk: flutter
   flutter_inner_shadow: ^0.0.1
   visibility_detector: ^0.4.0+2
+  markdown: ^7.2.2
 
 dev_dependencies:
   flutter_test:
@@ -65,6 +66,7 @@ flutter:
   assets:
     - assets/images/letterpress_1.png
     - assets/images/hyperion/enter_autonomic_computing/
+    - assets/images/turbocal/
 
   fonts:
     - family: Fraunces_Standard
@@ -126,3 +128,10 @@ flutter:
         - asset: assets/fonts/fraunces/soft/Fraunces_144pt_Soft-BlackItalic.ttf
           weight: 800
           style: italic
+
+    - family: IBM_Plex_Mono
+      fonts:
+        - asset: assets/fonts/ibm_plex_mono/IBMPlexMono-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/ibm_plex_mono/IBMPlexMono-Medium.ttf
+          weight: 500

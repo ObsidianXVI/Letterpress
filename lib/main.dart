@@ -1,5 +1,6 @@
 import 'dart:html';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:letterpress/utils/utils.dart';
 import 'package:letterpress/views/lp_views.dart';
@@ -40,6 +41,7 @@ void main() {
         LPRoutes.lp_home: (_) => const LetterpressApp(),
         LPRoutes.lp_timelapse: (_) => const LetterpressTimelapse(),
         LPRoutes.lp_blogules: (_) => const LetterpressBlogulesView(),
+        if (kDebugMode) '/dev': (_) => const DevView(),
         LPRoutes.unknownPlatform: (_) => Material(
               child: Padding(
                 padding: const EdgeInsets.only(left: 10, right: 10),

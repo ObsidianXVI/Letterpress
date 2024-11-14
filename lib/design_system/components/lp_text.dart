@@ -110,6 +110,24 @@ class LPText extends LPPostComponent {
         isClickable = false,
         isHeader = false;
 
+  LPText.codeStyle({
+    required bool inline,
+    super.leftSideNotes,
+    super.rightSideNotes,
+    required this.content,
+    this.alignment = Alignment.topLeft,
+    this.textAlign = TextAlign.left,
+  })  : lpFont = code.apply(
+          TextStyle(
+            color: (inline ? LPColor.chaseRed_500 : LPColor.platenWhite_500)
+                .withOpacity(0.7),
+            backgroundColor:
+                LPColor.rollerBlue_500.withOpacity(inline ? 0.2 : 0),
+          ),
+        ),
+        isClickable = false,
+        isHeader = false;
+
   LPText.hyperlink({
     super.leftSideNotes,
     super.rightSideNotes,

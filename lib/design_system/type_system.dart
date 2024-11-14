@@ -11,6 +11,7 @@ final ResponsiveTypeface header2 = Header2();
 final ResponsiveTypeface header3 = Header3();
 final ResponsiveTypeface verseQuote = VerseQuote();
 final ResponsiveTypeface semanticTag = body;
+final ResponsiveTypeface code = Code();
 
 class HeroTitle extends ResponsiveTypeface {
   HeroTitle() {
@@ -208,6 +209,30 @@ class BodyB1 extends ResponsiveTypeface {
   }
 }
 
+class Code extends ResponsiveTypeface {
+  Code() {
+    styleDelegates.addAll({
+      const DesktopPlatform(): TextStyle(
+        fontSize: scaled(20, 18),
+        fontWeight: FontWeight.w400,
+        letterSpacing: 0.5,
+        fontVariations: const [ui.FontVariation.opticalSize(24)],
+        height: 1.4,
+        fontFamily: 'IBM_Plex_Mono',
+      ),
+      const MobilePlatform(): TextStyle(
+        letterSpacing: 0.5,
+        fontSize: scaled(18, 14),
+        fontWeight: FontWeight.w400,
+        fontVariations: const [
+          ui.FontVariation.opticalSize(24),
+        ],
+        height: 1.37,
+        fontFamily: 'IBM_Plex_Mono',
+      ),
+    });
+  }
+}
 
 
 /**
