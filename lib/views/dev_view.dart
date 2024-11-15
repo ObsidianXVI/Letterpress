@@ -65,6 +65,11 @@ class TestModule extends LPModule {
                   'Do not use Flutter build web on platforms deployed after 10 jan',
               calloutType: CalloutType.critical,
             ),
+            const LPPullQuote(
+              content: "It's not a bug, it's a feature.",
+              attribution: 'Every programmer ever',
+              ref: 'https://github.com',
+            ),
             LPText.plainBody(
                 content:
                     "Having just discovered all the amazing things possible in the world of 0s and 1s, I was obviously more interested in learning what it could do for me. So I got into scripting. Nope, not Python as you would think, but instead, with iOS Shortcuts. For those who don't know, Shortcuts is an iOS application where you can create programs and automations to execute commands on your iPhone easily. I was trying to use Shortcuts to integrate the different tools I used, and went so far as to try out different URL schemes and X-callbacks. What I found to be sorely lacking was integration and interoperability between the different tools."),
