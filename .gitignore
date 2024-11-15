@@ -45,3 +45,6 @@ app.*.map.json
 
 # Firebase Ignore
 .firebase/
+
+# Archived Code
+*/letterpress-engine/tools/MD2LP/markdown_parser/

@@ -38,3 +38,4 @@ part './components/lp_verse_quote.dart';
 part './components/lp_sidenote.dart';
 part './components/lp_code_block.dart';
 part './components/lp_pull_quote.dart';
+part './components/lp_callout.dart';

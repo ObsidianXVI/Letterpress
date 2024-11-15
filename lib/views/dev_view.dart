@@ -11,7 +11,7 @@ class DevView extends StatelessWidget {
           width: double.infinity,
           height: double.infinity,
           color: LPColor.inkBlue_700,
-          child: LPRenderer(article: TestModule2()),
+          child: LPRenderer(article: TestModule(renderWithPost: true)),
         ),
       ),
     );
@@ -47,6 +47,24 @@ class TestModule extends LPModule {
               LPText.codeStyle(inline: true, content: "abstract"),
               LPText.plainBody(content: " keyword to enable it."),
             ]),
+            const LPCallout(
+              title: 'NOTE',
+              content:
+                  'Do not use Flutter build web on platforms deployed after 10 jan',
+              calloutType: CalloutType.note,
+            ),
+            const LPCallout(
+              title: 'WARNING',
+              content:
+                  'Do not use Flutter build web on platforms deployed after 10 jan',
+              calloutType: CalloutType.moderate,
+            ),
+            const LPCallout(
+              title: 'DEPRECATED',
+              content:
+                  'Do not use Flutter build web on platforms deployed after 10 jan',
+              calloutType: CalloutType.critical,
+            ),
             LPText.plainBody(
                 content:
                     "Having just discovered all the amazing things possible in the world of 0s and 1s, I was obviously more interested in learning what it could do for me. So I got into scripting. Nope, not Python as you would think, but instead, with iOS Shortcuts. For those who don't know, Shortcuts is an iOS application where you can create programs and automations to execute commands on your iPhone easily. I was trying to use Shortcuts to integrate the different tools I used, and went so far as to try out different URL schemes and X-callbacks. What I found to be sorely lacking was integration and interoperability between the different tools."),
