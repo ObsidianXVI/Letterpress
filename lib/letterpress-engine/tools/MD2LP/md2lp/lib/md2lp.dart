@@ -96,14 +96,58 @@ class ImageBlockParser implements BlockSyntax {
   }
 }
 
+class SideNoteBlockParser implements BlockSyntax {
+  SideNoteBlockParser();
+
+  @override
+  RegExp get pattern => RegExp(r'^@note \{');
+
+  @override
+  bool canParse(BlockParser parser) => pattern.hasMatch(parser.current.content);
+
+  @override
+  Node? parse(BlockParser parser) {
+    final List<String> lines = [];
+    final Map<String, String> attrs = {};
+
+    while ((parser..advance()).current.content.trim() != '}') {
+      lines.add(parser.current.content);
+      final List<String> chunks = parser.current.content.split('>>');
+      attrs[chunks[0].trim()] = chunks[1].trim();
+    }
+
+    return Element.text('note', lines.join('\n'))..attributes.addAll(attrs);
+  }
+
+  @override
+  List<Line?> parseChildLines(BlockParser parser) {
+    return const [];
+  }
+
+  @override
+  bool canEndBlock(BlockParser parser) => true;
+
+  @override
+  BlockSyntax? interruptedBy(BlockParser parser) {
+    // TODO: implement interruptedBy
+    throw UnimplementedError();
+  }
+}
+
 class MD2LP_Transpiler {
   final List<ParseMode> parseModes = [];
   final List<String> result = [];
+  Map<String, String>? leftSideNote;
+  Map<String, String>? rightSideNote;
 
   String transpile(String mdSource) {
     final ast = Document(
       extensionSet: ExtensionSet.gitHubFlavored,
-      blockSyntaxes: [VerseQuoteParser(), ImageBlockParser()],
+      blockSyntaxes: [
+        VerseQuoteParser(),
+        ImageBlockParser(),
+        SideNoteBlockParser()
+      ],
     ).parse(src);
     for (final Node node in ast) {
       handleNode(node);
@@ -162,36 +206,36 @@ class MD2LP_Transpiler {
       switch (e.tag) {
         case 'h1':
           result.add(
-              "LPText.header1(content: \"${e.textContent.sanitised()}\"),");
+              "LPText.header1(content: \"${e.textContent.sanitised()}\",${injectSideNotesIfPresent()}),");
           break;
         case 'h2':
           result.add(
-              "LPText.header2(content: \"${e.textContent.sanitised()}\"),");
+              "LPText.header2(content: \"${e.textContent.sanitised()}\",${injectSideNotesIfPresent()}),");
           break;
         case 'h3':
           result.add(
-              "LPText.header3(content: \"${e.textContent.sanitised()}\"),");
+              "LPText.header3(content: \"${e.textContent.sanitised()}\",${injectSideNotesIfPresent()}),");
           break;
         case 'a':
           result.add(
-              "LPText.hyperlink(content: \"${e.textContent.sanitised()}\", url: \"${e.attributes['href']}\"),");
+              "LPText.hyperlink(content: \"${e.textContent.sanitised()}\", url: \"${e.attributes['href']}\",${injectSideNotesIfPresent()}),");
           break;
         case 'em':
           result.add(
-              "LPText.plainBody(content: \"${e.textContent.sanitised()}\", isBold: true),");
+              "LPText.plainBody(content: \"${e.textContent.sanitised()}\", isBold: true,${injectSideNotesIfPresent()}),");
           break;
         case 'strong':
           result.add(
-              "LPText.plainBody(content: \"${e.textContent.sanitised()}\", isItalic: true),");
+              "LPText.plainBody(content: \"${e.textContent.sanitised()}\", isItalic: true,${injectSideNotesIfPresent()}),");
         case 'del':
           result.add(
-              "LPText.plainBody(content: \"${e.textContent.sanitised()}\", isStrikethrough: true),");
+              "LPText.plainBody(content: \"${e.textContent.sanitised()}\", isStrikethrough: true,${injectSideNotesIfPresent()}),");
           break;
         case 'pre':
           break;
         case 'code':
           result.add(
-              "LPText.codeStyle(content: \"${e.textContent.sanitised()}\", inline: ${parseModes.isNotEmpty}),");
+              "LPText.codeStyle(content: \"${e.textContent.sanitised()}\", inline: ${parseModes.isNotEmpty},${injectSideNotesIfPresent()}),");
           break;
         case 'versequote':
           result.add(
@@ -199,11 +243,19 @@ class MD2LP_Transpiler {
           break;
         case 'img':
           result.add(
-              "LPImage.url(url: \"${e.attributes['url']}\", width: ${e.attributes['width']}, height: ${e.attributes['height']},),");
+              "LPImage.url(url: \"${e.attributes['url']}\", width: ${e.attributes['width']}, height: ${e.attributes['height']},${injectSideNotesIfPresent()}),");
+          break;
+        // The note must appear BEFORE the block to which it is going to be attached
+        case 'note':
+          if (e.attributes['leftSide'] == 'true') {
+            leftSideNote = e.attributes;
+          } else {
+            rightSideNote = e.attributes;
+          }
           break;
         case 'li':
           result.add(
-              "LPText.plainBody(content: \"${e.textContent.sanitised()}\"),");
+              "LPText.plainBody(content: \"${e.textContent.sanitised()}\",${injectSideNotesIfPresent()}),");
           break;
         default:
           break;
@@ -212,7 +264,24 @@ class MD2LP_Transpiler {
   }
 
   void handleTextNode(Text t) {
-    result.add("LPText.plainBody(content: \"${t.textContent.sanitised()}\"),");
+    result.add(
+        "LPText.plainBody(content: \"${t.textContent.sanitised()}\",${injectSideNotesIfPresent()}),");
+  }
+
+  String injectSideNotesIfPresent() {
+    String res = '';
+    if (leftSideNote != null) {
+      res +=
+          'leftSideNotes: [LPSideNoteComment(text: "${leftSideNote!['text']}", leftSide: true,),],';
+      leftSideNote = null;
+    }
+    if (rightSideNote != null) {
+      res +=
+          'leftSideNotes: [LPSideNoteComment(text: "${rightSideNote!['text']}", leftSide: false,),],';
+      rightSideNote = null;
+    }
+
+    return res;
   }
 }
 
@@ -265,7 +334,10 @@ Hopping over to FigJam, let's get started ideating (or, to be more precise, iden
 # Imagining "Turbocal"
 Hopping over to FigJam, let's get started ideating (or, to be more precise, identifying the features from Google Calendar that we would like to implement in TurboCal).
 
-
+@note {
+  text>> Hello there!
+  leftSide>> true
+}
 # Designing
 We are actually going to skip the UI design stage, and get straight to thinking about the implementation, because our interface will look 99% like Google Calendar.
 

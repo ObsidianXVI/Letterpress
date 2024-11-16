@@ -18,7 +18,7 @@ class LPRenderer extends StatefulWidget {
 
 class LPRendererState extends State<LPRenderer> {
   final double gutterRatio =
-      Multiplatform.currentPlatform == const DesktopPlatform() ? 0.1 : 0.05;
+      Multiplatform.currentPlatform == const DesktopPlatform() ? 0.04 : 0.05;
   static const SizedBox componentDivider = SizedBox(height: 30);
   bool coverInView = true;
 
@@ -26,7 +26,7 @@ class LPRendererState extends State<LPRenderer> {
   Widget build(BuildContext context) {
     late final double vpWidth = DimensionTools.getWidth(context);
 
-    /// Automatically decided gutter to include between content and edges of the screen,
+    /// Automatically-decided gutter to include between content and side notes,
     /// based on the platform.
     late final double colGutter = Dimensions.width() * gutterRatio;
     final double contentWidth = vpWidth - colGutter * 2;
@@ -36,7 +36,7 @@ class LPRendererState extends State<LPRenderer> {
         (Multiplatform.currentPlatform == const DesktopPlatform() ? 0.6 : 1);
 
     /// The width for each "side notes" column
-    final double sideColWidth = contentWidth * 0.2;
+    final double sideColWidth = contentWidth * 0.22;
 
     final List<Widget> widgets = [];
     if (widget.includeTableOfContents) {
@@ -224,6 +224,7 @@ class LPRendererState extends State<LPRenderer> {
   }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (Multiplatform.currentPlatform == const DesktopPlatform())
           Padding(

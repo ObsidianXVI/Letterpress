@@ -11,7 +11,7 @@ class DevView extends StatelessWidget {
           width: double.infinity,
           height: double.infinity,
           color: LPColor.inkBlue_700,
-          child: LPRenderer(article: TestModule2()),
+          child: LPRenderer(article: TestModule(renderWithPost: true)),
         ),
       ),
     );
@@ -40,8 +40,15 @@ class TestModule extends LPModule {
                 content:
                     "Lighthouse is a project I started in the June of 2022, 3 months after I first started coding. Even though Lighthouse was my first coding project (I had never completed even a single mini-project while learning to code), I wanted to go big."),
             LPText.plainBody(
-                content:
-                    "I asked myself, “What would be a useful application to develop? What is something that people, including me, would actually use?”. At the time of thinking, I was really into productivity and the like. I was playing around with many different types of software, from project management tools like Jira or Asana, to calendars like the one by Apple or Google. Learning about integration and IoT was another big thing that I had going on at the time, and that constitutes the other half of the driving force behind Lighthouse."),
+              content:
+                  "I asked myself, “What would be a useful application to develop? What is something that people, including me, would actually use?”. At the time of thinking, I was really into productivity and the like. I was playing around with many different types of software, from project management tools like Jira or Asana, to calendars like the one by Apple or Google. Learning about integration and IoT was another big thing that I had going on at the time, and that constitutes the other half of the driving force behind Lighthouse.",
+              leftSideNotes: [
+                LPSideNoteComment(
+                  text: "Hello",
+                  leftSide: true,
+                )
+              ],
+            ),
             LPTextSpan(lpTextComponents: [
               LPText.plainBody(content: "But we need the "),
               LPText.codeStyle(inline: true, content: "abstract"),
@@ -146,7 +153,15 @@ class TestModule2 extends LPModule {
                     content: "\n    width: 500\n    height: 500\n}"),
               ],
             ),
-            LPText.header1(content: "Definition"),
+            LPText.header1(
+              content: "Designing",
+              leftSideNotes: [
+                LPSideNoteComment(
+                  text: "Hello there!",
+                  leftSide: true,
+                ),
+              ],
+            ),
             LPText.codeStyle(content: "Problem", inline: false),
             LPText.plainBody(content: " Situation"),
             LPSingleLevelListSpan(
