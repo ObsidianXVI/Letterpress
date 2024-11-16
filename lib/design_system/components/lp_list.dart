@@ -7,6 +7,70 @@ enum LPListType {
   ;
 }
 
+abstract class LPListSpan extends LPPostComponent {
+  final LPListType listType;
+
+  const LPListSpan({
+    required this.listType,
+    super.leftSideNotes,
+    super.rightSideNotes,
+    super.key,
+  });
+}
+
+class LPSingleLevelListSpan extends LPListSpan {
+  final List<LPPostComponent> listItems;
+
+  const LPSingleLevelListSpan({
+    required this.listItems,
+    required super.listType,
+    super.leftSideNotes,
+    super.rightSideNotes,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final List<Widget> itemWidgets = [];
+    if (listType == LPListType.bullet) {
+      itemWidgets.addAll([
+        for (final item in listItems)
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              LPText.plainBody(content: '•'),
+              const SizedBox(width: 10),
+              item
+            ],
+          ),
+      ]);
+    } else if (listType == LPListType.numbered) {
+      for (int i = 1; i < listItems.length + 1; i++) {
+        itemWidgets.add(
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              LPText.plainBody(content: "$i."),
+              const SizedBox(width: 10),
+              listItems[i - 1],
+            ],
+          ),
+        );
+      }
+    }
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.only(left: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: itemWidgets,
+        ),
+      ),
+    );
+  }
+}
+
+
 /* class LPList extends LPPostComponent {
   final LPListType lpListType;
 

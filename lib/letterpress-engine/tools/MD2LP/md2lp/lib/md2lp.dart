@@ -2,14 +2,71 @@ library letterpress.tools.md2lp;
 
 import 'package:markdown/markdown.dart';
 
-enum ParseMode { none, textspan, orderedList, unorderedList }
+enum ParseMode { textspan, orderedList, unorderedList }
+
+class VerseQuoteParser implements BlockSyntax {
+  VerseQuoteParser();
+
+  @override
+  RegExp get pattern => RegExp(r'^@versequote \{');
+
+  @override
+  bool canParse(BlockParser parser) => pattern.hasMatch(parser.current.content);
+
+  @override
+  Node? parse(BlockParser parser) {
+    final List<String> lines = [];
+    final Map<String, String> attrs = {};
+
+    while ((parser..advance()).current.content.trim() != '}') {
+      lines.add(parser.current.content);
+      final List<String> chunks = parser.current.content.split(':');
+      final String param = chunks[0].trim();
+      final String val = chunks[1].trim();
+      if (param != 'verses') {
+        attrs[param] = val;
+      } else {
+        final List<String> verses = [];
+        while ((parser..advance()).current.content.trim() != ']') {
+          parser.advance();
+          lines.add(parser.current.content);
+          verses.add(parser.current.content.trim());
+        }
+        attrs['verses'] = verses.join('|');
+      }
+    }
+
+    return Element.text('versequote', lines.join('\n'))
+      ..attributes.addAll(attrs);
+  }
+
+  @override
+  List<Line?> parseChildLines(BlockParser parser) {
+    return const [];
+  }
+
+  @override
+  bool canEndBlock(BlockParser parser) {
+    // TODO: implement canEndBlock
+    throw UnimplementedError();
+  }
+
+  @override
+  BlockSyntax? interruptedBy(BlockParser parser) {
+    // TODO: implement interruptedBy
+    throw UnimplementedError();
+  }
+}
 
 class MD2LP_Transpiler {
-  ParseMode parseMode = ParseMode.none;
+  final List<ParseMode> parseModes = [];
   final List<String> result = [];
 
   String transpile(String mdSource) {
-    final ast = Document().parse(src);
+    final ast = Document(
+      extensionSet: ExtensionSet.gitHubFlavored,
+      blockSyntaxes: [VerseQuoteParser()],
+    ).parse(src);
     for (final Node node in ast) {
       handleNode(node);
     }
@@ -26,34 +83,42 @@ class MD2LP_Transpiler {
   }
 
   void handleElementNode(Element e) {
-    /* print(
-        "[${e.tag}] ${e.children != null ? '(${e.children!.length})' : ''} ${e.textContent}"); */
+    print(
+        "[${e.tag}] ${e.children != null ? '(${e.children!.length})' : ''} ${e.textContent}");
 
     if (e.children == null) result.add(e.textContent);
     if (e.children!.length > 1) {
       switch (e.tag) {
         case 'p':
-          parseMode = ParseMode.textspan;
+          parseModes.add(ParseMode.textspan);
           result.add("LPTextSpan(lpTextComponents: [");
         case 'ul':
-          parseMode = ParseMode.unorderedList;
+          parseModes.add(ParseMode.unorderedList);
+          result.add(
+              "LPSingleLevelListSpan(listType: LPListType.bullet, listItems: [");
         case 'ol':
-          parseMode = ParseMode.orderedList;
+          parseModes.add(ParseMode.orderedList);
+          result.add(
+              "LPSingleLevelListSpan(listType:  LPListType.numbered, listItems: [");
+        case 'li':
+          parseModes.add(ParseMode.textspan);
+          result.add("LPTextSpan(lpTextComponents: [");
       }
 
       for (final Node n in e.children!) {
         handleNode(n);
       }
-
-      switch (parseMode) {
-        case ParseMode.textspan:
-          result.add("],),");
-        case ParseMode.unorderedList:
-        case ParseMode.orderedList:
-        default:
-          break;
+      if (parseModes.isNotEmpty) {
+        switch (parseModes.last) {
+          case ParseMode.textspan:
+          case ParseMode.unorderedList:
+          case ParseMode.orderedList:
+            result.add("],),");
+            parseModes.removeLast();
+          default:
+            break;
+        }
       }
-      parseMode = ParseMode.none;
     } else {
       // Single-child element means child is a Text node
       switch (e.tag) {
@@ -77,22 +142,24 @@ class MD2LP_Transpiler {
         case 'strong':
           result.add(
               "LPText.plainBody(content: \"${e.textContent.sanitised()}\", isItalic: true),");
+        case 'del':
+          result.add(
+              "LPText.plainBody(content: \"${e.textContent.sanitised()}\", isStrikethrough: true),");
           break;
         case 'pre':
           break;
         case 'code':
           result.add(
-              "LPText.codeStyle(content: \"${e.textContent}\", inline: ${parseMode == ParseMode.textspan}),");
+              "LPText.codeStyle(content: \"${e.textContent}\", inline: ${parseModes.isNotEmpty}),");
           break;
-        /* case 'li':
-          result.add("LPText.header3(content: \"${e.textContent}\"),");
-          break; */
+        case 'versequote':
+          result.add(
+              "LPVerse(verses: ${e.attributes['verses']!.split('|').map((x) => '"$x"').toList()}, reference: \"${e.attributes['artist']}\" + ', ' + \"${e.attributes['song']}\" + ' (' + \"${e.attributes['album']}\" + ')', url: \"${e.attributes['hyperlink']}\"),");
+          break;
+        case 'li':
+          result.add("LPText.plainBody(content: \"${e.textContent}\"),");
+          break;
         default:
-          if (e.children![0] is Element) {
-            handleElementNode(e.children![0] as Element);
-          } else if (e.children![0] is Text) {
-            handleTextNode(e.children![0] as Text);
-          }
           break;
       }
     }
@@ -109,7 +176,7 @@ extension StringUtils on String {
 
 void main() {
   print((MD2LP_Transpiler()..transpile(src)).result.join('\n'));
-  //
+  //.result.join('\n')
 }
 
 final String src = """Complex Calendar Widget in Flutter (Turbocal)
@@ -139,7 +206,7 @@ Like:
 but not like:
 
 - ererr
-- bufeubfbf
+- `bufeubfbf` lol *true*
 - yeee
 
 ## Design Brief

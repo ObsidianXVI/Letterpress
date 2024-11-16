@@ -81,11 +81,13 @@ class LPText extends LPPostComponent {
     Color? color,
     bool isItalic = false,
     bool isBold = false,
+    bool isStrikethrough = false,
   })  : lpFont = body.apply(
           TextStyle(
             color: (color ?? LPColor.rollerBlue_500).withOpacity(0.85),
             fontStyle: isItalic ? FontStyle.italic : null,
             fontWeight: isBold ? FontWeight.w600 : null,
+            decoration: isStrikethrough ? TextDecoration.lineThrough : null,
           ),
         ),
         isClickable = false,
