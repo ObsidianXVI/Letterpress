@@ -1,7 +1,6 @@
 library letterpress.views;
 
 import 'package:flutter/material.dart';
-import 'package:flutter_inner_shadow/flutter_inner_shadow.dart';
 import 'package:letterpress/design_system/design_system.dart';
 import 'package:letterpress/letterpress-engine/store/lp_store.dart';
 import 'package:letterpress/utils/utils.dart';

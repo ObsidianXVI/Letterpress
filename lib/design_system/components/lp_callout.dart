@@ -30,7 +30,8 @@ class LPCallout extends LPQuote {
         decoration: BoxDecoration(
           color: calloutType.color.withOpacity(0.1),
           borderRadius: BorderRadius.circular(5),
-          border: Border.all(color: calloutType.color, width: 0.5),
+          border:
+              Border.all(color: calloutType.color.withOpacity(0.4), width: 0.5),
         ),
         child: Padding(
           padding: const EdgeInsets.all(14),
@@ -38,7 +39,7 @@ class LPCallout extends LPQuote {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               LPText.plainBody(
-                color: calloutType.color,
+                color: calloutType.color.withOpacity(0.7),
                 content: title,
                 isItalic: true,
               ),

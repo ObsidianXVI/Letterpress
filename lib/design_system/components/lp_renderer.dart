@@ -187,21 +187,33 @@ class LPRendererState extends State<LPRenderer> {
                   left: 0,
                   right: 0,
                   top: 0,
-                  child: Container(
-                    width: vpWidth,
-                    height:
-                        Multiplatform.currentPlatform == const DesktopPlatform()
-                            ? 80
-                            : 60,
-                    color: LPColor.inkBlue_500,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 20),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          widget.article.title,
-                          style: header3.apply(
-                              const TextStyle(color: LPColor.gripperBlue_400)),
+                  child: ClipRect(
+                    child: Container(
+                      width: vpWidth,
+                      height: Multiplatform.currentPlatform ==
+                              const DesktopPlatform()
+                          ? 70
+                          : 50,
+                      decoration: BoxDecoration(
+                        color: LPColor.inkBlue_500.withOpacity(0.1),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: BackdropFilter(
+                            filter: ui.ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+                            child: Text(
+                              widget.article.title,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: body.apply(
+                                const TextStyle(
+                                  color: LPColor.gripperBlue_400,
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ),

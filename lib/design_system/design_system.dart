@@ -1,10 +1,11 @@
 library letterpress.ds;
 
-import 'dart:html';
+import 'package:web/web.dart' as web;
 import 'dart:ui' as ui;
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hotbox/hotbox.dart';
 import 'package:letterpress/letterpress-engine/letterpress_engine.dart';
 import 'package:letterpress/utils/utils.dart';

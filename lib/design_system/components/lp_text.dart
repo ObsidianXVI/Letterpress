@@ -181,7 +181,7 @@ class LPText extends LPPostComponent {
                   } else if (props['action'] != null) {
                     (props['action'] as Function).call();
                   } else if (props['url'] != null) {
-                    window.open(props['url'], 'launching...');
+                    web.window.open(props['url'], 'launching...');
                   }
                 },
                 child: Text(
@@ -221,7 +221,7 @@ class LPTextSpan extends LPPostComponent {
             }
             if (lpText.props.containsKey('url') &&
                 lpText.props['url'] != null) {
-              window.open(lpText.props['url'] as String, '');
+              web.window.open(lpText.props['url'] as String, '');
             }
             if (lpText.props.containsKey('route') &&
                 lpText.props['route'] != null) {
