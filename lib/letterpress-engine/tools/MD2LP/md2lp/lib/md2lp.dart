@@ -20,7 +20,7 @@ class VerseQuoteParser implements BlockSyntax {
 
     while ((parser..advance()).current.content.trim() != '}') {
       lines.add(parser.current.content);
-      final List<String> chunks = parser.current.content.split(':');
+      final List<String> chunks = parser.current.content.split('>>');
       final String param = chunks[0].trim();
       final String val = chunks[1].trim();
       if (param != 'verses') {
@@ -58,6 +58,44 @@ class VerseQuoteParser implements BlockSyntax {
   }
 }
 
+class ImageBlockParser implements BlockSyntax {
+  ImageBlockParser();
+
+  @override
+  RegExp get pattern => RegExp(r'^@img \{');
+
+  @override
+  bool canParse(BlockParser parser) => pattern.hasMatch(parser.current.content);
+
+  @override
+  Node? parse(BlockParser parser) {
+    final List<String> lines = [];
+    final Map<String, String> attrs = {};
+
+    while ((parser..advance()).current.content.trim() != '}') {
+      lines.add(parser.current.content);
+      final List<String> chunks = parser.current.content.split('>>');
+      attrs[chunks[0].trim()] = chunks[1].trim();
+    }
+
+    return Element.text('img', lines.join('\n'))..attributes.addAll(attrs);
+  }
+
+  @override
+  List<Line?> parseChildLines(BlockParser parser) {
+    return const [];
+  }
+
+  @override
+  bool canEndBlock(BlockParser parser) => true;
+
+  @override
+  BlockSyntax? interruptedBy(BlockParser parser) {
+    // TODO: implement interruptedBy
+    throw UnimplementedError();
+  }
+}
+
 class MD2LP_Transpiler {
   final List<ParseMode> parseModes = [];
   final List<String> result = [];
@@ -65,7 +103,7 @@ class MD2LP_Transpiler {
   String transpile(String mdSource) {
     final ast = Document(
       extensionSet: ExtensionSet.gitHubFlavored,
-      blockSyntaxes: [VerseQuoteParser()],
+      blockSyntaxes: [VerseQuoteParser(), ImageBlockParser()],
     ).parse(src);
     for (final Node node in ast) {
       handleNode(node);
@@ -123,17 +161,20 @@ class MD2LP_Transpiler {
       // Single-child element means child is a Text node
       switch (e.tag) {
         case 'h1':
-          result.add("LPText.header1(content: \"${e.textContent}\"),");
+          result.add(
+              "LPText.header1(content: \"${e.textContent.sanitised()}\"),");
           break;
         case 'h2':
-          result.add("LPText.header2(content: \"${e.textContent}\"),");
+          result.add(
+              "LPText.header2(content: \"${e.textContent.sanitised()}\"),");
           break;
         case 'h3':
-          result.add("LPText.header3(content: \"${e.textContent}\"),");
+          result.add(
+              "LPText.header3(content: \"${e.textContent.sanitised()}\"),");
           break;
         case 'a':
           result.add(
-              "LPText.hyperlink(content: \"${e.textContent}\", url: \"${e.attributes['href']}\"),");
+              "LPText.hyperlink(content: \"${e.textContent.sanitised()}\", url: \"${e.attributes['href']}\"),");
           break;
         case 'em':
           result.add(
@@ -150,14 +191,19 @@ class MD2LP_Transpiler {
           break;
         case 'code':
           result.add(
-              "LPText.codeStyle(content: \"${e.textContent}\", inline: ${parseModes.isNotEmpty}),");
+              "LPText.codeStyle(content: \"${e.textContent.sanitised()}\", inline: ${parseModes.isNotEmpty}),");
           break;
         case 'versequote':
           result.add(
               "LPVerse(verses: ${e.attributes['verses']!.split('|').map((x) => '"$x"').toList()}, reference: \"${e.attributes['artist']}\" + ', ' + \"${e.attributes['song']}\" + ' (' + \"${e.attributes['album']}\" + ')', url: \"${e.attributes['hyperlink']}\"),");
           break;
+        case 'img':
+          result.add(
+              "LPImage.url(url: \"${e.attributes['url']}\", width: ${e.attributes['width']}, height: ${e.attributes['height']},),");
+          break;
         case 'li':
-          result.add("LPText.plainBody(content: \"${e.textContent}\"),");
+          result.add(
+              "LPText.plainBody(content: \"${e.textContent.sanitised()}\"),");
           break;
         default:
           break;
@@ -188,9 +234,9 @@ While working on Lighthouse, I made a shocking yet somewhat thrilling discovery 
 
 The `issue` in question is Flutter's lack of a full-fledged calendar widget. Sure, there are calendar UIs already available on [pub.dev](https://pub.dev), but look at how similar it is in quality to its competitors' equivalents:
 @img {
-    url: https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg
-    width: 500
-    height: 500
+    url>> https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg
+    width>> 500
+    height>> 500
 }
 
 Surely flutter can do much better?
@@ -243,11 +289,11 @@ The first question is: which format will our event data follow? Since Lighthouse
 @div
 
 @versequote {
-    artist: Logic
-    song: Playwright
-    album: College Park
-    hyperlink: https://youtu.be/gb1SQ2vc-5o?t=10
-    verses: [
+    artist>> Logic
+    song>> Playwright
+    album>> College Park
+    hyperlink>> https://youtu.be/gb1SQ2vc-5o?t=10
+    verses>> [
         When the vibes is right
         Chillin' with the homies, tryna dodge the plight
         Rapper by day, but I'm a dad by night

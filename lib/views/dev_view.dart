@@ -120,6 +120,12 @@ class TestModule2 extends LPModule {
                         " are normal.\n<TOC>\nWhile working on Lighthouse, I made a shocking yet somewhat thrilling discovery about Flutter. On one hand, I was amazed that no one had come up with a solution to this massive, gaping void in the Flutter widget pool. In the other hand was my stylus as I started scribbling away ideas to solve this need."),
               ],
             ),
+            LPImage.url(
+              url:
+                  "https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg",
+              width: 500,
+              height: 500,
+            ),
             LPTextSpan(
               lpTextComponents: [
                 LPText.plainBody(content: "The "),
