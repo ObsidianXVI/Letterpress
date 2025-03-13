@@ -90,11 +90,13 @@ class PieceTitle extends ResponsiveTypeface {
         fontSize: scaled(90, 70),
         fontWeight: FontWeight.w600,
         height: 0.76,
+        color: LPColor.gripperBlue_400,
       ),
       const MobilePlatform(): TextStyle(
         fontSize: scaled(50, 36),
         fontWeight: FontWeight.w600,
         height: 0.76,
+        color: LPColor.gripperBlue_400,
       ),
     });
   }

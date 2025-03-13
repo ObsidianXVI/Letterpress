@@ -103,15 +103,15 @@ class LetterpressAppState extends State<LetterpressApp> {
                                           const DesktopPlatform()
                                       ? 0.45 * Dimensions.width()
                                       : Dimensions.width() * 0.89,
-                                  child: Text(
-                                    """Letterpress is a blog site by OBSiDIAN about coding and design stuff — but with a twist. More than just a disjoint sequence of short articles on varying subjects, in the Letterpress model, short articles known as Blogules focusing on a particular subject can be published and read individually. However, multiple Blogules can be strung together to create a Post, making for a longer read but providing a broader insight on a specific subject.
+                                  child: LPTextSpan(lpTextComponents: [
+                                    LPText.plainBody(
+                                      content:
+                                          """Letterpress is a blog site about coding and design stuff — but with a twist. More than just a disjoint sequence of short articles on varying subjects, in the Letterpress blog, short articles known as Blogules focusing on a particular subject can be published and read individually. However, multiple Blogules can be strung together to create a Post, making for a longer read but providing a broader insight on a specific subject.
 
 I started Letterpress because I wanted to document my thoughts and learning points as I worked on various coding projects. Thus, Blogules tagged with the same project name are also collated into what are known as Journals. Each Journal provides a chronological overview of Blogules belonging to a particular project.""",
-                                    style: BodyB1().apply(
-                                      const TextStyle(
-                                          color: LPColor.gripperBlue_500),
+                                      color: LPColor.gripperBlue_500,
                                     ),
-                                  ),
+                                  ]),
                                 ),
                               ],
                             )
@@ -166,40 +166,17 @@ I started Letterpress because I wanted to document my thoughts and learning poin
                               scrollDirection: Axis.horizontal,
                               child: Row(
                                 children: [
-                                  PromoCard(
-                                      size: SizeVariant.small,
-                                      title: 'Some Cool Post',
-                                      description:
-                                          'Lorem ipsum dolor sit amet consectetur.',
-                                      onTap: () {}),
-                                  const SizedBox(width: 40),
-                                  PromoCard(
-                                      size: SizeVariant.small,
-                                      title: 'Some Cool Post',
-                                      description:
-                                          'Lorem ipsum dolor sit amet consectetur.',
-                                      onTap: () {}),
-                                  const SizedBox(width: 40),
-                                  PromoCard(
-                                      size: SizeVariant.small,
-                                      title: 'Some Cool Post',
-                                      description:
-                                          'Lorem ipsum dolor sit amet consectetur.',
-                                      onTap: () {}),
-                                  const SizedBox(width: 40),
-                                  PromoCard(
-                                      size: SizeVariant.small,
-                                      title: 'Some Cool Post',
-                                      description:
-                                          'Lorem ipsum dolor sit amet consectetur.',
-                                      onTap: () {}),
-                                  const SizedBox(width: 40),
-                                  PromoCard(
-                                      size: SizeVariant.small,
-                                      title: 'Some Cool Post',
-                                      description:
-                                          'Lorem ipsum dolor sit amet consectetur.',
-                                      onTap: () {}),
+                                  for (final post in LPStore.posts) ...[
+                                    PromoCard(
+                                        size: SizeVariant.large,
+                                        title: post.title,
+                                        description: post.description,
+                                        onTap: () {
+                                          Navigator.pushNamed(context,
+                                              "${LPRoutes.lp_posts}/${post.title.urlSafeSlug}");
+                                        }),
+                                    const SizedBox(width: 40),
+                                  ],
                                 ],
                               ),
                             )
@@ -240,7 +217,7 @@ I started Letterpress because I wanted to document my thoughts and learning poin
                             SizedBox(
                               width: 600,
                               child: Text(
-                                "The full repository of blogules available at your fingertips for querying.",
+                                "Musings, insights, and personal experiences in byte-sized reads.",
                                 style: BodyB1().apply(
                                   const TextStyle(
                                       color: LPColor.gripperBlue_500),

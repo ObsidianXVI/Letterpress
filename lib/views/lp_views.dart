@@ -11,9 +11,8 @@ import 'package:project_redline/multi_platform/multi_platform.dart';
 import 'package:project_redline/project_redline.dart';
 
 part './lp_home.dart';
-part './lp_post_view.dart';
 part './lp_gallery.dart';
 part 'lp_blogules.dart';
-part './lp_blogule_view.dart';
+part 'lp_render_view.dart';
 part './lp_timelapse.dart';
 part './dev_view.dart';

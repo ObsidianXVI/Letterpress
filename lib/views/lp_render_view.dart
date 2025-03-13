@@ -1,8 +1,9 @@
 part of letterpress.views;
 
-class LetterpressBloguleView extends StatelessWidget {
-  final LPModule child;
-  const LetterpressBloguleView({
+class LetterpressRenderView extends StatelessWidget {
+  final LPArticle child;
+
+  const LetterpressRenderView({
     required this.child,
     super.key,
   });

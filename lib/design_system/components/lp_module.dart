@@ -6,6 +6,7 @@ abstract class LPArticle {
   final DateTime publicationDate;
   final DateTime lastUpdate;
   final List<LPPostComponent> components;
+  final bool isPreviewMode;
 
   const LPArticle({
     required this.title,
@@ -13,6 +14,7 @@ abstract class LPArticle {
     required this.publicationDate,
     required this.lastUpdate,
     required this.components,
+    this.isPreviewMode = false,
   });
 }
 
@@ -32,5 +34,6 @@ class LPModule extends LPArticle {
     required this.projectName,
     required this.renderWithPost,
     super.coverImgName,
+    super.isPreviewMode,
   });
 }

@@ -38,8 +38,14 @@ class TurbocalModuleA extends LPModule {
               width: 500,
               height: 500,
               leftSideNotes: const [
-                LPSideNoteComment(text: "I definitely did this"),
-                LPSideNoteComment(text: "Yep"),
+                LPSideNoteComment(
+                  text: "I definitely did this",
+                  leftSide: true,
+                ),
+                LPSideNoteComment(
+                  text: "Yep",
+                  leftSide: true,
+                ),
               ],
             ),
             LPText.plainBody(content: 'Surely flutter can do much better?'),
@@ -61,8 +67,14 @@ class TurbocalModuleA extends LPModule {
             LPText.header1(
               content: "Designing",
               rightSideNotes: const [
-                LPSideNoteComment(text: "I definitely did this"),
-                LPSideNoteComment(text: "Yep"),
+                LPSideNoteComment(
+                  text: "I definitely did this",
+                  leftSide: true,
+                ),
+                LPSideNoteComment(
+                  text: "Yep",
+                  leftSide: true,
+                ),
               ],
             ),
             LPText.plainBody(

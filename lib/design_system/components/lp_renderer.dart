@@ -195,25 +195,43 @@ class LPRendererState extends State<LPRenderer> {
                           ? 70
                           : 50,
                       decoration: BoxDecoration(
-                        color: LPColor.inkBlue_500.withOpacity(0.1),
+                        color: LPColor.inkBlue_500.withOpacity(0.2),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 20),
+                        padding: const EdgeInsets.only(left: 20, right: 20),
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: BackdropFilter(
-                            filter: ui.ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-                            child: Text(
-                              widget.article.title,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: body.apply(
-                                const TextStyle(
-                                  color: LPColor.gripperBlue_400,
-                                ),
-                              ),
-                            ),
-                          ),
+                              filter:
+                                  ui.ImageFilter.blur(sigmaX: 40, sigmaY: 40),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    widget.article.title,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: body.apply(
+                                      const TextStyle(
+                                        color: LPColor.gripperBlue_400,
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    widget.article.lastUpdate.toDateString(),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: body.apply(
+                                      TextStyle(
+                                        color: LPColor.gripperBlue_400
+                                            .withOpacity(0.4),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )),
                         ),
                       ),
                     ),
@@ -257,7 +275,7 @@ class LPRendererState extends State<LPRenderer> {
         if (Multiplatform.currentPlatform == const DesktopPlatform())
           Padding(
             padding: EdgeInsets.only(left: colGutter),
-            child: Container(
+            child: SizedBox(
               width: sideColWidth - colGutter,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,

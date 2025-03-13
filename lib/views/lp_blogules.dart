@@ -19,9 +19,8 @@ class LetterpressBlogulesView extends StatelessWidget {
                 const SizedBox(height: 10),
                 LPText.plainBody(
                   content:
-                      'The entire repository of blogules at your fingertips, available for querying.',
+                      'The entire repository of blogules (mini blog pieces) at your fingertips, available for querying.',
                 ),
-                LPText.hyperlink(content: "What is a blogule?", action: () {}),
                 const SizedBox(height: 40),
                 GridView.count(
                   shrinkWrap: true,

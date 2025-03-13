@@ -13,6 +13,7 @@ class LPRoutes {
   static const String lp_gallery = '/gallery';
   static const String lp_blogules = '/blogules';
   static const String lp_timelapse = '/timelapse';
+  static const String lp_posts = '/posts';
   static const String unknownPlatform = '/unknown';
 }
 
@@ -39,8 +40,10 @@ void main() {
       initialRoute: LPRoutes.lp_home,
       routes: {
         LPRoutes.lp_home: (_) => const LetterpressApp(),
-        LPRoutes.lp_timelapse: (_) => const LetterpressTimelapse(),
-        LPRoutes.lp_blogules: (_) => const LetterpressBlogulesView(),
+        if (kDebugMode)
+          LPRoutes.lp_timelapse: (_) => const LetterpressTimelapse(),
+        if (kDebugMode)
+          LPRoutes.lp_blogules: (_) => const LetterpressBlogulesView(),
         if (kDebugMode) '/dev': (_) => const DevView(),
         LPRoutes.unknownPlatform: (_) => Material(
               child: Padding(
@@ -58,9 +61,9 @@ void main() {
           List<MapEntry<String, Widget Function(BuildContext)>>.generate(
             LPStore.posts.length,
             (i) => MapEntry(
-              "posts/${LPStore.posts[i].postConfigs.title.urlSafeSlug}",
+              "${LPRoutes.lp_posts}/${LPStore.posts[i].title.urlSafeSlug}",
               (_) => Material(
-                child: LetterpressPostView(
+                child: LetterpressRenderView(
                   child: LPStore.posts[i],
                 ),
               ),
@@ -73,7 +76,7 @@ void main() {
             (i) => MapEntry(
               "${LPRoutes.lp_blogules}/${LPStore.blogules[i].title.urlSafeSlug}",
               (_) => Material(
-                child: LetterpressBloguleView(
+                child: LetterpressRenderView(
                   child: LPStore.blogules[i],
                 ),
               ),

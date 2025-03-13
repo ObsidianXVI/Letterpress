@@ -45,14 +45,14 @@ class PromoCardState extends State<PromoCard> {
                     : 340,
               SizeVariant.medium =>
                 Multiplatform.currentPlatform == const DesktopPlatform()
-                    ? 776
+                    ? 600
                     : 540,
               SizeVariant.large =>
                 Multiplatform.currentPlatform == const DesktopPlatform()
                     ? 776
                     : 540,
             },
-            height: 438,
+            height: 450,
             decoration: BoxDecoration(
               color: LPColor.inkBlue_500,
               borderRadius: BorderRadius.circular(5),
