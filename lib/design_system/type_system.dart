@@ -6,6 +6,7 @@ final ResponsiveTypeface pieceTitle = PieceTitle();
 final ResponsiveTypeface bigFunky = BigFunky();
 final ResponsiveTypeface mediumFunky = MediumFunky();
 final ResponsiveTypeface body = BodyB1();
+final ResponsiveTypeface body2 = BodyB2();
 final ResponsiveTypeface header1 = Header1();
 final ResponsiveTypeface header2 = Header2();
 final ResponsiveTypeface header3 = Header3();
@@ -42,6 +43,23 @@ class SectionTitle extends ResponsiveTypeface {
       ),
       const MobilePlatform(): TextStyle(
         fontSize: scaled(80, 68),
+        fontWeight: FontWeight.w300,
+        height: 0.76,
+      ),
+    });
+  }
+}
+
+class DialogTitle extends ResponsiveTypeface {
+  DialogTitle() {
+    styleDelegates.addAll({
+      const DesktopPlatform(): TextStyle(
+        fontSize: scaled(100, 80),
+        fontWeight: FontWeight.w300,
+        height: 0.76,
+      ),
+      const MobilePlatform(): TextStyle(
+        fontSize: scaled(50, 40),
         fontWeight: FontWeight.w300,
         height: 0.76,
       ),
@@ -200,6 +218,31 @@ class BodyB1 extends ResponsiveTypeface {
       const MobilePlatform(): TextStyle(
         letterSpacing: 0.5,
         fontSize: scaled(22, 20),
+        fontWeight: FontWeight.w400,
+        fontVariations: const [
+          ui.FontVariation.opticalSize(24),
+        ],
+        height: 1.37,
+        fontFamily: 'Fraunces_Soft',
+      ),
+    });
+  }
+}
+
+class BodyB2 extends ResponsiveTypeface {
+  BodyB2() {
+    styleDelegates.addAll({
+      const DesktopPlatform(): TextStyle(
+        fontSize: scaled(20, 16),
+        fontWeight: FontWeight.w400,
+        letterSpacing: 0.5,
+        fontVariations: const [ui.FontVariation.opticalSize(24)],
+        height: 1.4,
+        fontFamily: 'Fraunces_Soft',
+      ),
+      const MobilePlatform(): TextStyle(
+        letterSpacing: 0.5,
+        fontSize: scaled(18, 14),
         fontWeight: FontWeight.w400,
         fontVariations: const [
           ui.FontVariation.opticalSize(24),
