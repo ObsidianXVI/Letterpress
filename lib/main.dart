@@ -37,7 +37,7 @@ void main() {
   runApp(
     MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: LPRoutes.lp_home,
+      initialRoute: LPRoutes.lp_home, //LPRoutes.lp_home
       routes: {
         LPRoutes.lp_home: (_) => const LetterpressApp(),
         if (kDebugMode)

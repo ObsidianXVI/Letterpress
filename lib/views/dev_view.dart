@@ -11,7 +11,9 @@ class DevView extends StatelessWidget {
           width: double.infinity,
           height: double.infinity,
           color: LPColor.inkBlue_700,
-          child: LPRenderer(article: TestModule(renderWithPost: true)),
+          child: Center(
+            child: EmailSubscriptionDialog(isSubscribed: false),
+          ),
         ),
       ),
     );
