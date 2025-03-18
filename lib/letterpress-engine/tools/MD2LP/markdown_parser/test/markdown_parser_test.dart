@@ -1,9 +1,19 @@
+import 'package:markdown/markdown.dart';
 import 'package:markdown_parser/markdown_parser.dart';
 import 'package:markdown_parser/src/markdown_parser.dart';
 import 'package:test/test.dart';
 
 void main() {
-  final GlobalParser globalParser = GlobalParser(
+  final result = Document().parse(src);
+
+  for (final Node r in result.cast()) {
+    if (r is Element) {
+      print(r.children);
+    } else {
+      print(r.runtimeType);
+    }
+  }
+/*   final GlobalParser globalParser = GlobalParser(
     parserConfigs: ParserConfigs(
       lineTriggeredParsers: [
         const VerseQuote_Parser(),
@@ -15,15 +25,15 @@ void main() {
   final List<Token> tokens = globalParser.parseString(src.trim());
   for (Token t in tokens) {
     print(t);
-  }
+  } */
 /*   final SourceMap original = SourceMap(source: src);
   print(original.charAt(original.advanceCursor(3))); */
 }
 
-final String src = """
-Complex Calendar Widget in Flutter (Turbocal)
+final String src = """Complex Calendar Widget in Flutter (Turbocal)
 
 # Overview
+This is **embolded**
 <TOC>
 While working on Lighthouse, I made a shocking yet somewhat thrilling discovery about Flutter. On one hand, I was amazed that no one had come up with a solution to this massive, gaping void in the Flutter widget pool. In the other hand was my stylus as I started scribbling away ideas to solve this need.
 
