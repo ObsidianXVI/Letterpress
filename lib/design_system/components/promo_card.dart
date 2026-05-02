@@ -3,14 +3,14 @@ part of letterpress.ds;
 enum SizeVariant { small, medium, large }
 
 class PromoCard extends StatefulWidget {
-  final String title;
+  final LPArticle article;
   final String description;
   final SizeVariant size;
   final void Function() onTap;
 
   const PromoCard({
     required this.size,
-    required this.title,
+    required this.article,
     required this.description,
     required this.onTap,
     super.key,
@@ -32,10 +32,16 @@ class PromoCardState extends State<PromoCard> {
         onEnter: (_) => setState(() => hovering = true),
         onExit: (_) => setState(() => hovering = false),
         child: GestureDetector(
-          onTapDown: (_) => setState(() => pressing = true),
+          onTapDown: (_) => setState(() {
+            if (!widget.article.isPreviewMode) {
+              pressing = true;
+            }
+          }),
           onTapUp: (_) => setState(() {
-            pressing = false;
-            widget.onTap();
+            if (!widget.article.isPreviewMode) {
+              pressing = false;
+              widget.onTap();
+            }
           }),
           child: Container(
             width: switch (widget.size) {
@@ -50,9 +56,22 @@ class PromoCardState extends State<PromoCard> {
               SizeVariant.large =>
                 Multiplatform.currentPlatform == const DesktopPlatform()
                     ? 776
-                    : 540,
+                    : 600,
             },
-            height: 450,
+            height: switch (widget.size) {
+              SizeVariant.small =>
+                Multiplatform.currentPlatform == const DesktopPlatform()
+                    ? 450
+                    : 450,
+              SizeVariant.medium =>
+                Multiplatform.currentPlatform == const DesktopPlatform()
+                    ? 450
+                    : 450,
+              SizeVariant.large =>
+                Multiplatform.currentPlatform == const DesktopPlatform()
+                    ? 520
+                    : 450,
+            },
             decoration: BoxDecoration(
               color: LPColor.inkBlue_500,
               borderRadius: BorderRadius.circular(5),
@@ -76,7 +95,7 @@ class PromoCardState extends State<PromoCard> {
               child: Column(
                 children: [
                   Text(
-                    widget.title,
+                    widget.article.title,
                     textAlign: TextAlign.left,
                     style: (switch (widget.size) {
                       SizeVariant.small => mediumFunky,

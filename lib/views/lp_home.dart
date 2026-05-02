@@ -148,7 +148,7 @@ I started Letterpress because I wanted to document my thoughts and learning poin
                                 const TextStyle(color: LPColor.rollerBlue_500),
                               ),
                             ),
-                            const SizedBox(height: 40),
+                            const SizedBox(height: 20),
                             SizedBox(
                               width: 600,
                               child: Text(
@@ -169,7 +169,7 @@ I started Letterpress because I wanted to document my thoughts and learning poin
                                   for (final post in LPStore.posts) ...[
                                     PromoCard(
                                         size: SizeVariant.large,
-                                        title: post.title,
+                                        article: post,
                                         description: post.description,
                                         onTap: () {
                                           Navigator.pushNamed(context,
@@ -234,9 +234,11 @@ I started Letterpress because I wanted to document my thoughts and learning poin
                                   for (final blogule in LPStore.blogules) ...[
                                     PromoCard(
                                       size: SizeVariant.medium,
-                                      title: blogule.title,
-                                      description: blogule.publicationDate
-                                          .toDateString(),
+                                      article: blogule,
+                                      description: blogule.isPreviewMode
+                                          ? "COMING SOON"
+                                          : blogule.publicationDate
+                                              .toDateString(),
                                       onTap: () => Navigator.of(context).pushNamed(
                                           "${LPRoutes.lp_blogules}/${blogule.title.urlSafeSlug}"),
                                     ),
