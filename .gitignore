@@ -48,3 +48,6 @@ app.*.map.json
 
 # Archived Code
 */letterpress-engine/tools/MD2LP/markdown_parser/
+
+.env
+.gemini/

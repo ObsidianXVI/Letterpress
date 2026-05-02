@@ -106,9 +106,9 @@ class LetterpressAppState extends State<LetterpressApp> {
                                   child: LPTextSpan(lpTextComponents: [
                                     LPText.plainBody(
                                       content:
-                                          """Letterpress is a blog site about coding and design stuff — but with a twist. More than just a disjoint sequence of short articles on varying subjects, in the Letterpress blog, I write short articles known as Blogules focusing on a particular subject can be published and read individually. However, multiple Blogules can be strung together to create a Post, making for a longer read but providing a broader insight on a specific subject.
+                                          """Letterpress is a blog about coding, design, SWE, and all that good stuff. I started this initially to document my reflections and knowledge as I worked on various projects.
 
-I started Letterpress because I wanted to document my thoughts and learning points as I worked on various coding projects. Hopefully you can apply some of my takeaways to your projects as well, or at the very least, enjoy reading some of my ramblings!""", // Thus, Blogules tagged with the same project name are also collated into what are known as Journals. Each Journal provides a chronological overview of Blogules belonging to a particular project.
+It includes short-form Blogules, in-depth Posts, and even newsletters. I do not claim to be a professional coder or prolific writer, and there are many blogs out there like this one, but this is mine. In a sea full of vessels out on different voyages, this is the logbook of a particular one.""", // Thus, Blogules tagged with the same project name are also collated into what are known as Journals. Each Journal provides a chronological overview of Blogules belonging to a particular project.
                                       color: LPColor.gripperBlue_500,
                                     ),
                                   ]),

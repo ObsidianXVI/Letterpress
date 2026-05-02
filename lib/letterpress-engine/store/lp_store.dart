@@ -16,12 +16,14 @@ part './modules/affogato/openly_open_source.dart';
 part './modules/affogato/dns_ssl_smtp_and_other_fun_acronyms.dart';
 part './modules/affogato/creating_a_banger_landing_page.dart';
 part './modules/cortado/pricing_a_saas_built_on_cloud_services.dart';
+part './modules/cortado/cortado_initial_post.dart';
 
 class LPStore {
   static final List<LPPost> posts = [
     // assorted_reflections_from_hyperion,
-    challenging_puzzles_involved_in_writing_an_IDE_from_scratch,
-    on_the_intricacies_of_managing_an_open_source_project,
+    // challenging_puzzles_involved_in_writing_an_IDE_from_scratch,
+    // on_the_intricacies_of_managing_an_open_source_project,
+    cortado_build_in_public,
     bootstrapping_without_boots_or_straps,
   ];
   static final List<LPModule> blogules = [
@@ -29,6 +31,7 @@ class LPStore {
     enter_autonomic_computing,
     perfekshun,
     homage_27_11_23,
+    cortado_initial_post,
     // skeletons_gold_chests_and_other_swashbuckling_treasures,
     openly_open_source,
     dns_ssl_smtp_and_other_fun_acronyms,
@@ -101,6 +104,16 @@ final LPPost bootstrapping_without_boots_or_straps = LPPost(
   ],
 );
 
+final LPPost cortado_build_in_public = LPPost(
+  blogules: [cortado_initial_post],
+  lastUpdate: DateTime(2026, 5, 2),
+  publicationDate: DateTime(2026, 5, 2),
+  title: "Build-In-Public: Developing a complex BaaS from scratch",
+  description:
+      "Cortado is a plug-and-play backend-as-a-service to power cloud-based IDEs built in Flutter, by handling file operations, resource provisioning, LSP, extension support, etc.",
+  isPreviewMode: true,
+);
+
 final LPModule create_art_not_code = Create_Art_Not_Code(renderWithPost: false);
 final LPModule turbocalModuleA = TurbocalModuleA(renderWithPost: false);
 final LPModule lh_a_formal_intro_to_lh =
@@ -134,3 +147,6 @@ final LPModule creating_a_banger_landing_page = Creating_A_Banger_Landing_Page(
   renderWithPost: false,
   isPreviewMode: true,
 );
+
+final LPModule cortado_initial_post =
+    CortadoInitialPost(isPreviewMode: true, renderWithPost: false);
