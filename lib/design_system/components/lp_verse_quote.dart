@@ -7,14 +7,14 @@ abstract class LPQuote extends LPPostComponent {
 class LPVerseQuote extends LPQuote {
   final List<String> verses;
   final String reference;
-  final String url;
+  final String? url;
 
   const LPVerseQuote({
     super.leftSideNotes,
     super.rightSideNotes,
     required this.verses,
     required this.reference,
-    required this.url,
+    this.url,
     super.key,
   });
 
@@ -31,12 +31,21 @@ class LPVerseQuote extends LPQuote {
                 content: verses.join('\n'),
               ),
               const SizedBox(height: 30),
-              LPText.hyperlink(
-                alignment: Alignment.bottomCenter,
-                content: reference,
-                url: url,
-                textAlign: TextAlign.center,
-              ),
+              if (url != null && url!.trim().isNotEmpty)
+                LPText.hyperlink(
+                  alignment: Alignment.bottomCenter,
+                  content: reference,
+                  url: url,
+                  textAlign: TextAlign.center,
+                )
+              else
+                LPText.plainBody(
+                  alignment: Alignment.bottomCenter,
+                  content: reference,
+                  textAlign: TextAlign.center,
+                  color: LPColor.rollerBlue_500,
+                  isItalic: true,
+                ),
             ],
           ),
         ),

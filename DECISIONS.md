@@ -97,5 +97,8 @@
 - Letterpress should remove the external `hotbox`, `octane`, and `project_redline` path packages and own its responsive layout, platform selection, palette constants, and browser/runtime adapters locally.
   Rationale: the user explicitly chose to delete the blogules timeline instead of preserving the `hotbox` surface, hoist the small `octane` theme usage into local constants, and replace `project_redline` with a more robust Letterpress-specific adaptive system rather than carrying those sibling packages forward.
 
+- Letterpress remote content should be sourced from a build-time public base URL (`LP_PUBLIC_CONTENT_BASE_URL`) with object paths `posts/<slug>.md`, `blogules/<slug>.md`, and `newsletters/<slug>.pdf`, while embedded Flutter article modules remain the fallback if remote Markdown is unavailable.
+  Rationale: the user explicitly wants Markdown and PDF assets to live in a public GCS bucket and be fetched by the app, but keeping the embedded article modules as fallback avoids taking the site down during migration or while bucket objects are still being uploaded.
+
 - The next release after the reading-experience refresh will introduce newsletter discovery cards that use a portrait PDF-like ratio, render the first PDF page as the thumbnail, store the source PDFs under `lib/letterpress-engine/store/newsletters/`, and open the browser-native PDF viewer when clicked.
   Rationale: the user explicitly described the intended newsletter storage path and interaction model, so follow-up planning should preserve that target behavior rather than inventing a different delivery flow.

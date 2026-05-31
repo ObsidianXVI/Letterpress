@@ -4,11 +4,15 @@ class LPRenderer extends StatefulWidget {
   final bool includeTableOfContents;
   final bool includeMetaDetails;
   final LPArticle article;
+  final String? markdownSourceUrl;
+  final String? pdfUrl;
 
   const LPRenderer({
     required this.article,
     this.includeMetaDetails = true,
     this.includeTableOfContents = false,
+    this.markdownSourceUrl,
+    this.pdfUrl,
     super.key,
   });
 
@@ -62,8 +66,7 @@ class LPRendererState extends State<LPRenderer> {
         Multiplatform.currentPlatform == const DesktopPlatform() ? 0.04 : 0.05;
     final double colGutter = vpWidth * gutterRatio;
     final double contentWidth = vpWidth - colGutter * 2;
-    final double mainColWidth =
-        contentWidth *
+    final double mainColWidth = contentWidth *
         (Multiplatform.currentPlatform == const DesktopPlatform() ? 0.6 : 1);
     final double sideColWidth = contentWidth * 0.22;
 
@@ -126,6 +129,13 @@ class LPRendererState extends State<LPRenderer> {
             ),
           ),
         ),
+        if (widget.markdownSourceUrl != null)
+          LPText.hyperlink(
+            content: 'Source Markdown',
+            url: widget.markdownSourceUrl,
+          ),
+        if (widget.pdfUrl != null)
+          LPText.hyperlink(content: 'Open PDF', url: widget.pdfUrl),
       ]);
     }
 
@@ -343,8 +353,7 @@ class LPRendererState extends State<LPRenderer> {
       return;
     }
 
-    final double targetOffset =
-        renderObject.localToGlobal(Offset.zero).dy +
+    final double targetOffset = renderObject.localToGlobal(Offset.zero).dy +
         _scrollController.offset -
         _headerHeight(context) -
         24;

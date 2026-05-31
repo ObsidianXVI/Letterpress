@@ -10,12 +10,14 @@ class LetterpressApp extends StatefulWidget {
 class LetterpressAppState extends State<LetterpressApp> {
   final ScrollController postCarouselController = ScrollController();
   final ScrollController bloguleCarouselController = ScrollController();
+  final ScrollController newsletterCarouselController = ScrollController();
 
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _animateCarousel(postCarouselController);
       _animateCarousel(bloguleCarouselController);
+      _animateCarousel(newsletterCarouselController);
     });
     super.initState();
   }
@@ -24,6 +26,7 @@ class LetterpressAppState extends State<LetterpressApp> {
   void dispose() {
     postCarouselController.dispose();
     bloguleCarouselController.dispose();
+    newsletterCarouselController.dispose();
     super.dispose();
   }
 
@@ -100,6 +103,19 @@ class LetterpressAppState extends State<LetterpressApp> {
                     ),
                 ],
               ),
+              if (LPStoreRemoteContent.newsletters.isNotEmpty)
+                _buildDiscoverySection(
+                  context: context,
+                  title: 'Newsletters',
+                  subtitle:
+                      'Longer-form dispatches pulled from public PDF files in the content bucket.',
+                  controller: newsletterCarouselController,
+                  cards: [
+                    for (final LPNewsletter newsletter
+                        in LPStoreRemoteContent.newsletters)
+                      _buildNewsletterCard(newsletter),
+                  ],
+                ),
             ],
           ),
         ),
@@ -226,5 +242,94 @@ It includes short-form Blogules, in-depth Posts, and even newsletters. I do not 
     final double bottom = width >= 900 ? 28 : 20;
 
     return EdgeInsets.fromLTRB(horizontal, top, horizontal, bottom);
+  }
+
+  Widget _buildNewsletterCard(LPNewsletter newsletter) {
+    final String? pdfUrl = newsletter.pdfUrl;
+
+    return SelectionContainer.disabled(
+      child: GestureDetector(
+        onTap: () {
+          if (newsletter.isPreviewMode || pdfUrl == null) {
+            return;
+          }
+          openExternalUrl(pdfUrl);
+        },
+        child: Container(
+          width: 280,
+          height: 396,
+          decoration: BoxDecoration(
+            color: LPColor.inkBlue_500,
+            borderRadius: BorderRadius.circular(6),
+            border: Border.all(
+              color: LPColor.rollerBlue_500.withOpacity(0.55),
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(22),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  height: 170,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(4),
+                    border: Border.all(
+                      color: LPColor.rollerBlue_500.withOpacity(0.4),
+                    ),
+                    gradient: LinearGradient(
+                      colors: [
+                        LPColor.inkBlue_700,
+                        LPColor.inkBlue_500.withOpacity(0.7),
+                      ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ),
+                  ),
+                  child: Center(
+                    child: Text(
+                      'PDF',
+                      style: code.apply(
+                        const TextStyle(color: LPColor.gripperBlue_500),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 18),
+                Text(
+                  newsletter.title,
+                  style: mediumFunky.apply(
+                    const TextStyle(color: LPColor.gripperBlue_500),
+                  ),
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const Spacer(),
+                Text(
+                  newsletter.description,
+                  style: body2.apply(
+                    const TextStyle(color: LPColor.rollerBlue_500),
+                  ),
+                  maxLines: 4,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  newsletter.isPreviewMode || pdfUrl == null
+                      ? 'COMING SOON'
+                      : newsletter.publicationDate.toDateString(),
+                  style: body2.apply(
+                    const TextStyle(
+                      color: LPColor.gripperBlue_400,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

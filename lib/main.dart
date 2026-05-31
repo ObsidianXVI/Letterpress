@@ -4,6 +4,7 @@ import 'package:letterpress/utils/browser_runtime.dart';
 import 'package:letterpress/utils/utils.dart';
 import 'package:letterpress/views/lp_views.dart';
 import 'package:letterpress/letterpress-engine/store/lp_store.dart';
+import 'package:letterpress/letterpress-engine/store/remote_content.dart';
 
 class LPRoutes {
   static const String lp_home = '/';
@@ -52,7 +53,13 @@ Route<dynamic> generateLetterpressRoute(RouteSettings settings) {
     final article = post ?? blogule;
 
     if (article != null) {
-      page = Material(child: LetterpressRenderView(child: article));
+      page = Material(
+        child: LetterpressRenderView(
+          child: article,
+          markdownSourceUrl:
+              LPStoreRemoteContent.markdownUrlForArticle(article),
+        ),
+      );
     }
   }
 

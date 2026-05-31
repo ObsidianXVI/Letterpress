@@ -1,5 +1,5 @@
 # Current Release
 
-Current task: v0.1 → Feature 1.2 → Task 1.2.1 — reading experience refresh completed, including local replacement of the old `hotbox`, `octane`, and `project_redline` dependencies with Letterpress-owned routing, styling, and adaptive layout primitives.
+Current task: v0.1 → Feature 1.3 → Task 1.3.1 — public-GCS-backed remote content loading completed for Markdown article bodies, with embedded-content fallback and newsletter/PDF bucket scaffolding.
 
-Next task: plan and scaffold newsletter cards backed by PDF assets and browser-native PDF viewing.
+Next task: upload the first real bucket objects and replace the placeholder newsletter cards with richer PDF-preview cards.

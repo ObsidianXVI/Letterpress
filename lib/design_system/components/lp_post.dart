@@ -44,13 +44,27 @@ class LPPost extends LPArticle {
     required this.description,
     super.isPreviewMode,
   }) : super(
-         coverImgName: blogules.first.coverImgName,
-         components: [
-           for (final blogule in blogules) ...[
-             LPText.mainTitle(content: blogule.title),
-             ...blogule.components,
-             const LPDivider(),
-           ],
-         ]..removeLast(),
-       );
+          coverImgName: blogules.first.coverImgName,
+          components: [
+            for (final blogule in blogules) ...[
+              LPText.mainTitle(content: blogule.title),
+              ...blogule.components,
+              const LPDivider(),
+            ],
+          ]..removeLast(),
+        );
+
+  LPPost.fromComponents({
+    required this.blogules,
+    required super.lastUpdate,
+    required super.publicationDate,
+    required super.title,
+    required this.description,
+    required List<LPPostComponent> components,
+    super.isPreviewMode,
+  }) : super(
+          coverImgName:
+              blogules.isNotEmpty ? blogules.first.coverImgName : null,
+          components: components,
+        );
 }
