@@ -30,8 +30,10 @@ class LPCallout extends LPQuote {
         decoration: BoxDecoration(
           color: calloutType.color.withOpacity(0.1),
           borderRadius: BorderRadius.circular(5),
-          border:
-              Border.all(color: calloutType.color.withOpacity(0.4), width: 0.5),
+          border: Border.all(
+            color: calloutType.color.withOpacity(0.4),
+            width: 0.5,
+          ),
         ),
         child: Padding(
           padding: const EdgeInsets.all(14),
@@ -44,10 +46,7 @@ class LPCallout extends LPQuote {
                 isItalic: true,
               ),
               const SizedBox(height: 5),
-              LPText.plainBody(
-                color: calloutType.color,
-                content: content,
-              ),
+              LPText.plainBody(color: calloutType.color, content: content),
             ],
           ),
         ),

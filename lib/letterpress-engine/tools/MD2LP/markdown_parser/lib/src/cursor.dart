@@ -4,10 +4,7 @@ class CursorLocation {
   final int row;
   final int col;
 
-  const CursorLocation({
-    required this.row,
-    required this.col,
-  });
+  const CursorLocation({required this.row, required this.col});
 
   bool hasExceeded(CursorLocation end) =>
       !(col <= end.row && end.row <= end.row);
@@ -32,14 +29,16 @@ class CursorLocation {
 class SourceMap {
   CursorLocation currentLocation = CursorLocation(row: 0, col: 0);
   final String source;
-  late final List<List<String>> chars =
-      source.split('\n').map((String line) => line.split('')).toList();
-  late final CursorLocation endLoc =
-      CursorLocation(row: chars.length - 1, col: chars.last.length - 1);
+  late final List<List<String>> chars = source
+      .split('\n')
+      .map((String line) => line.split(''))
+      .toList();
+  late final CursorLocation endLoc = CursorLocation(
+    row: chars.length - 1,
+    col: chars.last.length - 1,
+  );
 
-  SourceMap({
-    required this.source,
-  });
+  SourceMap({required this.source});
 
   List<String> get currentLineChars => chars[currentLocation.row];
   List<List<String>> get charMapFromCurrent {

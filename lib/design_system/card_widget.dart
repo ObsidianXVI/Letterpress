@@ -67,6 +67,15 @@ class LPHoverableCardWidgetState extends State<LPHoverableCardWidget> {
           color: LPColor.inkBlue_500,
           borderRadius: BorderRadius.circular(5),
           border: Border.all(color: LPColor.rollerBlue_500),
+          boxShadow: _hovered && widget.clickable
+              ? [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.18),
+                    blurRadius: 12,
+                    offset: const Offset(0, 8),
+                  ),
+                ]
+              : null,
         ),
         child: widget.child,
       ),

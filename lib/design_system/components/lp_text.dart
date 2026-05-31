@@ -5,6 +5,9 @@ class LPText extends LPPostComponent {
   final TextStyle lpFont;
   final bool isClickable;
   final bool isHeader;
+  final int headingLevel;
+  final bool isCodeStyle;
+  final bool isInlineCode;
   final TextAlign textAlign;
   final Alignment alignment;
   final Map<String, dynamic> props = {};
@@ -16,6 +19,9 @@ class LPText extends LPPostComponent {
     required this.lpFont,
     required this.isClickable,
     required this.isHeader,
+    this.headingLevel = 0,
+    this.isCodeStyle = false,
+    this.isInlineCode = false,
     this.alignment = Alignment.topLeft,
     this.textAlign = TextAlign.left,
     super.key,
@@ -29,7 +35,10 @@ class LPText extends LPPostComponent {
     this.textAlign = TextAlign.left,
   })  : lpFont = pieceTitle.apply(),
         isClickable = false,
-        isHeader = true;
+        isHeader = true,
+        headingLevel = 1,
+        isCodeStyle = false,
+        isInlineCode = false;
 
   LPText.header1({
     super.leftSideNotes,
@@ -39,7 +48,10 @@ class LPText extends LPPostComponent {
     this.textAlign = TextAlign.left,
   })  : lpFont = header1.apply(),
         isClickable = false,
-        isHeader = true;
+        isHeader = true,
+        headingLevel = 1,
+        isCodeStyle = false,
+        isInlineCode = false;
 
   LPText.header2({
     super.leftSideNotes,
@@ -49,7 +61,10 @@ class LPText extends LPPostComponent {
     this.textAlign = TextAlign.left,
   })  : lpFont = header2.apply(),
         isClickable = false,
-        isHeader = true;
+        isHeader = true,
+        headingLevel = 2,
+        isCodeStyle = false,
+        isInlineCode = false;
 
   LPText.header3({
     super.leftSideNotes,
@@ -59,7 +74,10 @@ class LPText extends LPPostComponent {
     this.textAlign = TextAlign.left,
   })  : lpFont = header3.apply(),
         isClickable = false,
-        isHeader = true;
+        isHeader = true,
+        headingLevel = 3,
+        isCodeStyle = false,
+        isInlineCode = false;
 
   LPText.semanticTag1({
     super.leftSideNotes,
@@ -70,7 +88,10 @@ class LPText extends LPPostComponent {
     bool isItalic = false,
   })  : lpFont = semanticTag.apply(),
         isClickable = false,
-        isHeader = false;
+        isHeader = false,
+        headingLevel = 0,
+        isCodeStyle = false,
+        isInlineCode = false;
 
   LPText.plainBody({
     super.leftSideNotes,
@@ -91,7 +112,10 @@ class LPText extends LPPostComponent {
           ),
         ),
         isClickable = false,
-        isHeader = false;
+        isHeader = false,
+        headingLevel = 0,
+        isCodeStyle = false,
+        isInlineCode = false;
 
   LPText.buttonText({
     super.leftSideNotes,
@@ -100,10 +124,14 @@ class LPText extends LPPostComponent {
     this.alignment = Alignment.topLeft,
     this.textAlign = TextAlign.left,
     bool isItalic = false,
-  })  : lpFont = body
-            .apply(TextStyle(color: LPColor.rollerBlue_500.withOpacity(0.85))),
+  })  : lpFont = body.apply(
+          TextStyle(color: LPColor.rollerBlue_500.withOpacity(0.85)),
+        ),
         isClickable = false,
-        isHeader = false;
+        isHeader = false,
+        headingLevel = 0,
+        isCodeStyle = false,
+        isInlineCode = false;
 
   LPText.verse({
     super.leftSideNotes,
@@ -113,9 +141,13 @@ class LPText extends LPPostComponent {
     this.textAlign = TextAlign.center,
     bool isItalic = false,
   })  : lpFont = verseQuote.apply(
-            isItalic ? const TextStyle(fontStyle: FontStyle.italic) : null),
+          isItalic ? const TextStyle(fontStyle: FontStyle.italic) : null,
+        ),
         isClickable = false,
-        isHeader = false;
+        isHeader = false,
+        headingLevel = 0,
+        isCodeStyle = false,
+        isInlineCode = false;
 
   LPText.codeStyle({
     required bool inline,
@@ -126,14 +158,20 @@ class LPText extends LPPostComponent {
     this.textAlign = TextAlign.left,
   })  : lpFont = code.apply(
           TextStyle(
-            color: (inline ? LPColor.chaseRed_500 : LPColor.platenWhite_500)
-                .withOpacity(0.7),
-            backgroundColor:
-                LPColor.rollerBlue_500.withOpacity(inline ? 0.2 : 0),
+            color: inline
+                ? LPColor.platenWhite_500.withOpacity(0.95)
+                : LPColor.platenWhite_500.withOpacity(0.82),
+            backgroundColor: inline
+                ? LPColor.rollerBlue_500.withOpacity(0.18)
+                : Colors.transparent,
+            fontWeight: inline ? FontWeight.w500 : FontWeight.w400,
           ),
         ),
         isClickable = false,
-        isHeader = false;
+        isHeader = false,
+        headingLevel = 0,
+        isCodeStyle = true,
+        isInlineCode = inline;
 
   LPText.hyperlink({
     super.leftSideNotes,
@@ -144,58 +182,67 @@ class LPText extends LPPostComponent {
     Function? action,
     String? url,
     String? route,
-  })  : lpFont = body.apply(TextStyle(
-          color: LPColor.gripperBlue_400.withOpacity(0.8),
-          decoration: TextDecoration.underline,
-          decorationColor: LPColor.rollerBlue_500,
-        )),
+  })  : lpFont = body.apply(
+          TextStyle(
+            color: LPColor.gripperBlue_400.withOpacity(0.8),
+            decoration: TextDecoration.underline,
+            decorationColor: LPColor.rollerBlue_500,
+          ),
+        ),
         isClickable = true,
-        isHeader = false {
-    props.addAll({
-      'url': url,
-      'action': action,
-      'route': route,
-    });
+        isHeader = false,
+        headingLevel = 0,
+        isCodeStyle = false,
+        isInlineCode = false {
+    props.addAll({'url': url, 'action': action, 'route': route});
   }
 
   LPText.paragraphBreak()
       : content = '\n',
-        lpFont = body
-            .apply(TextStyle(color: LPColor.rollerBlue_500.withOpacity(0.85))),
+        lpFont = body.apply(
+          TextStyle(color: LPColor.rollerBlue_500.withOpacity(0.85)),
+        ),
         isClickable = false,
-        textAlign = TextAlign.left,
         isHeader = false,
+        headingLevel = 0,
+        isCodeStyle = false,
+        isInlineCode = false,
+        textAlign = TextAlign.left,
         alignment = Alignment.topLeft;
+
+  String get headingLabel => content.replaceAll('\n', ' ').trim();
+
+  void activate(BuildContext context) {
+    if (props['route'] != null) {
+      Navigator.of(context).pushNamed(props['route'] as String);
+      return;
+    }
+    if (props['action'] != null) {
+      (props['action'] as Function).call();
+      return;
+    }
+    if (props['url'] != null) {
+      openExternalUrl(props['url'] as String);
+    }
+  }
+
+  TextSpan toInlineSpan(BuildContext context) {
+    return TextSpan(
+      text: content,
+      style: lpFont,
+      mouseCursor: isClickable ? SystemMouseCursors.click : null,
+      recognizer: isClickable
+          ? (TapGestureRecognizer()..onTap = () => activate(context))
+          : null,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Align(
+    return _LPSelectableRichText(
       alignment: alignment,
-      child: isClickable
-          ? MouseRegion(
-              cursor: SystemMouseCursors.click,
-              child: GestureDetector(
-                onTap: () {
-                  if (props['route'] != null) {
-                    Navigator.of(context).pushNamed(props['route']);
-                  } else if (props['action'] != null) {
-                    (props['action'] as Function).call();
-                  } else if (props['url'] != null) {
-                    web.window.open(props['url'], 'launching...');
-                  }
-                },
-                child: Text(
-                  content,
-                  style: lpFont,
-                  textAlign: textAlign,
-                ),
-              ),
-            )
-          : SelectableText(
-              content,
-              style: lpFont,
-              textAlign: textAlign,
-            ),
+      textAlign: textAlign,
+      spans: [toInlineSpan(context)],
     );
   }
 }
@@ -211,38 +258,40 @@ class LPTextSpan extends LPPostComponent {
 
   @override
   Widget build(BuildContext context) {
-    TapGestureRecognizer? gestureRecog(LPText lpText) {
-      if (lpText.isClickable) {
-        return TapGestureRecognizer()
-          ..onTap = () {
-            if (lpText.props.containsKey('action') &&
-                lpText.props['action'] != null) {
-              (lpText.props['action'] as Function).call();
-            }
-            if (lpText.props.containsKey('url') &&
-                lpText.props['url'] != null) {
-              web.window.open(lpText.props['url'] as String, '');
-            }
-            if (lpText.props.containsKey('route') &&
-                lpText.props['route'] != null) {
-              Navigator.of(context).pushNamed(lpText.props['route'] as String);
-            }
-          };
-      } else {
-        return null;
-      }
-    }
+    return _LPSelectableRichText(
+      textAlign: TextAlign.left,
+      spans: [
+        for (final LPText lpText in lpTextComponents)
+          lpText.toInlineSpan(context),
+      ],
+    );
+  }
+}
 
-    return Text.rich(
-      TextSpan(
-        children: List<TextSpan>.generate(
-          lpTextComponents.length,
-          (int i) => TextSpan(
-            text: lpTextComponents[i].content,
-            style: lpTextComponents[i].lpFont,
-            recognizer: gestureRecog(lpTextComponents[i]),
-          ),
-        ),
+class _LPSelectableRichText extends StatelessWidget {
+  final List<InlineSpan> spans;
+  final Alignment alignment;
+  final TextAlign textAlign;
+
+  const _LPSelectableRichText({
+    required this.spans,
+    this.alignment = Alignment.topLeft,
+    this.textAlign = TextAlign.left,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final selectionRegistrar = SelectionContainer.maybeOf(context);
+
+    return Align(
+      alignment: alignment,
+      child: RichText(
+        textAlign: textAlign,
+        selectionRegistrar: selectionRegistrar,
+        selectionColor: selectionRegistrar == null
+            ? null
+            : OctaneTheme.obsidianB100.withOpacity(0.3),
+        text: TextSpan(children: spans),
       ),
     );
   }

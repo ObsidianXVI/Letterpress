@@ -4,11 +4,7 @@ class LPMetaTag extends StatelessWidget {
   final String label;
   final Color primaryColor;
 
-  const LPMetaTag({
-    required this.label,
-    required this.primaryColor,
-    super.key,
-  });
+  const LPMetaTag({required this.label, required this.primaryColor, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +16,7 @@ class LPMetaTag extends StatelessWidget {
       ),
       child: Padding(
         padding: const EdgeInsets.all(6),
-        child: Center(
-          child: LPText.semanticTag1(content: label),
-        ),
+        child: Center(child: LPText.semanticTag1(content: label)),
       ),
     );
   }

@@ -3,9 +3,7 @@ part of markdown_parser;
 class GlobalParser {
   final ParserConfigs parserConfigs;
 
-  const GlobalParser({
-    required this.parserConfigs,
-  });
+  const GlobalParser({required this.parserConfigs});
 
   List<Token> parseString(String source) {
     final List<Token> tokens = [];

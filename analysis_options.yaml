@@ -9,6 +9,26 @@
 # packages, and plugins designed to encourage good coding practices.
 include: package:flutter_lints/flutter.yaml
 
+analyzer:
+  exclude:
+    - lib/letterpress-engine/tools/**
+  errors:
+    deprecated_member_use: ignore
+    use_build_context_synchronously: ignore
+    constant_identifier_names: ignore
+    non_constant_identifier_names: ignore
+    camel_case_types: ignore
+    slash_for_doc_comments: ignore
+    prefer_adjacent_string_concatenation: ignore
+    use_key_in_widget_constructors: ignore
+    sized_box_for_whitespace: ignore
+    avoid_unnecessary_containers: ignore
+    prefer_const_constructors_in_immutables: ignore
+    prefer_const_constructors: ignore
+    prefer_const_literals_to_create_immutables: ignore
+    no_leading_underscores_for_local_identifiers: ignore
+    hash_and_equals: ignore
+
 linter:
   # The lint rules applied to this project can be customized in the
   # section below to disable rules from the `package:flutter_lints/flutter.yaml`
@@ -22,8 +42,7 @@ linter:
   # `// ignore_for_file: name_of_lint` syntax on the line or in the file
   # producing the lint.
   rules:
-    # avoid_print: false  # Uncomment to disable the `avoid_print` rule
-    # prefer_single_quotes: true  # Uncomment to enable the `prefer_single_quotes` rule
+    avoid_print: false
 
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options

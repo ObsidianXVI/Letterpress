@@ -39,6 +39,19 @@ class LPStore {
     pricing_a_saas_built_on_cloud_services,
     create_art_not_code,
   ];
+
+  static final Map<String, LPPost> _postsByRoute = {
+    for (final LPPost post in posts) "${LPRoutes.lp_posts}/${post.slug}": post,
+  };
+
+  static final Map<String, LPModule> _blogulesByRoute = {
+    for (final LPModule blogule in blogules)
+      "${LPRoutes.lp_blogules}/${blogule.slug}": blogule,
+  };
+
+  static LPPost? postForRoute(String route) => _postsByRoute[route];
+
+  static LPModule? bloguleForRoute(String route) => _blogulesByRoute[route];
 }
 
 final LPPost turbocal_post = LPPost(
@@ -47,9 +60,7 @@ final LPPost turbocal_post = LPPost(
       'Designing a Google Calendar-like widget from scratch in Flutter.',
   publicationDate: DateTime(2023, 3, 10),
   lastUpdate: DateTime(2023, 6, 2),
-  blogules: [
-    TurbocalModuleA(renderWithPost: true),
-  ],
+  blogules: [TurbocalModuleA(renderWithPost: true)],
 );
 
 final LPPost assorted_reflections_from_hyperion = LPPost(
@@ -59,23 +70,18 @@ final LPPost assorted_reflections_from_hyperion = LPPost(
       'Thoughts on the design process, collaborating with A.I., and grappling with the unknown.',
   publicationDate: DateTime(2024, 11, 23),
   lastUpdate: DateTime(2024, 11, 23),
-  blogules: [
-    create_art_not_code,
-    create_art_not_code,
-  ],
+  blogules: [create_art_not_code, create_art_not_code],
 );
 
-final LPPost challenging_puzzles_involved_in_writing_an_IDE_from_scratch =
-    LPPost(
+final LPPost
+challenging_puzzles_involved_in_writing_an_IDE_from_scratch = LPPost(
   isPreviewMode: true,
   lastUpdate: DateTime(2025, 3, 17),
   publicationDate: DateTime(2025, 3, 17),
   title: 'Challenging puzzles involved in writing an IDE from scratch',
   description:
       "I discuss a few key architectural and implementation conundrums I encountered while building the Affogato Editor, and how I approached them. A fun read for software engineers.",
-  blogules: [
-    openly_open_source,
-  ],
+  blogules: [openly_open_source],
 );
 
 final LPPost on_the_intricacies_of_managing_an_open_source_project = LPPost(
@@ -85,10 +91,7 @@ final LPPost on_the_intricacies_of_managing_an_open_source_project = LPPost(
   title: 'On the Intricacies of Managing an Open-Source Project',
   description:
       "I discuss a few key architectural and implementation conundrums I encountered while building the Affogato Editor, and how I approached them. A fun read for software engineers.",
-  blogules: [
-    openly_open_source,
-    dns_ssl_smtp_and_other_fun_acronyms,
-  ],
+  blogules: [openly_open_source, dns_ssl_smtp_and_other_fun_acronyms],
 );
 
 final LPPost bootstrapping_without_boots_or_straps = LPPost(
@@ -98,10 +101,7 @@ final LPPost bootstrapping_without_boots_or_straps = LPPost(
   title: 'Bootstrapping Without Boots or Straps',
   description:
       "Launching Cortado, a SaaS, with zero knowledge, background, network, or finances.",
-  blogules: [
-    openly_open_source,
-    dns_ssl_smtp_and_other_fun_acronyms,
-  ],
+  blogules: [openly_open_source, dns_ssl_smtp_and_other_fun_acronyms],
 );
 
 final LPPost cortado_build_in_public = LPPost(
@@ -116,10 +116,12 @@ final LPPost cortado_build_in_public = LPPost(
 
 final LPModule create_art_not_code = Create_Art_Not_Code(renderWithPost: false);
 final LPModule turbocalModuleA = TurbocalModuleA(renderWithPost: false);
-final LPModule lh_a_formal_intro_to_lh =
-    A_Formal_Intro_To_Lh(renderWithPost: false);
-final LPModule enter_autonomic_computing =
-    Enter_Autonomic_Computing(renderWithPost: false);
+final LPModule lh_a_formal_intro_to_lh = A_Formal_Intro_To_Lh(
+  renderWithPost: false,
+);
+final LPModule enter_autonomic_computing = Enter_Autonomic_Computing(
+  renderWithPost: false,
+);
 final LPModule perfekshun = Perfekshun(renderWithPost: false);
 final LPModule homage_27_11_23 = Homage_27_11_23(renderWithPost: false);
 final LPModule skeletons_gold_chests_and_other_swashbuckling_treasures =
@@ -133,20 +135,22 @@ final LPModule openly_open_source = Openly_Open_Source(
 
 final LPModule dns_ssl_smtp_and_other_fun_acronyms =
     DNS_SSL_SMTP_And_Other_Fun_Acronyms(
-  renderWithPost: false,
-  isPreviewMode: true,
-);
+      renderWithPost: false,
+      isPreviewMode: true,
+    );
 
 final LPModule pricing_a_saas_built_on_cloud_services =
     Pricing_A_SaaS_Built_On_Cloud_Services(
-  isPreviewMode: true,
-  renderWithPost: false,
-);
+      isPreviewMode: true,
+      renderWithPost: false,
+    );
 
 final LPModule creating_a_banger_landing_page = Creating_A_Banger_Landing_Page(
   renderWithPost: false,
   isPreviewMode: true,
 );
 
-final LPModule cortado_initial_post =
-    CortadoInitialPost(isPreviewMode: true, renderWithPost: false);
+final LPModule cortado_initial_post = CortadoInitialPost(
+  isPreviewMode: true,
+  renderWithPost: false,
+);

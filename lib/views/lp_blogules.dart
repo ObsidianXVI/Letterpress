@@ -27,91 +27,88 @@ class LetterpressBlogulesView extends StatelessWidget {
                   crossAxisCount: 4,
                   mainAxisSpacing: 40,
                   crossAxisSpacing: 40,
-                  children: List<Widget>.generate(
-                    LPStore.blogules.length,
-                    (i) {
-                      final LPModule blogule = LPStore.blogules[i];
-                      return Align(
-                        alignment: Alignment.topLeft,
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).pushNamed(
-                                "${LPRoutes.lp_blogules}/${blogule.title.urlSafeSlug}");
-                          },
-                          child: SelectionContainer.disabled(
-                            child: Container(
+                  children: List<Widget>.generate(LPStore.blogules.length, (i) {
+                    final LPModule blogule = LPStore.blogules[i];
+                    return Align(
+                      alignment: Alignment.topLeft,
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pushNamed(
+                            "${LPRoutes.lp_blogules}/${blogule.title.urlSafeSlug}",
+                          );
+                        },
+                        child: SelectionContainer.disabled(
+                          child: Container(
+                            width: 800,
+                            height: 300,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: OctaneTheme.obsidianC150,
+                            ),
+                            child: LPHoverableCardWidget(
                               width: 800,
                               height: 300,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: OctaneTheme.obsidianC150,
-                              ),
-                              child: LPHoverableCardWidget(
-                                width: 800,
-                                height: 300,
-                                clickable: true,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(20),
-                                  child: Stack(
-                                    children: [
-                                      Flex(
-                                        direction: Axis.vertical,
-                                        children: [
-                                          Flexible(
-                                            child: Text(
-                                              blogule.title,
-                                              maxLines: 3,
+                              clickable: true,
+                              child: Padding(
+                                padding: const EdgeInsets.all(20),
+                                child: Stack(
+                                  children: [
+                                    Flex(
+                                      direction: Axis.vertical,
+                                      children: [
+                                        Flexible(
+                                          child: Text(
+                                            blogule.title,
+                                            maxLines: 3,
+                                            style: TextStyle(
+                                              color: OctaneTheme.obsidianB000,
+                                              fontSize: 30,
+                                              fontFamily:
+                                                  LPFontFamily.body.name,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(height: 20),
+                                      ],
+                                    ),
+                                    Positioned(
+                                      bottom: 0,
+                                      left: 0,
+                                      child: SizedBox(
+                                        height: 40,
+                                        width: 660,
+                                        child: ListView.separated(
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: blogule.tags.length,
+                                          itemBuilder: (context, i) => Chip(
+                                            backgroundColor:
+                                                OctaneTheme.obsidianB050,
+                                            label: Text(
+                                              blogule.tags[i],
                                               style: TextStyle(
-                                                color: OctaneTheme.obsidianB000,
-                                                fontSize: 30,
+                                                color: OctaneTheme.obsidianC150,
+                                                fontSize: 16,
                                                 fontFamily:
                                                     LPFontFamily.body.name,
                                                 fontWeight: FontWeight.w600,
                                               ),
                                             ),
                                           ),
-                                          const SizedBox(height: 20),
-                                        ],
-                                      ),
-                                      Positioned(
-                                        bottom: 0,
-                                        left: 0,
-                                        child: SizedBox(
-                                          height: 40,
-                                          width: 660,
-                                          child: ListView.separated(
-                                            scrollDirection: Axis.horizontal,
-                                            itemCount: blogule.tags.length,
-                                            itemBuilder: (context, i) => Chip(
-                                              backgroundColor:
-                                                  OctaneTheme.obsidianB050,
-                                              label: Text(
-                                                blogule.tags[i],
-                                                style: TextStyle(
-                                                  color:
-                                                      OctaneTheme.obsidianC150,
-                                                  fontSize: 16,
-                                                  fontFamily:
-                                                      LPFontFamily.body.name,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                            ),
-                                            separatorBuilder: (context, _) =>
-                                                const SizedBox(width: 10),
-                                          ),
+                                          separatorBuilder: (context, _) =>
+                                              const SizedBox(width: 10),
                                         ),
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
                           ),
                         ),
-                      );
-                    },
-                  ),
+                      ),
+                    );
+                  }),
                 ),
               ],
             ),

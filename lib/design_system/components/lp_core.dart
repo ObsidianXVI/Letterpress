@@ -29,7 +29,7 @@ extension DateUtils on DateTime {
     'September',
     'October',
     'November',
-    'December'
+    'December',
   ];
 
   String toDateString() {

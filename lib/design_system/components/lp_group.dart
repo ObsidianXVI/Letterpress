@@ -3,9 +3,7 @@ part of letterpress.ds;
 class LPGroup extends LPPostComponent {
   final List<LPPostComponent> postComponents;
 
-  const LPGroup.vertical({
-    required this.postComponents,
-  });
+  const LPGroup.vertical({required this.postComponents});
 
   @override
   Widget build(BuildContext context) {

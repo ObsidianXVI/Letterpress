@@ -13,7 +13,7 @@ void main() {
       print(r.runtimeType);
     }
   }
-/*   final GlobalParser globalParser = GlobalParser(
+  /*   final GlobalParser globalParser = GlobalParser(
     parserConfigs: ParserConfigs(
       lineTriggeredParsers: [
         const VerseQuote_Parser(),
@@ -26,7 +26,7 @@ void main() {
   for (Token t in tokens) {
     print(t);
   } */
-/*   final SourceMap original = SourceMap(source: src);
+  /*   final SourceMap original = SourceMap(source: src);
   print(original.charAt(original.advanceCursor(3))); */
 }
 

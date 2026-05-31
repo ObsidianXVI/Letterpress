@@ -17,10 +17,8 @@ enum LPColorTheme {
   header4_grey(OctaneTheme.obsidianB150),
   hyperlink_purple(OctaneTheme.purple800),
   inline_code_cyan(OctaneTheme.blue800),
-  lyrics_quote_red(OctaneTheme.red800),
-  ;
+  lyrics_quote_red(OctaneTheme.red800);
 
   final Color color;
   const LPColorTheme(this.color);
 }
-

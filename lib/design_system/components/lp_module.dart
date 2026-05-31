@@ -37,3 +37,7 @@ class LPModule extends LPArticle {
     super.isPreviewMode,
   });
 }
+
+extension LPArticleRouting on LPArticle {
+  String get slug => title.urlSafeSlug;
+}

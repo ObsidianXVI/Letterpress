@@ -1,6 +1,5 @@
 library markdown_parser;
 
-
 part './parser_configs.dart';
 part './parser_component.dart';
 part './token.dart';
@@ -12,9 +11,7 @@ class ParserInstance {
   final ParserConfigs configs;
   late final GlobalParser mainParser = GlobalParser(parserConfigs: configs);
 
-  ParserInstance({
-    required this.configs,
-  });
+  ParserInstance({required this.configs});
 
   List<Token> parserString(String source) => mainParser.parseString(source);
 

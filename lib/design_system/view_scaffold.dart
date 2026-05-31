@@ -4,11 +4,8 @@ class ViewScaffold extends StatefulWidget {
   final FocusNode focusNode;
   final Widget child;
 
-  ViewScaffold({
-    required this.child,
-    FocusNode? focusNode,
-    super.key,
-  }) : focusNode = focusNode ?? FocusNode();
+  ViewScaffold({required this.child, FocusNode? focusNode, super.key})
+    : focusNode = focusNode ?? FocusNode();
 
   @override
   State<StatefulWidget> createState() => ViewScaffoldState();
@@ -20,14 +17,12 @@ class ViewScaffoldState extends State<ViewScaffold> {
   @override
   Widget build(BuildContext context) {
     Future.microtask(() {
-      Multiplatform.currentPlatform = Multiplatform.platformSelector(
-          Dimensions.width(), Dimensions.height());
+      final Size size = MediaQuery.sizeOf(context);
+      Multiplatform.syncFromSize(size.width, size.height);
       if (Multiplatform.currentPlatform == const UnknownPlatform()) {
         Navigator.of(context).pushNamed(LPRoutes.unknownPlatform);
       }
     });
-    return Material(
-      child: widget.child,
-    );
+    return Material(child: widget.child);
   }
 }

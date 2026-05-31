@@ -88,3 +88,14 @@
 
 - SaaS/server API-key integrations authenticate an external platform as one Cortado entity, while that platform remains responsible for its own downstream user identities.
   Rationale: the user wants Cortado to manage end users only in the zero-backend first-party path. When a full SaaS already operates its own auth stack, Cortado should only need platform-level trust rather than becoming the identity source of truth for every downstream user in that product.
+
+## 31/05/26
+
+- Letterpress should not expose a browsable `/blogules` index route; only individual blogule detail pages under `/blogules/<slug>` should be reachable.
+  Rationale: the user explicitly wants blogules to be discovered contextually while the standalone collection route itself stays inaccessible.
+
+- Letterpress should remove the external `hotbox`, `octane`, and `project_redline` path packages and own its responsive layout, platform selection, palette constants, and browser/runtime adapters locally.
+  Rationale: the user explicitly chose to delete the blogules timeline instead of preserving the `hotbox` surface, hoist the small `octane` theme usage into local constants, and replace `project_redline` with a more robust Letterpress-specific adaptive system rather than carrying those sibling packages forward.
+
+- The next release after the reading-experience refresh will introduce newsletter discovery cards that use a portrait PDF-like ratio, render the first PDF page as the thumbnail, store the source PDFs under `lib/letterpress-engine/store/newsletters/`, and open the browser-native PDF viewer when clicked.
+  Rationale: the user explicitly described the intended newsletter storage path and interaction model, so follow-up planning should preserve that target behavior rather than inventing a different delivery flow.

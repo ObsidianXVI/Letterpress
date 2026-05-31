@@ -2,19 +2,13 @@ part of letterpress.ds;
 
 abstract class LPSideNoteComponent extends StatelessWidget {
   final bool leftSide;
-  const LPSideNoteComponent({
-    required this.leftSide,
-    super.key,
-  });
+  const LPSideNoteComponent({required this.leftSide, super.key});
 }
 
 class LPSideNoteComment extends LPSideNoteComponent {
   final String text;
 
-  const LPSideNoteComment({
-    required this.text,
-    required super.leftSide,
-  });
+  const LPSideNoteComment({required this.text, required super.leftSide});
 
   @override
   Widget build(BuildContext context) {

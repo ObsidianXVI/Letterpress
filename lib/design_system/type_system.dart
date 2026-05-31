@@ -1,5 +1,48 @@
 part of letterpress.ds;
 
+class ResponsiveTypeface {
+  final Map<LPPlatform, TextStyle> styleDelegates = <LPPlatform, TextStyle>{};
+
+  TextStyle apply([TextStyle? styleOverride]) {
+    final TextStyle resolvedStyle = _resolveForCurrentPlatform();
+    return styleOverride == null
+        ? resolvedStyle
+        : resolvedStyle.merge(styleOverride);
+  }
+
+  TextStyle _resolveForCurrentPlatform() {
+    final TextStyle? exact = styleDelegates[Multiplatform.currentPlatform];
+    if (exact != null) {
+      return exact;
+    }
+
+    final TextStyle? mobile = styleDelegates[const MobilePlatform()];
+    final TextStyle? desktop = styleDelegates[const DesktopPlatform()];
+
+    if (mobile != null && desktop != null) {
+      final LPAdaptiveInfo adaptive = LPAdaptiveInfo.fromSize(
+        Size(Dimensions.width(), Dimensions.height()),
+      );
+      final double t = adaptive.fluid(
+        min: 0,
+        max: 1,
+        minWidth: 720,
+        maxWidth: 1440,
+      );
+      return TextStyle.lerp(mobile, desktop, t) ?? desktop;
+    }
+
+    if (desktop != null) {
+      return desktop;
+    }
+    if (mobile != null) {
+      return mobile;
+    }
+
+    return const TextStyle();
+  }
+}
+
 final ResponsiveTypeface heroTitle = HeroTitle();
 final ResponsiveTypeface sectionTitle = SectionTitle();
 final ResponsiveTypeface pieceTitle = PieceTitle();
@@ -193,9 +236,7 @@ class VerseQuote extends ResponsiveTypeface {
       const MobilePlatform(): TextStyle(
         fontSize: scaled(26, 20),
         fontWeight: FontWeight.w400,
-        fontVariations: const [
-          ui.FontVariation.opticalSize(24),
-        ],
+        fontVariations: const [ui.FontVariation.opticalSize(24)],
         color: LPColor.chaseRed_500,
         height: 1.35,
         fontFamily: 'Fraunces_Soft',
@@ -219,9 +260,7 @@ class BodyB1 extends ResponsiveTypeface {
         letterSpacing: 0.5,
         fontSize: scaled(22, 20),
         fontWeight: FontWeight.w400,
-        fontVariations: const [
-          ui.FontVariation.opticalSize(24),
-        ],
+        fontVariations: const [ui.FontVariation.opticalSize(24)],
         height: 1.37,
         fontFamily: 'Fraunces_Soft',
       ),
@@ -244,9 +283,7 @@ class BodyB2 extends ResponsiveTypeface {
         letterSpacing: 0.5,
         fontSize: scaled(18, 14),
         fontWeight: FontWeight.w400,
-        fontVariations: const [
-          ui.FontVariation.opticalSize(24),
-        ],
+        fontVariations: const [ui.FontVariation.opticalSize(24)],
         height: 1.37,
         fontFamily: 'Fraunces_Soft',
       ),
@@ -269,16 +306,13 @@ class Code extends ResponsiveTypeface {
         letterSpacing: 0.5,
         fontSize: scaled(18, 14),
         fontWeight: FontWeight.w400,
-        fontVariations: const [
-          ui.FontVariation.opticalSize(24),
-        ],
+        fontVariations: const [ui.FontVariation.opticalSize(24)],
         height: 1.37,
         fontFamily: 'IBM_Plex_Mono',
       ),
     });
   }
 }
-
 
 /**
  * class LPFont {

@@ -3,10 +3,7 @@ part of letterpress.views;
 class LetterpressRenderView extends StatelessWidget {
   final LPArticle child;
 
-  const LetterpressRenderView({
-    required this.child,
-    super.key,
-  });
+  const LetterpressRenderView({required this.child, super.key});
 
   @override
   Widget build(BuildContext context) {

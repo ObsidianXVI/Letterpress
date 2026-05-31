@@ -1,11 +1,7 @@
 part of letterpress.ds;
 
 abstract class LPQuote extends LPPostComponent {
-  const LPQuote({
-    super.leftSideNotes,
-    super.rightSideNotes,
-    super.key,
-  });
+  const LPQuote({super.leftSideNotes, super.rightSideNotes, super.key});
 }
 
 class LPVerseQuote extends LPQuote {

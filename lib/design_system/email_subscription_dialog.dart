@@ -3,10 +3,7 @@ part of letterpress.ds;
 class EmailSubscriptionDialog extends StatefulWidget {
   final bool isSubscribed;
 
-  const EmailSubscriptionDialog({
-    required this.isSubscribed,
-    super.key,
-  });
+  const EmailSubscriptionDialog({required this.isSubscribed, super.key});
 
   @override
   State<StatefulWidget> createState() => EmailSubscriptionDialogState();
@@ -23,11 +20,9 @@ class EmailSubscriptionDialogState extends State<EmailSubscriptionDialog> {
         label: label,
         labelWidget: Text(
           label,
-          style: body2.apply(
-            const TextStyle(color: LPColor.gripperBlue_500),
-          ),
+          style: body2.apply(const TextStyle(color: LPColor.gripperBlue_500)),
         ),
-      )
+      ),
   ];
   String? fieldError;
 
@@ -43,10 +38,12 @@ class EmailSubscriptionDialogState extends State<EmailSubscriptionDialog> {
   }
 
   bool validateFieldEntry() {
-    if (!_fields.any((field) => field
-        .replaceAll(' ', '-')
-        .toLowerCase()
-        .contains(fieldController.text.replaceAll(' ', '-').toLowerCase()))) {
+    if (!_fields.any(
+      (field) => field
+          .replaceAll(' ', '-')
+          .toLowerCase()
+          .contains(fieldController.text.replaceAll(' ', '-').toLowerCase()),
+    )) {
       fieldError =
           "Sorry, but you have to choose from one of the given options.";
     } else {
@@ -59,25 +56,26 @@ class EmailSubscriptionDialogState extends State<EmailSubscriptionDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final bool useLargeLayout = context.isDesktopLayout;
+
     return Center(
       child: Material(
         color: Colors.transparent,
-        child: Multiplatform.currentPlatform == const DesktopPlatform()
+        child: useLargeLayout
             ? Container(
-                width: MediaQuery.of(context).size.width * 0.6,
-                height: MediaQuery.of(context).size.height * 0.65,
+                width: MediaQuery.sizeOf(context).width * 0.6,
+                height: MediaQuery.sizeOf(context).height * 0.65,
                 decoration: BoxDecoration(
                   color: LPColor.inkBlue_500,
                   borderRadius: BorderRadius.circular(5),
-                  border: Border.all(
-                    color: LPColor.rollerBlue_500,
-                  ),
+                  border: Border.all(color: LPColor.rollerBlue_500),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 60, right: 60),
                   child: ScrollConfiguration(
-                    behavior: ScrollConfiguration.of(context)
-                        .copyWith(scrollbars: false),
+                    behavior: ScrollConfiguration.of(
+                      context,
+                    ).copyWith(scrollbars: false),
                     child: SingleChildScrollView(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -92,19 +90,21 @@ class EmailSubscriptionDialogState extends State<EmailSubscriptionDialog> {
                           ),
                           const SizedBox(height: 360),
                           LPText.plainBody(
-                              content:
-                                  "You can opt to be notified via email when I publish more blogules in this series. I won't sell your data, I won't send you promotional emails for anything, I won't spam you with useless updates about Letterpress. Just a notification each time there's more to read in this series. And you can unsubscribe any time with one click from your inbox, no questions asked."),
+                            content:
+                                "You can opt to be notified via email when I publish more blogules in this series. I won't sell your data, I won't send you promotional emails for anything, I won't spam you with useless updates about Letterpress. Just a notification each time there's more to read in this series. And you can unsubscribe any time with one click from your inbox, no questions asked.",
+                          ),
                           const SizedBox(height: 20),
                           LPText.plainBody(
-                              content:
-                                  "If this sounds cool with you, please fill out this poorly-designed form so I can get to know you a bit better!"),
+                            content:
+                                "If this sounds cool with you, please fill out this poorly-designed form so I can get to know you a bit better!",
+                          ),
                           const SizedBox(height: 60),
                           TextFormField(
                             controller: nameController,
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
-                            validator: (value) => value != null &&
-                                    value.isNotEmpty
+                            validator: (value) =>
+                                value != null && value.isNotEmpty
                                 ? null
                                 : "Please don't leave this field empty. I need to be able to identify you somehow!",
                             style: body2.apply(
@@ -115,32 +115,39 @@ class EmailSubscriptionDialogState extends State<EmailSubscriptionDialog> {
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(4),
                                 borderSide: BorderSide(
-                                    color: LPColor.gripperBlue_500
-                                        .withOpacity(0.3)),
+                                  color: LPColor.gripperBlue_500.withOpacity(
+                                    0.3,
+                                  ),
+                                ),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(4),
                                 borderSide: BorderSide(
-                                    color: LPColor.gripperBlue_500
-                                        .withOpacity(0.5)),
+                                  color: LPColor.gripperBlue_500.withOpacity(
+                                    0.5,
+                                  ),
+                                ),
                               ),
                               errorStyle: body2.apply(
                                 TextStyle(
-                                    color:
-                                        LPColor.chaseRed_500.withOpacity(0.6)),
+                                  color: LPColor.chaseRed_500.withOpacity(0.6),
+                                ),
                               ),
                               helperText:
                                   'So that I can address you appropriately in my emails.',
                               hintText: 'Name, in any form',
                               hintStyle: body2.apply(
                                 TextStyle(
-                                    color: LPColor.gripperBlue_500
-                                        .withOpacity(0.6)),
+                                  color: LPColor.gripperBlue_500.withOpacity(
+                                    0.6,
+                                  ),
+                                ),
                               ),
                               helperStyle: body2.apply(
                                 TextStyle(
-                                  color:
-                                      LPColor.gripperBlue_500.withOpacity(0.4),
+                                  color: LPColor.gripperBlue_500.withOpacity(
+                                    0.4,
+                                  ),
                                 ),
                               ),
                             ),
@@ -152,8 +159,8 @@ class EmailSubscriptionDialogState extends State<EmailSubscriptionDialog> {
                                 AutovalidateMode.onUserInteraction,
                             validator: (value) =>
                                 value != null && value.isValidEmail()
-                                    ? null
-                                    : "Please provide a valid email.",
+                                ? null
+                                : "Please provide a valid email.",
                             style: body2.apply(
                               const TextStyle(color: LPColor.gripperBlue_500),
                             ),
@@ -162,32 +169,39 @@ class EmailSubscriptionDialogState extends State<EmailSubscriptionDialog> {
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(4),
                                 borderSide: BorderSide(
-                                    color: LPColor.gripperBlue_500
-                                        .withOpacity(0.3)),
+                                  color: LPColor.gripperBlue_500.withOpacity(
+                                    0.3,
+                                  ),
+                                ),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(4),
                                 borderSide: BorderSide(
-                                    color: LPColor.gripperBlue_500
-                                        .withOpacity(0.5)),
+                                  color: LPColor.gripperBlue_500.withOpacity(
+                                    0.5,
+                                  ),
+                                ),
                               ),
                               errorStyle: body2.apply(
                                 TextStyle(
-                                    color:
-                                        LPColor.chaseRed_500.withOpacity(0.6)),
+                                  color: LPColor.chaseRed_500.withOpacity(0.6),
+                                ),
                               ),
                               helperText:
                                   'So that the email finds you, hopefully well.',
                               hintText: 'Email address',
                               hintStyle: body2.apply(
                                 TextStyle(
-                                    color: LPColor.gripperBlue_500
-                                        .withOpacity(0.6)),
+                                  color: LPColor.gripperBlue_500.withOpacity(
+                                    0.6,
+                                  ),
+                                ),
                               ),
                               helperStyle: body2.apply(
                                 TextStyle(
-                                  color:
-                                      LPColor.gripperBlue_500.withOpacity(0.4),
+                                  color: LPColor.gripperBlue_500.withOpacity(
+                                    0.4,
+                                  ),
                                 ),
                               ),
                             ),
@@ -201,8 +215,9 @@ class EmailSubscriptionDialogState extends State<EmailSubscriptionDialog> {
                             },
                             enableFilter: true,
                             filterCallback: (entries, filter) {
-                              final res = entries.where((e) =>
-                                  e.label.toLowerCase().startsWith(filter));
+                              final res = entries.where(
+                                (e) => e.label.toLowerCase().startsWith(filter),
+                              );
                               return res.isEmpty ? entries : res.toList();
                             },
                             textStyle: body2.apply(
@@ -213,43 +228,53 @@ class EmailSubscriptionDialogState extends State<EmailSubscriptionDialog> {
                             inputDecorationTheme: InputDecorationTheme(
                               hintStyle: body2.apply(
                                 TextStyle(
-                                    color: LPColor.gripperBlue_500
-                                        .withOpacity(0.6)),
+                                  color: LPColor.gripperBlue_500.withOpacity(
+                                    0.6,
+                                  ),
+                                ),
                               ),
                               helperStyle: body2.apply(
                                 TextStyle(
-                                  color:
-                                      LPColor.gripperBlue_500.withOpacity(0.4),
+                                  color: LPColor.gripperBlue_500.withOpacity(
+                                    0.4,
+                                  ),
                                 ),
                               ),
                               errorStyle: body2.apply(
                                 TextStyle(
-                                    color:
-                                        LPColor.chaseRed_500.withOpacity(0.6)),
+                                  color: LPColor.chaseRed_500.withOpacity(0.6),
+                                ),
                               ),
                               border: const OutlineInputBorder(),
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(4),
                                 borderSide: BorderSide(
-                                    color: LPColor.gripperBlue_500
-                                        .withOpacity(0.3)),
+                                  color: LPColor.gripperBlue_500.withOpacity(
+                                    0.3,
+                                  ),
+                                ),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(4),
                                 borderSide: BorderSide(
-                                    color: LPColor.gripperBlue_500
-                                        .withOpacity(0.5)),
+                                  color: LPColor.gripperBlue_500.withOpacity(
+                                    0.5,
+                                  ),
+                                ),
                               ),
                             ),
                             width:
                                 MediaQuery.of(context).size.width * 0.6 - 120,
                             menuStyle: MenuStyle(
                               backgroundColor: const WidgetStatePropertyAll(
-                                  LPColor.inkBlue_500),
+                                LPColor.inkBlue_500,
+                              ),
                               side: WidgetStatePropertyAll(
                                 BorderSide(
-                                    color: LPColor.gripperBlue_500
-                                        .withOpacity(0.3)),
+                                  color: LPColor.gripperBlue_500.withOpacity(
+                                    0.3,
+                                  ),
+                                ),
                               ),
                             ),
                             dropdownMenuEntries: entries,
@@ -279,8 +304,8 @@ class EmailSubscriptionDialogState extends State<EmailSubscriptionDialog> {
                                 height: 80,
                                 initialState:
                                     isFormFilled && validateFieldEntry()
-                                        ? ButtonState.enabled
-                                        : ButtonState.disabled,
+                                    ? ButtonState.enabled
+                                    : ButtonState.disabled,
                                 child: Center(
                                   child: Text(
                                     "Count me in!",
@@ -288,9 +313,9 @@ class EmailSubscriptionDialogState extends State<EmailSubscriptionDialog> {
                                       TextStyle(
                                         color:
                                             isFormFilled && validateFieldEntry()
-                                                ? LPColor.gripperBlue_400
-                                                : LPColor.gripperBlue_400
-                                                    .withOpacity(0.4),
+                                            ? LPColor.gripperBlue_400
+                                            : LPColor.gripperBlue_400
+                                                  .withOpacity(0.4),
                                       ),
                                     ),
                                   ),
@@ -311,7 +336,8 @@ class EmailSubscriptionDialogState extends State<EmailSubscriptionDialog> {
     );
   }
 
-  bool get isFormFilled => (nameController.text.isNotEmpty &&
+  bool get isFormFilled =>
+      (nameController.text.isNotEmpty &&
       emailController.text.isNotEmpty &&
       fieldController.text.isNotEmpty);
 
@@ -335,7 +361,7 @@ class EmailSubscriptionDialogState extends State<EmailSubscriptionDialog> {
 extension EmailValidator on String {
   bool isValidEmail() {
     return RegExp(
-            r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
-        .hasMatch(this);
+      r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$',
+    ).hasMatch(this);
   }
 }

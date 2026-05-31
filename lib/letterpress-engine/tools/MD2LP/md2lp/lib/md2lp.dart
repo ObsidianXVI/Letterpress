@@ -146,7 +146,7 @@ class MD2LP_Transpiler {
       blockSyntaxes: [
         VerseQuoteParser(),
         ImageBlockParser(),
-        SideNoteBlockParser()
+        SideNoteBlockParser(),
       ],
     ).parse(mdSource);
     for (final Node node in ast) {
@@ -166,7 +166,8 @@ class MD2LP_Transpiler {
 
   void handleElementNode(Element e) {
     print(
-        "[${e.tag}] ${e.children != null ? '(${e.children!.length})' : ''} ${e.textContent}");
+      "[${e.tag}] ${e.children != null ? '(${e.children!.length})' : ''} ${e.textContent}",
+    );
 
     if (e.children == null) result.add(e.textContent);
     if (e.children!.length > 1) {
@@ -178,12 +179,14 @@ class MD2LP_Transpiler {
         case 'ul':
           parseModes.add(ParseMode.unorderedList);
           result.add(
-              "LPSingleLevelListSpan(listType: LPListType.bullet, listItems: [");
+            "LPSingleLevelListSpan(listType: LPListType.bullet, listItems: [",
+          );
           break;
         case 'ol':
           parseModes.add(ParseMode.orderedList);
           result.add(
-              "LPSingleLevelListSpan(listType:  LPListType.numbered, listItems: [");
+            "LPSingleLevelListSpan(listType:  LPListType.numbered, listItems: [",
+          );
           break;
         case 'li':
           parseModes.add(ParseMode.textspan);
@@ -210,45 +213,55 @@ class MD2LP_Transpiler {
       switch (e.tag) {
         case 'h1':
           result.add(
-              "LPText.header1(content: \"${e.textContent.sanitised()}\",${injectSideNotesIfPresent()}),");
+            "LPText.header1(content: \"${e.textContent.sanitised()}\",${injectSideNotesIfPresent()}),",
+          );
           break;
         case 'h2':
           result.add(
-              "LPText.header2(content: \"${e.textContent.sanitised()}\",${injectSideNotesIfPresent()}),");
+            "LPText.header2(content: \"${e.textContent.sanitised()}\",${injectSideNotesIfPresent()}),",
+          );
           break;
         case 'h3':
           result.add(
-              "LPText.header3(content: \"${e.textContent.sanitised()}\",${injectSideNotesIfPresent()}),");
+            "LPText.header3(content: \"${e.textContent.sanitised()}\",${injectSideNotesIfPresent()}),",
+          );
           break;
         case 'a':
           result.add(
-              "LPText.hyperlink(content: \"${e.textContent.sanitised()}\", url: \"${e.attributes['href']}\",${injectSideNotesIfPresent()}),");
+            "LPText.hyperlink(content: \"${e.textContent.sanitised()}\", url: \"${e.attributes['href']}\",${injectSideNotesIfPresent()}),",
+          );
           break;
         case 'em':
           result.add(
-              "LPText.plainBody(content: \"${e.textContent.sanitised()}\", isBold: true,${injectSideNotesIfPresent()}),");
+            "LPText.plainBody(content: \"${e.textContent.sanitised()}\", isBold: true,${injectSideNotesIfPresent()}),",
+          );
           break;
         case 'strong':
           result.add(
-              "LPText.plainBody(content: \"${e.textContent.sanitised()}\", isItalic: true,${injectSideNotesIfPresent()}),");
+            "LPText.plainBody(content: \"${e.textContent.sanitised()}\", isItalic: true,${injectSideNotesIfPresent()}),",
+          );
           break;
         case 'del':
           result.add(
-              "LPText.plainBody(content: \"${e.textContent.sanitised()}\", isStrikethrough: true,${injectSideNotesIfPresent()}),");
+            "LPText.plainBody(content: \"${e.textContent.sanitised()}\", isStrikethrough: true,${injectSideNotesIfPresent()}),",
+          );
           break;
         case 'pre':
           break;
         case 'code':
           result.add(
-              "LPText.codeStyle(content: \"${e.textContent.sanitised()}\", inline: ${parseModes.isNotEmpty},${injectSideNotesIfPresent()}),");
+            "LPText.codeStyle(content: \"${e.textContent.sanitised()}\", inline: ${parseModes.isNotEmpty},${injectSideNotesIfPresent()}),",
+          );
           break;
         case 'versequote':
           result.add(
-              "LPVerseQuote(verses: ${e.attributes['verses']!.split('|').map((x) => '"$x"').toList()}, reference: \"${e.attributes['artist']}\" + ', ' + \"${e.attributes['song']}\" + ' (' + \"${e.attributes['album']}\" + ')', url: \"${e.attributes['hyperlink']}\"),");
+            "LPVerseQuote(verses: ${e.attributes['verses']!.split('|').map((x) => '"$x"').toList()}, reference: \"${e.attributes['artist']}\" + ', ' + \"${e.attributes['song']}\" + ' (' + \"${e.attributes['album']}\" + ')', url: \"${e.attributes['hyperlink']}\"),",
+          );
           break;
         case 'img':
           result.add(
-              "LPImage.url(url: \"${e.attributes['url']}\", width: ${e.attributes['width']}, height: ${e.attributes['height']},${injectSideNotesIfPresent()}),");
+            "LPImage.url(url: \"${e.attributes['url']}\", width: ${e.attributes['width']}, height: ${e.attributes['height']},${injectSideNotesIfPresent()}),",
+          );
           break;
         // The note must appear BEFORE the block to which it is going to be attached
         case 'note':
@@ -260,7 +273,8 @@ class MD2LP_Transpiler {
           break;
         case 'li':
           result.add(
-              "LPText.plainBody(content: \"${e.textContent.sanitised()}\",${injectSideNotesIfPresent()}),");
+            "LPText.plainBody(content: \"${e.textContent.sanitised()}\",${injectSideNotesIfPresent()}),",
+          );
           break;
         default:
           break;
@@ -270,7 +284,8 @@ class MD2LP_Transpiler {
 
   void handleTextNode(Text t) {
     result.add(
-        "LPText.plainBody(content: \"${t.textContent.sanitised()}\",${injectSideNotesIfPresent()}),");
+      "LPText.plainBody(content: \"${t.textContent.sanitised()}\",${injectSideNotesIfPresent()}),",
+    );
   }
 
   String injectSideNotesIfPresent() {

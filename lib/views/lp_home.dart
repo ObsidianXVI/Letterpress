@@ -13,374 +13,218 @@ class LetterpressAppState extends State<LetterpressApp> {
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      postCarouselController.animateTo(
-          postCarouselController.position.maxScrollExtent,
-          duration: const Duration(seconds: 15),
-          curve: Curves.linear);
-      bloguleCarouselController.animateTo(
-          bloguleCarouselController.position.maxScrollExtent,
-          duration: const Duration(seconds: 15),
-          curve: Curves.linear);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _animateCarousel(postCarouselController);
+      _animateCarousel(bloguleCarouselController);
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    postCarouselController.dispose();
+    bloguleCarouselController.dispose();
+    super.dispose();
+  }
+
+  void _animateCarousel(ScrollController controller) {
+    if (!mounted || !controller.hasClients) {
+      return;
+    }
+
+    final ScrollPosition position = controller.position;
+    if (!position.hasContentDimensions || position.maxScrollExtent <= 0) {
+      return;
+    }
+
+    controller.animateTo(
+      position.maxScrollExtent,
+      duration: const Duration(seconds: 15),
+      curve: Curves.linear,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Material(
       color: LPColor.platenWhite_500,
-      child: Center(
-        child: ViewportSize(
-          child: Container(
-            color: LPColor.platenWhite_500,
-            width: double.infinity,
-            height: double.infinity,
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ViewportSize(
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                        top: Multiplatform.currentPlatform ==
-                                const MobilePlatform()
-                            ? 0
-                            : 10,
-                        left: Multiplatform.currentPlatform ==
-                                const MobilePlatform()
-                            ? 0
-                            : 10,
-                      ),
-                      child: Text(
-                        'LET\nTER\nPRESS',
-                        style: heroTitle.apply(),
-                      ),
+      child: Container(
+        color: LPColor.platenWhite_500,
+        width: double.infinity,
+        height: double.infinity,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildHero(context),
+              _buildAboutSection(context),
+              _buildDiscoverySection(
+                context: context,
+                title: 'Discover',
+                subtitle: 'An illuminating set of posts, curated by hand.',
+                controller: postCarouselController,
+                cards: [
+                  for (final LPPost post in LPStore.posts)
+                    PromoCard(
+                      size: SizeVariant.large,
+                      article: post,
+                      description: post.description,
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          "${LPRoutes.lp_posts}/${post.slug}",
+                        );
+                      },
                     ),
-                  ),
-                  ViewportSize(
-                    child: Container(
-                      color: LPColor.inkBlue_500,
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                          left: Multiplatform.currentPlatform ==
-                                  const DesktopPlatform()
-                              ? scaled(60, 30)
-                              : scaled(20, 16),
-                          top: Multiplatform.currentPlatform ==
-                                  const DesktopPlatform()
-                              ? scaled(60, 30)
-                              : scaled(20, 16),
-                          right: Multiplatform.currentPlatform ==
-                                  const DesktopPlatform()
-                              ? scaled(60, 30)
-                              : scaled(24, 24),
-                        ),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'About',
-                                  style: SectionTitle().apply(
-                                    const TextStyle(
-                                        color: LPColor.rollerBlue_500),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: Multiplatform.currentPlatform ==
-                                          const DesktopPlatform()
-                                      ? scaled(40, 30)
-                                      : scaled(30, 20),
-                                ),
-                                SizedBox(
-                                  width: Multiplatform.currentPlatform ==
-                                          const DesktopPlatform()
-                                      ? 0.45 * Dimensions.width()
-                                      : Dimensions.width() * 0.89,
-                                  child: LPTextSpan(lpTextComponents: [
-                                    LPText.plainBody(
-                                      content:
-                                          """Letterpress is a blog about coding, design, SWE, and all that good stuff. I started this initially to document my reflections and knowledge as I worked on various projects.
-
-It includes short-form Blogules, in-depth Posts, and even newsletters. I do not claim to be a professional coder or prolific writer, and there are many blogs out there like this one, but this is mine. In a sea full of vessels out on different voyages, this is the logbook of a particular one.""", // Thus, Blogules tagged with the same project name are also collated into what are known as Journals. Each Journal provides a chronological overview of Blogules belonging to a particular project.
-                                      color: LPColor.gripperBlue_500,
-                                    ),
-                                  ]),
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  ViewportSize(
-                    child: Container(
-                      color: LPColor.inkBlue_500,
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                          left: Multiplatform.currentPlatform ==
-                                  const DesktopPlatform()
-                              ? scaled(60, 30)
-                              : scaled(20, 16),
-                          top: Multiplatform.currentPlatform ==
-                                  const DesktopPlatform()
-                              ? scaled(60, 30)
-                              : scaled(20, 16),
-                          right: Multiplatform.currentPlatform ==
-                                  const DesktopPlatform()
-                              ? scaled(60, 30)
-                              : scaled(24, 24),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Discover',
-                              style: SectionTitle().apply(
-                                const TextStyle(color: LPColor.rollerBlue_500),
-                              ),
-                            ),
-                            const SizedBox(height: 20),
-                            SizedBox(
-                              width: 600,
-                              child: Text(
-                                "An illuminating set of posts, curated by hand.",
-                                style: BodyB1().apply(
-                                  const TextStyle(
-                                      color: LPColor.gripperBlue_500),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 60),
-                            SingleChildScrollView(
-                              controller: postCarouselController,
-                              clipBehavior: Clip.none,
-                              scrollDirection: Axis.horizontal,
-                              child: Row(
-                                children: [
-                                  for (final post in LPStore.posts) ...[
-                                    PromoCard(
-                                        size: SizeVariant.large,
-                                        article: post,
-                                        description: post.description,
-                                        onTap: () {
-                                          Navigator.pushNamed(context,
-                                              "${LPRoutes.lp_posts}/${post.title.urlSafeSlug}");
-                                        }),
-                                    const SizedBox(width: 40),
-                                  ],
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  ViewportSize(
-                    child: Container(
-                      color: LPColor.inkBlue_500,
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                          left: Multiplatform.currentPlatform ==
-                                  const DesktopPlatform()
-                              ? scaled(60, 30)
-                              : scaled(20, 16),
-                          top: Multiplatform.currentPlatform ==
-                                  const DesktopPlatform()
-                              ? scaled(60, 30)
-                              : scaled(20, 16),
-                          right: Multiplatform.currentPlatform ==
-                                  const DesktopPlatform()
-                              ? scaled(60, 30)
-                              : scaled(24, 24),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Blogules',
-                              style: SectionTitle().apply(
-                                const TextStyle(color: LPColor.rollerBlue_500),
-                              ),
-                            ),
-                            const SizedBox(height: 40),
-                            SizedBox(
-                              width: 600,
-                              child: Text(
-                                "Musings, insights, and personal experiences in byte-sized reads.",
-                                style: BodyB1().apply(
-                                  const TextStyle(
-                                      color: LPColor.gripperBlue_500),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 60),
-                            SingleChildScrollView(
-                              controller: bloguleCarouselController,
-                              clipBehavior: Clip.none,
-                              scrollDirection: Axis.horizontal,
-                              child: Row(
-                                children: [
-                                  for (final blogule in LPStore.blogules) ...[
-                                    PromoCard(
-                                      size: SizeVariant.medium,
-                                      article: blogule,
-                                      description: blogule.isPreviewMode
-                                          ? "COMING SOON"
-                                          : blogule.publicationDate
-                                              .toDateString(),
-                                      onTap: () => Navigator.of(context).pushNamed(
-                                          "${LPRoutes.lp_blogules}/${blogule.title.urlSafeSlug}"),
-                                    ),
-                                    const SizedBox(width: 40),
-                                  ]
-                                ], /* List<PromoCard>.generate(
-                                  LPStore.blogules.length,
-                                  (i) => PromoCard(
-                                    size: SizeVariant.medium,
-                                    title: LPStore.blogules[i].title,
-                                    description: LPStore
-                                        .blogules[i].publicationDate
-                                        .toDateString(),
-                                    onTap: () => Navigator.of(context).pushNamed(
-                                        "${LPRoutes.lp_blogules}/${LPStore.blogules[i].title.urlSafeSlug}"),
-                                  ),
-                                ), */
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-
-/*                     child: Stack(
-                      children: [
-                        Positioned.fill(
-                          child: ,
-                        ),
-/*                         InnerShadow(
-                          shadows: [
-                            Shadow(
-                              blurRadius: 50,
-                              color: Colors.black,
-                              offset: Offset(0, 60),
-                            ),
-                            Shadow(
-                              blurRadius: 50,
-                              color: Colors.black,
-                              offset: Offset(0, -60),
-                            ),
-                          ],
-                          child: Container(
-                            color: Colors.transparent,
-                            width: double.infinity,
-                            height: double.infinity,
-                          ),
-                        ), */
-                      ],
-                    ), */
-                  /* ViewportDependent(
-                    child: Container(
-                      width: double.infinity,
-                      height: double.infinity,
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                          left: 60,
-                          right: 60,
-                          top: 30,
-                        ),
-                        child: Column(
-                          children: [
-                            LPText.header1(content: 'Discover'),
-                            const SizedBox(height: 60),
-                            const SizedBox(height: 30),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  width: 200,
-                                  height: 60,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    border: Border.all(
-                                        color: OctaneTheme.purple800),
-                                  ),
-                                  child: TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context)
-                                          .pushNamed(LPRoutes.lp_timelapse);
-                                    },
-                                    child: Center(
-                                      child: Text(
-                                        'Timelapse',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontFamily: LPFontFamily.body.name,
-                                          fontSize: 26,
-                                          fontWeight: FontWeight.w300,
-                                          letterSpacing: 1,
-                                          color: OctaneTheme.purple800,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(width: 40),
-                                Container(
-                                  width: 200,
-                                  height: 60,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    border: Border.all(
-                                        color: OctaneTheme.purple800),
-                                  ),
-                                  child: TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context)
-                                          .pushNamed(LPRoutes.lp_gallery);
-                                    },
-                                    style: TextButton.styleFrom(
-                                      primary: OctaneTheme.purple800,
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        'Gallery',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontFamily: LPFontFamily.body.name,
-                                          fontSize: 26,
-                                          fontWeight: FontWeight.w300,
-                                          letterSpacing: 1,
-                                          color: OctaneTheme.purple800,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ), */
                 ],
               ),
-            ),
+              _buildDiscoverySection(
+                context: context,
+                title: 'Blogules',
+                subtitle:
+                    'Musings, insights, and personal experiences in byte-sized reads.',
+                controller: bloguleCarouselController,
+                cards: [
+                  for (final LPModule blogule in LPStore.blogules)
+                    PromoCard(
+                      size: SizeVariant.medium,
+                      article: blogule,
+                      description: blogule.isPreviewMode
+                          ? 'COMING SOON'
+                          : blogule.publicationDate.toDateString(),
+                      onTap: () {
+                        Navigator.of(context).pushNamed(
+                          "${LPRoutes.lp_blogules}/${blogule.slug}",
+                        );
+                      },
+                    ),
+                ],
+              ),
+            ],
           ),
         ),
       ),
     );
+  }
+
+  Widget _buildHero(BuildContext context) {
+    final double width = MediaQuery.sizeOf(context).width;
+    final double topPadding = width < 600 ? 16 : 10;
+    final double leftPadding = width < 600 ? 16 : 10;
+
+    return Padding(
+      padding: EdgeInsets.only(top: topPadding, left: leftPadding),
+      child: Text('LET\nTER\nPRESS', style: heroTitle.apply()),
+    );
+  }
+
+  Widget _buildAboutSection(BuildContext context) {
+    final EdgeInsets sectionPadding = _sectionPadding(context);
+    final double width = MediaQuery.sizeOf(context).width;
+    final double maxCopyWidth = width >= 900 ? width * 0.45 : width;
+
+    return Container(
+      color: LPColor.inkBlue_500,
+      width: double.infinity,
+      padding: sectionPadding,
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxWidth: maxCopyWidth.clamp(0.0, 720.0).toDouble(),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'About',
+              style: SectionTitle().apply(
+                const TextStyle(color: LPColor.rollerBlue_500),
+              ),
+            ),
+            SizedBox(height: width >= 900 ? 40 : 24),
+            SelectionArea(
+              child: LPTextSpan(
+                lpTextComponents: [
+                  LPText.plainBody(
+                    content:
+                        """Letterpress is a blog about coding, design, SWE, and all that good stuff. I started this initially to document my reflections and knowledge as I worked on various projects.
+
+It includes short-form Blogules, in-depth Posts, and even newsletters. I do not claim to be a professional coder or prolific writer, and there are many blogs out there like this one, but this is mine. In a sea full of vessels out on different voyages, this is the logbook of a particular one.""",
+                    color: LPColor.gripperBlue_500,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDiscoverySection({
+    required BuildContext context,
+    required String title,
+    required String subtitle,
+    required ScrollController controller,
+    required List<Widget> cards,
+  }) {
+    final EdgeInsets sectionPadding = _sectionPadding(context);
+    final double width = MediaQuery.sizeOf(context).width;
+
+    return Container(
+      color: LPColor.inkBlue_500,
+      width: double.infinity,
+      padding: sectionPadding,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: SectionTitle().apply(
+              const TextStyle(color: LPColor.rollerBlue_500),
+            ),
+          ),
+          const SizedBox(height: 20),
+          ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 620),
+            child: Text(
+              subtitle,
+              style: BodyB1().apply(
+                const TextStyle(color: LPColor.gripperBlue_500),
+              ),
+            ),
+          ),
+          SizedBox(height: width >= 900 ? 56 : 36),
+          SelectionContainer.disabled(
+            child: SingleChildScrollView(
+              controller: controller,
+              clipBehavior: Clip.none,
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  for (int i = 0; i < cards.length; i++) ...[
+                    cards[i],
+                    if (i != cards.length - 1)
+                      SizedBox(width: width >= 900 ? 36 : 20),
+                  ],
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  EdgeInsets _sectionPadding(BuildContext context) {
+    final double width = MediaQuery.sizeOf(context).width;
+    final double horizontal = width >= 1200
+        ? 60
+        : width >= 900
+            ? 40
+            : 20;
+    final double top = width >= 900 ? 60 : 28;
+    final double bottom = width >= 900 ? 28 : 20;
+
+    return EdgeInsets.fromLTRB(horizontal, top, horizontal, bottom);
   }
 }

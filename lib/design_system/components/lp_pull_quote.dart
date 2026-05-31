@@ -48,10 +48,7 @@ class LPPullQuote extends LPQuote {
               const SizedBox(height: 20),
               if (attribution != null)
                 ref != null
-                    ? LPText.hyperlink(
-                        content: attribution!,
-                        url: ref!,
-                      )
+                    ? LPText.hyperlink(content: attribution!, url: ref!)
                     : LPText.plainBody(content: attribution!),
             ],
           ),

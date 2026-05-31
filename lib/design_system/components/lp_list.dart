@@ -1,11 +1,6 @@
 part of letterpress.ds;
 
-enum LPListType {
-  bullet,
-  numbered,
-  chaptered,
-  ;
-}
+enum LPListType { bullet, numbered, chaptered }
 
 abstract class LPListSpan extends LPPostComponent {
   final LPListType listType;
@@ -40,7 +35,7 @@ class LPSingleLevelListSpan extends LPListSpan {
             children: [
               LPText.plainBody(content: '•'),
               const SizedBox(width: 10),
-              item
+              item,
             ],
           ),
       ]);
@@ -69,7 +64,6 @@ class LPSingleLevelListSpan extends LPListSpan {
     );
   }
 }
-
 
 /* class LPList extends LPPostComponent {
   final LPListType lpListType;

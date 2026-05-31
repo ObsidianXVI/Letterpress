@@ -12,7 +12,7 @@ class LPImage extends LPPostComponent {
     required this.width,
     required this.height,
     super.key,
-  }) : image = Image.network(url);
+  }) : image = Image.network(url, fit: BoxFit.contain);
 
   LPImage.asset({
     super.leftSideNotes,
@@ -21,21 +21,31 @@ class LPImage extends LPPostComponent {
     required this.width,
     required this.height,
     super.key,
-  }) : image = Image.asset(assetPath);
+  }) : image = Image.asset(assetPath, fit: BoxFit.contain);
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: SizedBox(
-        width: width,
-        height: height,
-        child: Center(
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(5),
-            child: image,
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        final double resolvedWidth = constraints.maxWidth.isFinite
+            ? constraints.maxWidth.clamp(0.0, width).toDouble()
+            : width;
+
+        return Center(
+          child: SizedBox(
+            width: resolvedWidth,
+            child: AspectRatio(
+              aspectRatio: width / height,
+              child: Center(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(5),
+                  child: image,
+                ),
+              ),
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
