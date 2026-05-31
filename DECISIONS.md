@@ -100,5 +100,8 @@
 - Letterpress remote content should be sourced from a build-time public base URL (`LP_PUBLIC_CONTENT_BASE_URL`) with object paths `posts/<slug>.md`, `blogules/<slug>.md`, and `newsletters/<slug>.pdf`, while embedded Flutter article modules remain the fallback if remote Markdown is unavailable.
   Rationale: the user explicitly wants Markdown and PDF assets to live in a public GCS bucket and be fetched by the app, but keeping the embedded article modules as fallback avoids taking the site down during migration or while bucket objects are still being uploaded.
 
+- The in-repo `md2lp` tool should emit complete `LPModule` classes plus top-level blogule declarations and separate `LPPost` declarations, rather than stopping at raw component snippets.
+  Rationale: the user explicitly asked for the markdown conversion tool to generate proper Letterpress declarations as well as components, and aligning the tool to the real `LPModule` / `LPPost` shapes makes it usable for actual store maintenance instead of just one-off experimentation.
+
 - The next release after the reading-experience refresh will introduce newsletter discovery cards that use a portrait PDF-like ratio, render the first PDF page as the thumbnail, store the source PDFs under `lib/letterpress-engine/store/newsletters/`, and open the browser-native PDF viewer when clicked.
   Rationale: the user explicitly described the intended newsletter storage path and interaction model, so follow-up planning should preserve that target behavior rather than inventing a different delivery flow.

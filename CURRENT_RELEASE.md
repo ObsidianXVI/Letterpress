@@ -1,5 +1,5 @@
 # Current Release
 
-Current task: v0.1 → Feature 1.3 → Task 1.3.1 — public-GCS-backed remote content loading completed for Markdown article bodies, with embedded-content fallback and newsletter/PDF bucket scaffolding.
+Current task: v0.1 → Feature 1.4 → Task 1.4.1 — `md2lp` is now a real generator CLI that emits Letterpress `LPModule` classes, top-level blogule declarations, and `LPPost` declarations from the current markdown dialect.
 
-Next task: upload the first real bucket objects and replace the placeholder newsletter cards with richer PDF-preview cards.
+Next task: run the tool against real `md_sources` content and decide how much of the hand-written store/module layer should be regenerated.

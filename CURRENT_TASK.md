@@ -1,37 +1,36 @@
 # CURRENT TASK
 
 ## Release · Feature · Task
-v0.1 → Feature 1.3 (Remote Content Bucket) → Task 1.3.1
+v0.1 → Feature 1.4 (MD2LP Generator) → Task 1.4.1
 
 ## Status
 DONE
 
 ## Objective
-Implement public-GCS-backed content loading for Letterpress:
-- fetch post and blogule Markdown from public URLs at runtime
-- support public PDF newsletter assets with the same bucket contract
-- keep the app resilient while content is migrated by falling back to embedded local article modules
+Complete the in-repo `md2lp` tool so it can convert Letterpress markdown into:
+- full `LPModule` classes
+- top-level blogule declarations
+- `LPPost` declarations
+- proper `LPPostComponent` trees for the current custom markdown dialect
 
 ## What was done last session
-Feature 1.2 completed the reading-experience refresh and removed the old sibling package dependencies.
+Feature 1.3 completed public-GCS-backed runtime content loading with Markdown fetch/fallback behavior.
 
 ## What was done this session
-Added a new remote content layer with a build-time public bucket base URL (`LP_PUBLIC_CONTENT_BASE_URL`), runtime Markdown fetching through `http`, a parser for the existing Letterpress markdown dialect (`@img`, `@div`, `@versequote`, headings, lists, code, links), detail-page rendering that prefers remote Markdown but falls back to embedded local modules when the fetch fails, source-link metadata in the article renderer, newsletter/PDF scaffolding on the homepage, a README section documenting the bucket layout, and regression tests for the parser plus remote fetch/fallback behavior.
+Replaced the old hardcoded `md2lp` prototype with a real CLI package structure, added generator logic for Letterpress markdown sources, implemented `module` and `post` commands, supported the current custom markdown blocks (`@img`, `@div`, `@versequote`, `@note`) alongside headings/lists/links/code, emitted complete `LPModule` classes plus top-level blogule declarations and `LPPost` declarations, documented command usage in the package README, and added CLI tests that execute the command surface end-to-end.
 
 ## Remaining work this session
-- upload actual Markdown and PDF objects to the public bucket
-- add newsletter metadata entries once the first PDFs exist
-- build/deploy with `--dart-define=LP_PUBLIC_CONTENT_BASE_URL=https://storage.googleapis.com/<bucket-name>`
+- use the completed generator against real markdown sources and replace/refresh hand-written module files as needed
+- decide whether the tool should also emit `part` entries or store-registration snippets automatically
 
 ## Definition of done
-- [x] post and blogule detail routes can resolve content from public Markdown URLs
-- [x] the app falls back to embedded local article content when remote Markdown is unavailable
-- [x] the content bucket contract for Markdown/PDF objects is documented
-- [x] newsletter/PDF support is scaffolded behind public URL metadata
-- [x] tests and analysis pass
+- [x] `md2lp module` emits a complete `LPModule` class and top-level blogule declaration
+- [x] `md2lp post` emits a valid `LPPost` declaration
+- [x] the generator understands the current Letterpress markdown dialect
+- [x] package-level tests and analysis pass
 
 ## Next task after this one
-Populate the first real bucket objects and build the richer newsletter experience (thumbnail/first-page preview instead of placeholder PDF cards).
+Run the tool against actual `md_sources` content and decide how much of the existing hand-written store/module layer should be regenerated versus kept custom.
 
 ## Blocked on / decisions needed
 None.
