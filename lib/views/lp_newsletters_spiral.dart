@@ -77,17 +77,43 @@ class _SpiralStage extends StatelessWidget {
   /// Newsletter covers are US Letter, as the templates in the Figma file are.
   static const double coverAspect = 612 / 792;
 
+  /// Size of a cover at the back and the front of the ring. Depth interpolates
+  /// between them, and the ring's vertical placement is solved from them.
+  static const double minScale = 0.70;
+  static const double maxScale = 1.12;
+
+  static double scaleForDepth(double depth) =>
+      minScale + (maxScale - minScale) * ((depth + 1) / 2);
+
   @override
   Widget build(BuildContext context) {
     final LPViewportData vp = LPViewport.of(context);
     final Size size = vp.size;
 
-    final Offset centre = Offset(size.width * 0.5, size.height * 0.5);
+    final double baseWidth =
+        size.width * vp.pick(mobile: 0.36, desktop: 0.18);
+
     // Wide enough that a cover at the side of the ring sits past the viewport
     // edge, so the ring reads as continuing beyond the frame rather than as a
     // tidy arrangement that happens to fit.
     final double radiusX = size.width * vp.pick(mobile: 0.56, desktop: 0.52);
-    final double radiusY = size.height * vp.pick(mobile: 0.26, desktop: 0.30);
+
+    // The ring is not centred on the viewport. The near cover is drawn larger
+    // than the far one, so a centred ring leaves the near one crowding the
+    // bottom edge while the far one floats well below the top. Solving for the
+    // two clearances directly puts the far cover just under the top edge and
+    // gives the near one room to breathe.
+    final double farHeight = baseWidth * minScale / coverAspect;
+    final double nearHeight = baseWidth * maxScale / coverAspect;
+    final double topClearance = size.height * 0.03;
+    final double bottomClearance = size.height * 0.09;
+
+    final double farCentreY = topClearance + farHeight / 2;
+    final double nearCentreY = size.height - bottomClearance - nearHeight / 2;
+    final double centreY = (farCentreY + nearCentreY) / 2;
+    final double radiusY = (nearCentreY - farCentreY) / 2;
+
+    final Offset centre = Offset(size.width * 0.5, centreY);
 
     // Screen y runs downwards, so a plain increasing angle would sweep
     // clockwise. Subtracting the rotation turns the ring the other way.
@@ -117,9 +143,6 @@ class _SpiralStage extends StatelessWidget {
     final List<_Orbiter> inFront = orbiters.where((o) => o.depth >= 0).toList()
       ..sort((a, b) => a.depth.compareTo(b.depth));
 
-    final double baseWidth =
-        size.width * vp.pick(mobile: 0.36, desktop: 0.18);
-
     Widget cover(_Orbiter o) => _CoverThumbnail(
           orbiter: o,
           baseWidth: baseWidth,
@@ -132,11 +155,14 @@ class _SpiralStage extends StatelessWidget {
         clipBehavior: Clip.hardEdge,
         children: [
           ...behind.map(cover),
-          Center(
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: size.width * _AboutMetrics.padLeft,
-              ),
+          // The word sits on the ring's axis, not the viewport's centre, so it
+          // stays threaded through the covers wherever the ring is placed.
+          Positioned(
+            left: size.width * _AboutMetrics.padLeft,
+            right: size.width * _AboutMetrics.padLeft,
+            top: centreY - size.height * 0.08,
+            height: size.height * 0.16,
+            child: Center(
               child: FittedBox(
                 fit: BoxFit.scaleDown,
                 child: Text(
@@ -174,7 +200,7 @@ class _CoverThumbnail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double near = (orbiter.depth + 1) / 2;
-    final double scale = 0.70 + 0.42 * near;
+    final double scale = _SpiralStage.scaleForDepth(orbiter.depth);
     final double width = baseWidth * scale;
     final double height = width / aspect;
 

@@ -350,10 +350,9 @@ class _DiscoverMetrics {
 
 /// The Discover band, on the platen white ground the design calls for.
 ///
-/// The artwork credit is carried over from the About frame at the identical
-/// position. That is deliberate rather than a stray copy: the transition zooms
-/// into the painting's white region until it becomes this section's background,
-/// and the credit staying put is what stitches the two together.
+/// The artwork credit belongs to About and stays there. It appears in the
+/// Discover frame in Figma, but carrying it across reads as a stray leftover
+/// once the painting itself has gone — a credit with nothing to credit.
 class _DiscoverSection extends StatelessWidget {
   final ScrollController controller;
   final List<Widget> Function(double? maxHeight) itemBuilder;
@@ -440,20 +439,6 @@ class _DiscoverSection extends StatelessWidget {
                     ),
                   ),
                 ],
-              ),
-            ),
-            Positioned(
-              // Right edge lands exactly where it does in the About band, which
-              // is where the artwork's left edge was.
-              right: vp.pick(
-                mobile: padLeft,
-                desktop:
-                    size.width * (_AboutMetrics.imageWidth + _AboutMetrics.gutter),
-              ),
-              bottom: gutter,
-              child: Opacity(
-                opacity: contentOpacity,
-                child: const LPArtworkCaption(),
               ),
             ),
           ],
