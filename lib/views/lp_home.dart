@@ -67,24 +67,7 @@ class LetterpressAppState extends State<LetterpressApp> {
                   ),
                 ),
               ),
-              _HomeSection(
-                title: 'About',
-                child: SizedBox(
-                  width: vp.pick(
-                    mobile: vp.size.width * 0.89,
-                    desktop: vp.size.width * 0.45,
-                  ),
-                  child: LPTextSpan(lpTextComponents: [
-                    LPText.plainBody(
-                      content:
-                          """Letterpress is a blog about coding, design, SWE, and all that good stuff. I started this initially to document my reflections and knowledge as I worked on various projects.
-
-It includes short-form Blogules, in-depth Posts, and even newsletters. I do not claim to be a professional coder or prolific writer, but in a sea full of vessels out on different voyages, this is the logbook of a particular one.""",
-                      color: LPColor.gripperBlue_400,
-                    ),
-                  ]),
-                ),
-              ),
+              const _AboutSection(),
               _HomeSection(
                 title: 'Discover',
                 child: _CarouselSection(
@@ -139,6 +122,148 @@ It includes short-form Blogules, in-depth Posts, and even newsletters. I do not 
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+/// Proportions taken from the `About - new` Figma frame (node 1:17), which is
+/// drawn at 1280x832.
+///
+/// They are kept as fractions of the frame rather than pixel constants so the
+/// composition — where the artwork edge falls, how far the caption sits from
+/// it — survives at viewport sizes the design was never drawn at.
+class _AboutMetrics {
+  const _AboutMetrics._();
+
+  static const double frameWidth = 1280;
+  static const double frameHeight = 832;
+
+  /// The artwork is flush to the right edge and bleeds the full height.
+  static const double imageWidth = 588 / frameWidth;
+  static const double padLeft = 70 / frameWidth;
+  static const double padTop = 70 / frameHeight;
+
+  /// Separates the caption from the artwork, and the caption from the floor.
+  static const double gutter = 25 / frameWidth;
+  static const double bodyWidth = 485 / frameWidth;
+  static const double titleToBody = 50 / frameHeight;
+}
+
+/// The About band: copy on the left, Friedrich's *Woman at a Window* bleeding
+/// off the right edge at full height.
+class _AboutSection extends StatelessWidget {
+  const _AboutSection();
+
+  static const String copy =
+      """Letterpress is a blog about coding, design, SWE, and all that good stuff. I started this initially to document my reflections and knowledge as I worked on various projects.
+
+It includes short-form Blogules, in-depth Posts, and even newsletters. I do not claim to be a professional coder or prolific writer, but in a sea full of vessels out on different voyages, this is the logbook of a particular one.""";
+
+  @override
+  Widget build(BuildContext context) {
+    final LPViewportData vp = LPViewport.of(context);
+    final Size size = vp.size;
+
+    final Widget textColumn = Padding(
+      padding: EdgeInsets.only(
+        left: size.width * _AboutMetrics.padLeft,
+        right: size.width * _AboutMetrics.gutter,
+        top: size.height * _AboutMetrics.padTop,
+        bottom: size.width * _AboutMetrics.gutter,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'About',
+            style: sectionTitle.apply(
+              const TextStyle(color: LPColor.rollerBlue_500),
+            ),
+          ),
+          SizedBox(height: size.height * _AboutMetrics.titleToBody),
+          SizedBox(
+            width: vp.pick(
+              mobile: double.infinity,
+              desktop: size.width * _AboutMetrics.bodyWidth,
+            ),
+            child: Text(
+              copy,
+              style: body.apply(
+                const TextStyle(color: LPColor.gripperBlue_500),
+              ),
+            ),
+          ),
+          const Spacer(),
+          // The credit is right-aligned so it runs up to the artwork's edge.
+          const Align(
+            alignment: Alignment.centerRight,
+            child: LPArtworkCaption(),
+          ),
+        ],
+      ),
+    );
+
+    final Widget artwork = Image.asset(
+      'assets/images/artworks/WomanAtAWindow.jpg',
+      fit: BoxFit.cover,
+      // The source is 3072x4345, the same 0.707 ratio as the 588x832 box the
+      // design places it in, so cover crops nothing at the intended width.
+      alignment: Alignment.center,
+      errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+    );
+
+    return SizedBox(
+      width: size.width,
+      height: size.height,
+      child: ColoredBox(
+        color: LPColor.inkBlue_500,
+        child: vp.isDesktop
+            ? Row(
+                children: [
+                  Expanded(
+                    flex: ((1 - _AboutMetrics.imageWidth) * 1000).round(),
+                    child: textColumn,
+                  ),
+                  Expanded(
+                    flex: (_AboutMetrics.imageWidth * 1000).round(),
+                    child: SizedBox.expand(child: artwork),
+                  ),
+                ],
+              )
+            // Portrait cannot take the side-by-side split, and stacking the two
+            // does not work either: dividing the height between them leaves the
+            // copy too little room, and how little depends on how the paragraphs
+            // reflow — a 320px phone needs half again as many lines as a 390px
+            // one. Running the artwork full-bleed behind the copy gives the text
+            // the whole viewport regardless, and the scrim keeps it legible
+            // while leaving the painting's lower half in the clear.
+            : Stack(
+                fit: StackFit.expand,
+                children: [
+                  // A phone is narrower than the painting's 0.707 ratio, so
+                  // cover crops the sides and keeps the full height — the
+                  // window stays in frame, which is what the section is about.
+                  SizedBox.expand(child: artwork),
+                  const DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Color(0xFA1D3557),
+                          Color(0xEB1D3557),
+                          Color(0x001D3557),
+                          Color(0x8C1D3557),
+                        ],
+                        stops: [0.0, 0.42, 0.72, 1.0],
+                      ),
+                    ),
+                    child: SizedBox.expand(),
+                  ),
+                  textColumn,
+                ],
+              ),
       ),
     );
   }

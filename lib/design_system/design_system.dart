@@ -66,3 +66,4 @@ part './components/lp_code_block.dart';
 part './components/lp_pull_quote.dart';
 part './components/lp_callout.dart';
 part './components/lp_button.dart';
+part './components/lp_artwork_caption.dart';
