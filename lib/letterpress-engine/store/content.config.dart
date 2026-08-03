@@ -29,11 +29,16 @@ class LPNewsletter {
   /// panel in its place.
   final String? coverImgName;
 
+  /// How many issue covers the index shows for this masthead. A placeholder
+  /// count until real issues exist to be listed.
+  final int issueCount;
+
   const LPNewsletter({
     required this.name,
     required this.slug,
     required this.description,
     this.coverImgName,
+    this.issueCount = 4,
   });
 }
 

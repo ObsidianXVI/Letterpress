@@ -141,6 +141,7 @@ class LetterpressAppState extends State<LetterpressApp> {
                 pageController: pageController,
                 startOffset: newslettersStart,
               ),
+              const NewslettersIndex(),
             ],
           ),
         ),

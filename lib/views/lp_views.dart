@@ -9,12 +9,14 @@ import 'package:letterpress/utils/utils.dart';
 import 'package:letterpress/main.dart';
 import 'package:octane/octane_ds/octane_ds.dart'
     hide ViewScaffold, ViewScaffoldState, HeroTitle, heroTitle;
+import 'package:letterpress/letterpress-engine/subscriptions/lp_subscriptions.dart';
 import 'package:project_redline/multi_platform/multi_platform.dart';
 
 part './lp_home.dart';
 part './lp_scroll_pinned_band.dart';
 part './lp_about_discover_transition.dart';
 part './lp_newsletters_spiral.dart';
+part './lp_newsletters_index.dart';
 part './lp_gallery.dart';
 part 'lp_blogules.dart';
 part 'lp_render_view.dart';

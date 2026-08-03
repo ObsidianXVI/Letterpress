@@ -52,7 +52,6 @@ class RenderViewHeader extends StatefulWidget {
 }
 
 class RenderViewHeaderState extends State<RenderViewHeader> {
-  bool isSubscribedToPost = false;
 
   /// The chain of headings leading to the current one, outermost first.
   ///
@@ -138,28 +137,12 @@ class RenderViewHeaderState extends State<RenderViewHeader> {
                 ],
                 const SizedBox(width: 12),
                 if (widget.article is LPPost)
-                  LPButton(
-                    width: 54,
-                    height: 32,
-                    callback: () async {
-                      final givenEmail = await showDialog<bool>(
-                        context: context,
-                        builder: (context) => EmailSubscriptionDialog(
-                          isSubscribed: isSubscribedToPost,
-                        ),
-                      );
-                      if (!mounted) return;
-                      setState(() {
-                        isSubscribedToPost =
-                            (givenEmail != null && givenEmail == true)
-                                ? true
-                                : isSubscribedToPost;
-                      });
-                    },
-                    child: Icon(
-                      isSubscribedToPost ? Icons.mark_email_read : Icons.mail,
-                      size: 24,
-                      color: LPColor.rollerBlue_500,
+                  LPSubscribeButton(
+                    size: vp.pick(mobile: 34.0, desktop: 40.0),
+                    target: LPSubscriptionTarget(
+                      kind: LPSubscriptionKind.post,
+                      slug: widget.article.title.urlSafeSlug,
+                      label: widget.article.title,
                     ),
                   ),
                 // The date is a nicety rather than a wayfinding aid, so it is

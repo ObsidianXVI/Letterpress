@@ -12,7 +12,13 @@ class DevView extends StatelessWidget {
           height: double.infinity,
           color: LPColor.inkBlue_700,
           child: Center(
-            child: EmailSubscriptionDialog(isSubscribed: false),
+            child: LPSubscribeDialog(
+              target: LPSubscriptionTarget(
+                kind: LPSubscriptionKind.newsletter,
+                slug: 'preprint',
+                label: 'preprint',
+              ),
+            ),
           ),
         ),
       ),
