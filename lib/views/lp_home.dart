@@ -68,27 +68,21 @@ class LetterpressAppState extends State<LetterpressApp> {
                 ),
               ),
               const _AboutSection(),
-              _HomeSection(
-                title: 'Discover',
-                child: _CarouselSection(
-                  blurb:
-                      "They are driven by a compulsion to put some part of themselves on paper, and yet they don't just write what comes naturally. They sit down to commit an act of literature, and the self who emerges on paper is far stiffer than the person who sat down to write. The problem is to find the real man or woman behind the tension. — William Zinsser",
-                  blurbMaxWidth: 900,
-                  controller: postCarouselController,
-                  itemBuilder: (double? maxHeight) => [
-                    for (final post in LPStore.posts)
-                      PromoCard(
-                        size: SizeVariant.large,
-                        article: post,
-                        description: post.description,
-                        maxHeight: maxHeight,
-                        onTap: () => Navigator.pushNamed(
-                          context,
-                          "${LPRoutes.lp_posts}/${post.title.urlSafeSlug}",
-                        ),
+              _DiscoverSection(
+                controller: postCarouselController,
+                itemBuilder: (double? maxHeight) => [
+                  for (final post in LPStore.posts)
+                    PromoCard(
+                      size: SizeVariant.large,
+                      article: post,
+                      description: post.description,
+                      maxHeight: maxHeight,
+                      onTap: () => Navigator.pushNamed(
+                        context,
+                        "${LPRoutes.lp_posts}/${post.title.urlSafeSlug}",
                       ),
-                  ],
-                ),
+                    ),
+                ],
               ),
               _HomeSection(
                 title: 'Blogules',
@@ -269,6 +263,104 @@ It includes short-form Blogules, in-depth Posts, and even newsletters. I do not 
   }
 }
 
+/// Proportions taken from the `Discover - new` Figma frame (node 93:16),
+/// drawn on the same 1280x832 canvas as the About band.
+class _DiscoverMetrics {
+  const _DiscoverMetrics._();
+
+  /// Title baseline block runs 70..164; the cards begin at 264.
+  static const double titleToCards = 100 / _AboutMetrics.frameHeight;
+  static const double cardGap = 46 / _AboutMetrics.frameWidth;
+}
+
+/// The Discover band, on the platen white ground the design calls for.
+///
+/// The artwork credit is carried over from the About frame at the identical
+/// position. That is deliberate rather than a stray copy: the transition zooms
+/// into the painting's white region until it becomes this section's background,
+/// and the credit staying put is what stitches the two together.
+class _DiscoverSection extends StatelessWidget {
+  final ScrollController controller;
+  final List<Widget> Function(double? maxHeight) itemBuilder;
+
+  const _DiscoverSection({
+    required this.controller,
+    required this.itemBuilder,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final LPViewportData vp = LPViewport.of(context);
+    final Size size = vp.size;
+
+    final double padLeft = size.width * _AboutMetrics.padLeft;
+    final double padTop = size.height * _AboutMetrics.padTop;
+    final double gutter = size.width * _AboutMetrics.gutter;
+
+    return SizedBox(
+      width: size.width,
+      height: size.height,
+      child: ColoredBox(
+        color: LPColor.platenWhite_500,
+        child: Stack(
+          children: [
+            Padding(
+              // No right padding: the cards are meant to run off the edge, so
+              // the carousel reads as continuing past the viewport.
+              padding: EdgeInsets.only(
+                left: padLeft,
+                top: padTop,
+                // Clears the credit sitting at the foot of the band.
+                bottom: gutter * 2 + size.height * 0.06,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Discover',
+                    style: sectionTitle.apply(
+                      const TextStyle(color: LPColor.rollerBlue_500),
+                    ),
+                  ),
+                  SizedBox(
+                    height: size.height *
+                        vp.pick(
+                          mobile: 0.04,
+                          desktop: _DiscoverMetrics.titleToCards,
+                        ),
+                  ),
+                  Expanded(
+                    child: _Carousel(
+                      controller: controller,
+                      itemBuilder: itemBuilder,
+                      gap: size.width *
+                          vp.pick(
+                            mobile: 0.05,
+                            desktop: _DiscoverMetrics.cardGap,
+                          ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Positioned(
+              // Right edge lands exactly where it does in the About band, which
+              // is where the artwork's left edge was.
+              right: vp.pick(
+                mobile: padLeft,
+                desktop:
+                    size.width * (_AboutMetrics.imageWidth + _AboutMetrics.gutter),
+              ),
+              bottom: gutter,
+              child: const LPArtworkCaption(),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 /// A titled band on the home page, one full viewport tall and wide.
 ///
 /// The section title is set in very large display type, so the space left for
@@ -321,13 +413,11 @@ class _HomeSection extends StatelessWidget {
 
 /// Standing text under a section title.
 class _SectionBlurb extends StatelessWidget {
-  final String text;
-  final double maxWidth;
+  static const double maxWidth = 600;
 
-  const _SectionBlurb({
-    required this.text,
-    this.maxWidth = 600,
-  });
+  final String text;
+
+  const _SectionBlurb({required this.text});
 
   @override
   Widget build(BuildContext context) {
@@ -351,7 +441,6 @@ class _SectionBlurb extends StatelessWidget {
 /// fits the section it was given.
 class _CarouselSection extends StatelessWidget {
   final String blurb;
-  final double blurbMaxWidth;
   final ScrollController controller;
   final List<Widget> Function(double? maxHeight) itemBuilder;
 
@@ -359,7 +448,6 @@ class _CarouselSection extends StatelessWidget {
     required this.blurb,
     required this.controller,
     required this.itemBuilder,
-    this.blurbMaxWidth = 600,
   });
 
   @override
@@ -369,7 +457,7 @@ class _CarouselSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _SectionBlurb(text: blurb, maxWidth: blurbMaxWidth),
+        _SectionBlurb(text: blurb),
         SizedBox(height: vp.pick(mobile: 20, desktop: 40)),
         Expanded(
           child: _Carousel(controller: controller, itemBuilder: itemBuilder),
@@ -384,15 +472,20 @@ class _Carousel extends StatelessWidget {
   final ScrollController controller;
   final List<Widget> Function(double? maxHeight) itemBuilder;
 
+  /// Space between cards. Defaults to the general home-page rhythm; Discover
+  /// overrides it with the value from its Figma frame.
+  final double? gap;
+
   const _Carousel({
     required this.controller,
     required this.itemBuilder,
+    this.gap,
   });
 
   @override
   Widget build(BuildContext context) {
     final LPViewportData vp = LPViewport.of(context);
-    final double gap = vp.pick(mobile: 20, desktop: 40);
+    final double gap = this.gap ?? vp.pick(mobile: 20, desktop: 40);
 
     return LayoutBuilder(
       builder: (context, constraints) {

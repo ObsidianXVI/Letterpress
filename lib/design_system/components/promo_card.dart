@@ -100,23 +100,27 @@ class PromoCardState extends State<PromoCard> {
               padding: const EdgeInsets.all(30),
               child: Column(
                 children: [
-                  // Flexible, because a short section leaves the card less room
-                  // than its title wants; ellipsis is better than an overflow.
-                  Flexible(
-                    child: Text(
-                      widget.article.title,
-                      textAlign: TextAlign.left,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 4,
-                      style: (switch (widget.size) {
-                        SizeVariant.small => mediumFunky,
-                        SizeVariant.medium => bigFunky,
-                        SizeVariant.large => bigFunky,
-                      }).apply(
-                          const TextStyle(color: LPColor.gripperBlue_500)),
+                  // The title takes all the room the description does not,
+                  // top-aligned. Sharing the slack with a Spacer instead would
+                  // halve the title's box and clip it mid-line, and a short
+                  // card needs the ellipsis rather than an overflow.
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        widget.article.title,
+                        textAlign: TextAlign.left,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 5,
+                        style: (switch (widget.size) {
+                          SizeVariant.small => mediumFunky,
+                          SizeVariant.medium => bigFunky,
+                          SizeVariant.large => bigFunky,
+                        }).apply(
+                            const TextStyle(color: LPColor.gripperBlue_500)),
+                      ),
                     ),
                   ),
-                  const Spacer(flex: 1),
                   Text(
                     widget.description,
                     style: body
