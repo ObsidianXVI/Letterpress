@@ -38,7 +38,10 @@ jumps to any heading. Verified in Chrome.
 
 **Home page.** `Newsletters` and `Discover` shared one `ViewportSize`, so a heading, two
 long quotes and a 520px carousel competed for a single viewport height and the cards fell
-off the bottom. Sections are now sized by content.
+off the bottom. Sections were split so each gets its own band, then reordered to About,
+Discover, Blogules, Newsletters, with every section a full viewport wide and tall. The
+carousels take the height the heading and blurb leave behind rather than a fixed height,
+which is what keeps the cards inside their section instead of clipping again.
 
 **Mobile.** Retuned the mobile type scale — `Header1` was 74px on a 390px screen and broke
 headings mid-word. `PromoCard` now clamps to the viewport width.
@@ -55,6 +58,8 @@ was tracked and animated for but never reached the decoration.
 - [x] Sticky header shows the current section, clickable, with a jump-to dropdown
 - [x] Browser swipe-right navigation disabled
 - [x] Discover area spacing fixed; no content cut off
+- [x] Home sections ordered About, Discover, Blogules, Newsletters
+- [x] Every home section fills the viewport width and height
 - [x] Mobile experience verified at 320/390/834px
 - [x] Tests added — 32 passing via `flutter test --platform chrome`
 - [ ] Right-click context-menu behaviour confirmed by a real right-click (see below)

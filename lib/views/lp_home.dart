@@ -52,8 +52,7 @@ class LetterpressAppState extends State<LetterpressApp> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // The masthead is the one section that genuinely wants the whole
-              // viewport — it is a full-bleed title and nothing else.
+              // The masthead: a full-bleed title and nothing else.
               SizedBox(
                 width: vp.size.width,
                 height: vp.size.height,
@@ -87,75 +86,56 @@ It includes short-form Blogules, in-depth Posts, and even newsletters. I do not 
                 ),
               ),
               _HomeSection(
-                title: 'Newsletters',
-                child: _SectionBlurb(
-                  text:
-                      "We are a society strangling in unnecessary words, circular constructions, pompous frills and meaningless jargon. — William Zinsser",
-                ),
-              ),
-              // Discover used to share a section with Newsletters, which meant a
-              // heading, two long quotes and a 520px-tall carousel all competing
-              // for one viewport's height — the carousel simply fell off the
-              // bottom. Each of these is now its own section, sized by content.
-              _HomeSection(
                 title: 'Discover',
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _SectionBlurb(
-                      text:
-                          "They are driven by a compulsion to put some part of themselves on paper, and yet they don't just write what comes naturally. They sit down to commit an act of literature, and the self who emerges on paper is far stiffer than the person who sat down to write. The problem is to find the real man or woman behind the tension. — William Zinsser",
-                      maxWidth: 900,
-                    ),
-                    SizedBox(height: vp.pick(mobile: 32, desktop: 60)),
-                    _Carousel(
-                      controller: postCarouselController,
-                      children: [
-                        for (final post in LPStore.posts)
-                          PromoCard(
-                            size: SizeVariant.large,
-                            article: post,
-                            description: post.description,
-                            onTap: () => Navigator.pushNamed(
-                              context,
-                              "${LPRoutes.lp_posts}/${post.title.urlSafeSlug}",
-                            ),
-                          ),
-                      ],
-                    ),
+                child: _CarouselSection(
+                  blurb:
+                      "They are driven by a compulsion to put some part of themselves on paper, and yet they don't just write what comes naturally. They sit down to commit an act of literature, and the self who emerges on paper is far stiffer than the person who sat down to write. The problem is to find the real man or woman behind the tension. — William Zinsser",
+                  blurbMaxWidth: 900,
+                  controller: postCarouselController,
+                  itemBuilder: (double? maxHeight) => [
+                    for (final post in LPStore.posts)
+                      PromoCard(
+                        size: SizeVariant.large,
+                        article: post,
+                        description: post.description,
+                        maxHeight: maxHeight,
+                        onTap: () => Navigator.pushNamed(
+                          context,
+                          "${LPRoutes.lp_posts}/${post.title.urlSafeSlug}",
+                        ),
+                      ),
                   ],
                 ),
               ),
               _HomeSection(
                 title: 'Blogules',
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _SectionBlurb(
-                      text:
-                          "Musings, insights, and personal experiences in byte-sized reads.",
-                    ),
-                    SizedBox(height: vp.pick(mobile: 32, desktop: 60)),
-                    _Carousel(
-                      controller: bloguleCarouselController,
-                      children: [
-                        for (final blogule in LPStore.blogules)
-                          PromoCard(
-                            size: SizeVariant.medium,
-                            article: blogule,
-                            description: blogule.isPreviewMode
-                                ? "COMING SOON"
-                                : blogule.publicationDate.toDateString(),
-                            onTap: () => Navigator.of(context).pushNamed(
-                              "${LPRoutes.lp_blogules}/${blogule.title.urlSafeSlug}",
-                            ),
-                          ),
-                      ],
-                    ),
+                child: _CarouselSection(
+                  blurb:
+                      "Musings, insights, and personal experiences in byte-sized reads.",
+                  controller: bloguleCarouselController,
+                  itemBuilder: (double? maxHeight) => [
+                    for (final blogule in LPStore.blogules)
+                      PromoCard(
+                        size: SizeVariant.medium,
+                        article: blogule,
+                        description: blogule.isPreviewMode
+                            ? "COMING SOON"
+                            : blogule.publicationDate.toDateString(),
+                        maxHeight: maxHeight,
+                        onTap: () => Navigator.of(context).pushNamed(
+                          "${LPRoutes.lp_blogules}/${blogule.title.urlSafeSlug}",
+                        ),
+                      ),
                   ],
                 ),
               ),
-              SizedBox(height: vp.pick(mobile: 60, desktop: 100)),
+              _HomeSection(
+                title: 'Newsletters',
+                child: const _SectionBlurb(
+                  text:
+                      "We are a society strangling in unnecessary words, circular constructions, pompous frills and meaningless jargon. — William Zinsser",
+                ),
+              ),
             ],
           ),
         ),
@@ -164,11 +144,13 @@ It includes short-form Blogules, in-depth Posts, and even newsletters. I do not 
   }
 }
 
-/// A titled band on the home page.
+/// A titled band on the home page, one full viewport tall and wide.
 ///
-/// Height comes from the content rather than the viewport. Section titles are
-/// set in very large display type, so pinning a section to the viewport height
-/// leaves almost nothing for the content beneath it on shorter windows.
+/// The section title is set in very large display type, so the space left for
+/// the content beneath it varies a lot with the window. [child] is given that
+/// remainder through an [Expanded] rather than a fixed height, which is what
+/// keeps tall content — the card carousels especially — inside the section
+/// instead of running off the bottom of it.
 class _HomeSection extends StatelessWidget {
   final String title;
   final Widget child;
@@ -183,17 +165,17 @@ class _HomeSection extends StatelessWidget {
     final LPViewportData vp = LPViewport.of(context);
 
     return Container(
-      width: double.infinity,
+      width: vp.size.width,
+      height: vp.size.height,
       color: LPColor.inkBlue_500,
       padding: EdgeInsets.only(
         left: vp.pick(mobile: scaled(20, 16), desktop: scaled(60, 30)),
         right: vp.pick(mobile: scaled(24, 24), desktop: scaled(60, 30)),
         top: vp.pick(mobile: scaled(30, 24), desktop: scaled(60, 30)),
-        bottom: vp.pick(mobile: scaled(40, 32), desktop: scaled(80, 40)),
+        bottom: vp.pick(mobile: scaled(30, 24), desktop: scaled(50, 30)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
         children: [
           Text(
             title,
@@ -201,8 +183,11 @@ class _HomeSection extends StatelessWidget {
               const TextStyle(color: LPColor.rollerBlue_500),
             ),
           ),
-          SizedBox(height: vp.pick(mobile: 24, desktop: 40)),
-          child,
+          // Section titles are set with a 0.76 line height, so descenders sit
+          // below the text box and crowd whatever follows. The gap has to clear
+          // the glyphs, not just the box.
+          SizedBox(height: vp.pick(mobile: 26, desktop: 52)),
+          Expanded(child: child),
         ],
       ),
     );
@@ -224,9 +209,9 @@ class _SectionBlurb extends StatelessWidget {
     final LPViewportData vp = LPViewport.of(context);
 
     return SizedBox(
-      // Fixed widths were overflowing narrow viewports; the intended measure is
-      // a maximum, not a fixed size.
-      width: math.min(maxWidth, vp.size.width * vp.pick(mobile: 0.89, desktop: 0.8)),
+      // A maximum, not a fixed size: a fixed width overflows narrow viewports.
+      width: math.min(
+          maxWidth, vp.size.width * vp.pick(mobile: 0.89, desktop: 0.8)),
       child: Text(
         text,
         style: body.apply(const TextStyle(color: LPColor.gripperBlue_400)),
@@ -235,14 +220,48 @@ class _SectionBlurb extends StatelessWidget {
   }
 }
 
+/// A blurb followed by a horizontally scrolling row of promo cards.
+///
+/// The cards take whatever vertical space the blurb leaves, so the whole thing
+/// fits the section it was given.
+class _CarouselSection extends StatelessWidget {
+  final String blurb;
+  final double blurbMaxWidth;
+  final ScrollController controller;
+  final List<Widget> Function(double? maxHeight) itemBuilder;
+
+  const _CarouselSection({
+    required this.blurb,
+    required this.controller,
+    required this.itemBuilder,
+    this.blurbMaxWidth = 600,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final LPViewportData vp = LPViewport.of(context);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _SectionBlurb(text: blurb, maxWidth: blurbMaxWidth),
+        SizedBox(height: vp.pick(mobile: 20, desktop: 40)),
+        Expanded(
+          child: _Carousel(controller: controller, itemBuilder: itemBuilder),
+        ),
+      ],
+    );
+  }
+}
+
 /// Horizontally scrolling row of promo cards.
 class _Carousel extends StatelessWidget {
   final ScrollController controller;
-  final List<Widget> children;
+  final List<Widget> Function(double? maxHeight) itemBuilder;
 
   const _Carousel({
     required this.controller,
-    required this.children,
+    required this.itemBuilder,
   });
 
   @override
@@ -250,19 +269,30 @@ class _Carousel extends StatelessWidget {
     final LPViewportData vp = LPViewport.of(context);
     final double gap = vp.pick(mobile: 20, desktop: 40);
 
-    return SingleChildScrollView(
-      controller: controller,
-      clipBehavior: Clip.none,
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          for (int i = 0; i < children.length; i++) ...[
-            children[i],
-            if (i != children.length - 1) SizedBox(width: gap),
-          ],
-        ],
-      ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // Passing the available height down lets each card cap itself, rather
+        // than overflowing a section that turned out to be shorter than the
+        // card's preferred size.
+        final List<Widget> items = itemBuilder(
+          constraints.hasBoundedHeight ? constraints.maxHeight : null,
+        );
+
+        return SingleChildScrollView(
+          controller: controller,
+          clipBehavior: Clip.none,
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              for (int i = 0; i < items.length; i++) ...[
+                items[i],
+                if (i != items.length - 1) SizedBox(width: gap),
+              ],
+            ],
+          ),
+        );
+      },
     );
   }
 }
