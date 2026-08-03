@@ -83,7 +83,10 @@ class _SpiralStage extends StatelessWidget {
     final Size size = vp.size;
 
     final Offset centre = Offset(size.width * 0.5, size.height * 0.5);
-    final double radiusX = size.width * vp.pick(mobile: 0.40, desktop: 0.34);
+    // Wide enough that a cover at the side of the ring sits past the viewport
+    // edge, so the ring reads as continuing beyond the frame rather than as a
+    // tidy arrangement that happens to fit.
+    final double radiusX = size.width * vp.pick(mobile: 0.56, desktop: 0.52);
     final double radiusY = size.height * vp.pick(mobile: 0.26, desktop: 0.30);
 
     // Screen y runs downwards, so a plain increasing angle would sweep
@@ -99,8 +102,12 @@ class _SpiralStage extends StatelessWidget {
         ),
         // Bottom of the ellipse is the near side, so sin is the depth.
         depth: math.sin(theta),
-        // Most turned away at the sides, square-on at front and back.
-        turn: -0.6 * math.cos(theta),
+        // Covers turn towards the centre of the ring, most at the sides and
+        // square-on at front and back. Kept shallow: past about 20 degrees the
+        // perspective foreshortening turns the rectangle into a wedge, which
+        // stops reading as a page seen at an angle and starts looking like a
+        // shape that has been sheared.
+        turn: -0.34 * math.cos(theta),
       );
     });
 
@@ -111,7 +118,7 @@ class _SpiralStage extends StatelessWidget {
       ..sort((a, b) => a.depth.compareTo(b.depth));
 
     final double baseWidth =
-        size.width * vp.pick(mobile: 0.30, desktop: 0.15);
+        size.width * vp.pick(mobile: 0.36, desktop: 0.18);
 
     Widget cover(_Orbiter o) => _CoverThumbnail(
           orbiter: o,
@@ -181,9 +188,11 @@ class _CoverThumbnail extends StatelessWidget {
         child: Transform(
           alignment: Alignment.center,
           transform: Matrix4.identity()
-            // Mild perspective, so a cover turning away foreshortens rather
-            // than merely squashing.
-            ..setEntry(3, 2, 0.0014)
+            // Shallow perspective. A stronger divisor exaggerates the near edge
+            // against the far one and the cover stops looking like a page held
+            // at an angle — it looks bent. This is enough to read as depth and
+            // little enough to keep the rectangle a rectangle.
+            ..setEntry(3, 2, 0.0006)
             ..rotateY(orbiter.turn),
           child: DecoratedBox(
             decoration: BoxDecoration(

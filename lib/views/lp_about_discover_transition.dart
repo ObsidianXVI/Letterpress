@@ -10,19 +10,36 @@ part of letterpress.views;
 class _Beat {
   const _Beat._();
 
+  /// Nothing moves for the first stretch. The reader has just arrived at the
+  /// About band and should get to read it, rather than have it start dissolving
+  /// the moment they touch the wheel.
+  static const double holdEnd = 0.12;
+
   /// On a phone the artwork rides up over the copy before anything else
   /// happens. Desktop has no such beat — the painting is already beside the
-  /// copy, so the zoom starts immediately.
-  static const double mobileSlideEnd = 0.34;
+  /// copy, so the zoom follows the hold directly.
+  static const double mobileSlideEnd = 0.30;
 
-  static const double washStart = 0.30;
-  static const double washEnd = 0.78;
+  /// The zoom runs to completion — the bright opening ends up filling the
+  /// frame on its own, before any paint is laid over it.
+  static const double zoomEnd = 0.58;
 
-  static const double titleStart = 0.60;
-  static const double titleEnd = 0.88;
+  /// Which is why the wash only starts near the end of the zoom: by then most
+  /// of the viewport is already the window's light, and the wash is finishing
+  /// a job the zoom has almost done rather than hiding it.
+  static const double washStart = 0.50;
+  static const double washEnd = 0.62;
 
-  static const double contentStart = 0.86;
-  static const double contentEnd = 1.0;
+  /// The heading only begins once the frame is genuinely white.
+  static const double titleStart = 0.64;
+  static const double titleEnd = 0.84;
+
+  static const double contentStart = 0.84;
+
+  /// Everything is in place well before the end, and the remaining scroll is a
+  /// deliberate tail: Discover stays assembled and pinned so the section can be
+  /// taken in, and only then does the page start moving again.
+  static const double contentEnd = 0.94;
 }
 
 /// Maps [t] onto 0..1 across the window [start]..[end].
@@ -68,10 +85,14 @@ class AboutDiscoverTransition extends StatelessWidget {
     super.key,
   });
 
-  /// How much scrolling the transition consumes, in viewports. Mobile needs
-  /// more because it has the artwork's climb to get through first.
+  /// How much scrolling the transition consumes, in viewports.
+  ///
+  /// Generous on purpose: the sequence has a hold at each end and four beats in
+  /// between, and each one needs enough scroll that it reads as a movement
+  /// rather than a jump. Mobile gets more again because it has the artwork's
+  /// climb to get through first.
   static double pinnedViewports(LPViewportData vp) =>
-      vp.pick(mobile: 1.5, desktop: 1.0);
+      vp.pick(mobile: 3.2, desktop: 2.4);
 
   @override
   Widget build(BuildContext context) {
@@ -122,19 +143,28 @@ class _TransitionStage extends StatelessWidget {
     return Alignment(fx * 2 - 1, fy * 2 - 1);
   }
 
-  /// Magnification needed for the bright opening to fill the width.
+  /// Magnification needed for the bright opening to fill the frame entirely.
   ///
-  /// The opening is roughly 80px across in the 588px-wide box the design draws
-  /// the painting in, so the factor falls out of how large that box is rendered
-  /// here. On desktop it works out constant; on a phone the painting is scaled
-  /// to the viewport height instead, so it depends on the aspect.
+  /// The opening — the lit pane beside her head — measures roughly 70x170 in
+  /// the 588x832 box the design draws the painting in. Both dimensions have to
+  /// be satisfied, not just the width, or the zoom stops with the window frame
+  /// still showing down the sides on a tall viewport.
   double _maxScale(LPViewportData vp) {
     final Size size = vp.size;
-    final double renderedArtworkWidth = vp.isDesktop
+
+    // On desktop the painting occupies the right-hand column; on a phone it is
+    // scaled to the viewport height and cropped at the sides.
+    final double artworkWidth = vp.isDesktop
         ? size.width * _AboutMetrics.imageWidth
         : size.height * _AboutMetrics.artworkAspect;
-    final double openingWidth = (80 / 588) * renderedArtworkWidth;
-    return (size.width / openingWidth).clamp(6.0, 26.0);
+    final double artworkHeight = size.height;
+
+    final double openingWidth = (70 / 588) * artworkWidth;
+    final double openingHeight = (170 / 832) * artworkHeight;
+
+    return math
+        .max(size.width / openingWidth, size.height / openingHeight)
+        .clamp(6.0, 40.0);
   }
 
   @override
@@ -142,26 +172,31 @@ class _TransitionStage extends StatelessWidget {
     final LPViewportData vp = LPViewport.of(context);
     final Size size = vp.size;
 
-    final double slideEnd = vp.isMobile ? _Beat.mobileSlideEnd : 0.0;
-    final double slide =
-        vp.isMobile ? _segment(progress, 0.0, _Beat.mobileSlideEnd) : 0.0;
+    // The artwork's climb, on a phone, sits between the opening hold and the
+    // zoom. On desktop that beat does not exist.
+    final double slide = vp.isMobile
+        ? Curves.easeInOut.transform(
+            _segment(progress, _Beat.holdEnd, _Beat.mobileSlideEnd))
+        : 0.0;
 
-    // Everything after the climb runs on its own clock, so the beats below can
-    // be written against a clean 0..1 regardless of platform.
-    final double t = _segment(progress, slideEnd, 1.0);
+    final double zoomStart =
+        vp.isMobile ? _Beat.mobileSlideEnd : _Beat.holdEnd;
 
-    // Geometric, so the magnification feels like a constant rate of approach
-    // rather than easing off as the numbers get large.
-    final double zoom =
-        math.pow(_maxScale(vp), Curves.easeInCubic.transform(t)).toDouble();
+    // The exponent runs linearly, so the magnification advances at a constant
+    // perceived rate. Easing it made the zoom back-loaded — by the point the
+    // wash began, the image had barely moved, and the effect read as a plain
+    // cross-fade rather than an approach.
+    final double zoom = math
+        .pow(_maxScale(vp), _segment(progress, zoomStart, _Beat.zoomEnd))
+        .toDouble();
 
     final double wash = Curves.easeInOut
-        .transform(_segment(t, _Beat.washStart, _Beat.washEnd));
+        .transform(_segment(progress, _Beat.washStart, _Beat.washEnd));
     final double titleRise = 1 -
         Curves.easeOutCubic
-            .transform(_segment(t, _Beat.titleStart, _Beat.titleEnd));
+            .transform(_segment(progress, _Beat.titleStart, _Beat.titleEnd));
     final double content = Curves.easeIn
-        .transform(_segment(t, _Beat.contentStart, _Beat.contentEnd));
+        .transform(_segment(progress, _Beat.contentStart, _Beat.contentEnd));
 
     return SizedBox(
         width: size.width,
