@@ -55,6 +55,18 @@ class LetterpressAppState extends State<LetterpressApp> {
   @override
   Widget build(BuildContext context) {
     final LPViewportData vp = LPViewport.of(context);
+    final double h = vp.size.height;
+
+    // Scroll offsets at which each pinned band reaches the top of the screen.
+    // They have to be derived rather than guessed, because a pinned band is
+    // taller than a viewport by however much scrolling it consumes, and that
+    // amount differs between platforms.
+    const double masthead = 1;
+    final double aboutStart = h * masthead;
+    final double aboutExtent =
+        h * (1 + AboutDiscoverTransition.pinnedViewports(vp));
+    final double newslettersStart =
+        aboutStart + aboutExtent + h /* Blogules */;
 
     return Material(
       color: LPColor.platenWhite_500,
@@ -82,9 +94,7 @@ class LetterpressAppState extends State<LetterpressApp> {
               ),
               AboutDiscoverTransition(
                 pageController: pageController,
-                // The masthead is exactly one viewport, so this band's top
-                // reaches the top of the screen after one viewport of scroll.
-                startOffset: vp.size.height,
+                startOffset: aboutStart,
                 carouselController: postCarouselController,
                 onRevealed: startPostCarouselDrift,
                 discoverItems: (double? maxHeight) => [
@@ -123,12 +133,9 @@ class LetterpressAppState extends State<LetterpressApp> {
                   ],
                 ),
               ),
-              _HomeSection(
-                title: 'Newsletters',
-                child: const _SectionBlurb(
-                  text:
-                      "We are a society strangling in unnecessary words, circular constructions, pompous frills and meaningless jargon. — William Zinsser",
-                ),
+              NewslettersSpiral(
+                pageController: pageController,
+                startOffset: newslettersStart,
               ),
             ],
           ),

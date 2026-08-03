@@ -75,44 +75,15 @@ class AboutDiscoverTransition extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final LPViewportData vp = LPViewport.of(context);
-    final Size size = vp.size;
-    final double pinned = size.height * pinnedViewports(vp);
-
-    return SizedBox(
-      width: size.width,
-      height: size.height + pinned,
-      child: AnimatedBuilder(
-        animation: pageController,
-        builder: (BuildContext context, Widget? _) {
-          final double offset =
-              pageController.hasClients ? pageController.offset : 0.0;
-          final double held = (offset - startOffset).clamp(0.0, pinned);
-          final double t = pinned == 0 ? 0 : held / pinned;
-
-          if (t >= 1.0) {
-            // Deferred: this runs during build.
-            WidgetsBinding.instance
-                .addPostFrameCallback((_) => onRevealed?.call());
-          }
-
-          return Stack(
-            clipBehavior: Clip.hardEdge,
-            children: [
-              Positioned(
-                top: held,
-                left: 0,
-                right: 0,
-                height: size.height,
-                child: _TransitionStage(
-                  progress: t,
-                  carouselController: carouselController,
-                  discoverItems: discoverItems,
-                ),
-              ),
-            ],
-          );
-        },
+    return ScrollPinnedBand(
+      pageController: pageController,
+      startOffset: startOffset,
+      pinnedViewports: pinnedViewports(LPViewport.of(context)),
+      onCompleted: onRevealed,
+      builder: (BuildContext context, double progress) => _TransitionStage(
+        progress: progress,
+        carouselController: carouselController,
+        discoverItems: discoverItems,
       ),
     );
   }
@@ -192,8 +163,7 @@ class _TransitionStage extends StatelessWidget {
     final double content = Curves.easeIn
         .transform(_segment(t, _Beat.contentStart, _Beat.contentEnd));
 
-    return ClipRect(
-      child: SizedBox(
+    return SizedBox(
         width: size.width,
         height: size.height,
         child: Stack(
@@ -230,8 +200,6 @@ class _TransitionStage extends StatelessWidget {
                 paintBackground: false,
               ),
           ],
-        ),
-      ),
-    );
+        ));
   }
 }
