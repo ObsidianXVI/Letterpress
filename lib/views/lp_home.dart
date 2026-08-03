@@ -8,36 +8,48 @@ class LetterpressApp extends StatefulWidget {
 }
 
 class LetterpressAppState extends State<LetterpressApp> {
+  final ScrollController pageController = ScrollController();
   final ScrollController postCarouselController = ScrollController();
   final ScrollController bloguleCarouselController = ScrollController();
+
+  bool postCarouselDrifted = false;
 
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      // A slow drift across the carousel on arrival, hinting that there is more
-      // to the side. Guarded because a short list may not overflow at all, in
-      // which case there is nothing to scroll and no client attached.
-      for (final ScrollController controller in [
-        postCarouselController,
-        bloguleCarouselController,
-      ]) {
-        if (!controller.hasClients) continue;
-        if (controller.position.maxScrollExtent <= 0) continue;
-        controller.animateTo(
-          controller.position.maxScrollExtent,
-          duration: const Duration(seconds: 15),
-          curve: Curves.linear,
-        );
-      }
+      drift(bloguleCarouselController);
     });
     super.initState();
   }
 
   @override
   void dispose() {
+    pageController.dispose();
     postCarouselController.dispose();
     bloguleCarouselController.dispose();
     super.dispose();
+  }
+
+  /// A slow drift across a carousel, hinting that there is more to the side.
+  ///
+  /// Guarded because a short list may not overflow at all, in which case there
+  /// is nothing to scroll and no client attached.
+  void drift(ScrollController controller) {
+    if (!mounted || !controller.hasClients) return;
+    if (controller.position.maxScrollExtent <= 0) return;
+    controller.animateTo(
+      controller.position.maxScrollExtent,
+      duration: const Duration(seconds: 15),
+      curve: Curves.linear,
+    );
+  }
+
+  /// Held back until the transition has actually delivered Discover, so the
+  /// drift is not spent while the section is still invisible.
+  void startPostCarouselDrift() {
+    if (postCarouselDrifted) return;
+    postCarouselDrifted = true;
+    drift(postCarouselController);
   }
 
   @override
@@ -48,6 +60,7 @@ class LetterpressAppState extends State<LetterpressApp> {
       color: LPColor.platenWhite_500,
       child: LPSelectionArea(
         child: SingleChildScrollView(
+          controller: pageController,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,10 +80,14 @@ class LetterpressAppState extends State<LetterpressApp> {
                   ),
                 ),
               ),
-              const _AboutSection(),
-              _DiscoverSection(
-                controller: postCarouselController,
-                itemBuilder: (double? maxHeight) => [
+              AboutDiscoverTransition(
+                pageController: pageController,
+                // The masthead is exactly one viewport, so this band's top
+                // reaches the top of the screen after one viewport of scroll.
+                startOffset: vp.size.height,
+                carouselController: postCarouselController,
+                onRevealed: startPostCarouselDrift,
+                discoverItems: (double? maxHeight) => [
                   for (final post in LPStore.posts)
                     PromoCard(
                       size: SizeVariant.large,
@@ -142,17 +159,71 @@ class _AboutMetrics {
   static const double gutter = 25 / frameWidth;
   static const double bodyWidth = 485 / frameWidth;
   static const double titleToBody = 50 / frameHeight;
+
+  /// The painting's own aspect, 3072x4345.
+  static const double artworkAspect = 3072 / 4345;
+
+  /// Bounds on where the artwork rests on a phone before the reader scrolls it
+  /// up over the copy. Its actual resting place is measured from the copy, so
+  /// that it clears the last line however the paragraphs happen to reflow.
+  static const double mobileArtworkRestMin = 0.35;
+  static const double mobileArtworkRestMax = 0.72;
+
+  /// The point the transition zooms into — the bright opening beside her head,
+  /// at (302, 304) in the 588x832 box the design places the painting in.
+  static const double focalX = 302 / 588;
+  static const double focalY = 304 / 832;
 }
 
 /// The About band: copy on the left, Friedrich's *Woman at a Window* bleeding
 /// off the right edge at full height.
 class _AboutSection extends StatelessWidget {
-  const _AboutSection();
+  /// How far the artwork has slid up over the copy, 0 at rest and 1 when its
+  /// top meets the top of the screen. Mobile only — on desktop the artwork is
+  /// beside the copy, not over it.
+  final double artworkSlide;
+
+  const _AboutSection({this.artworkSlide = 0});
 
   static const String copy =
       """Letterpress is a blog about coding, design, SWE, and all that good stuff. I started this initially to document my reflections and knowledge as I worked on various projects.
 
 It includes short-form Blogules, in-depth Posts, and even newsletters. I do not claim to be a professional coder or prolific writer, but in a sea full of vessels out on different voyages, this is the logbook of a particular one.""";
+
+  /// Height [text] will occupy once laid out at [maxWidth].
+  ///
+  /// The artwork's resting place on a phone has to sit below the copy, and a
+  /// fixed fraction cannot know that: the same two paragraphs run to eleven
+  /// lines at 390px and sixteen at 320px, so any constant either clips the
+  /// last line or strands the artwork far below it.
+  static double _measure(String text, TextStyle style, double maxWidth) {
+    final TextPainter painter = TextPainter(
+      text: TextSpan(text: text, style: style),
+      textDirection: TextDirection.ltr,
+    )..layout(maxWidth: math.max(0, maxWidth));
+    final double height = painter.height;
+    painter.dispose();
+    return height;
+  }
+
+  /// Where the artwork's top edge sits, in pixels, before the reader scrolls
+  /// it up over the copy: just clear of the last line.
+  static double _mobileArtworkRestTop(LPViewportData vp) {
+    final Size size = vp.size;
+    final double textWidth = size.width *
+        (1 - _AboutMetrics.padLeft - _AboutMetrics.gutter);
+
+    final double top = size.height * _AboutMetrics.padTop +
+        _measure('About', sectionTitle.apply(), textWidth) +
+        size.height * _AboutMetrics.titleToBody +
+        _measure(copy, body.apply(), textWidth) +
+        size.height * 0.04;
+
+    return top.clamp(
+      size.height * _AboutMetrics.mobileArtworkRestMin,
+      size.height * _AboutMetrics.mobileArtworkRestMax,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -190,10 +261,13 @@ It includes short-form Blogules, in-depth Posts, and even newsletters. I do not 
           ),
           const Spacer(),
           // The credit is right-aligned so it runs up to the artwork's edge.
-          const Align(
-            alignment: Alignment.centerRight,
-            child: LPArtworkCaption(),
-          ),
+          // On mobile it is positioned over the artwork instead, so that it
+          // survives the artwork sliding up over this column.
+          if (vp.isDesktop)
+            const Align(
+              alignment: Alignment.centerRight,
+              child: LPArtworkCaption(),
+            ),
         ],
       ),
     );
@@ -225,37 +299,31 @@ It includes short-form Blogules, in-depth Posts, and even newsletters. I do not 
                   ),
                 ],
               )
-            // Portrait cannot take the side-by-side split, and stacking the two
-            // does not work either: dividing the height between them leaves the
-            // copy too little room, and how little depends on how the paragraphs
-            // reflow — a 320px phone needs half again as many lines as a 390px
-            // one. Running the artwork full-bleed behind the copy gives the text
-            // the whole viewport regardless, and the scrim keeps it legible
-            // while leaving the painting's lower half in the clear.
+            // Portrait cannot take the side-by-side split. The copy holds the
+            // viewport and the artwork rests below it, showing the window; as
+            // the reader scrolls it rides up over the copy until it covers the
+            // screen, at which point the zoom takes over.
             : Stack(
                 fit: StackFit.expand,
                 children: [
-                  // A phone is narrower than the painting's 0.707 ratio, so
-                  // cover crops the sides and keeps the full height — the
-                  // window stays in frame, which is what the section is about.
-                  SizedBox.expand(child: artwork),
-                  const DecoratedBox(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Color(0xFA1D3557),
-                          Color(0xEB1D3557),
-                          Color(0x001D3557),
-                          Color(0x8C1D3557),
-                        ],
-                        stops: [0.0, 0.42, 0.72, 1.0],
-                      ),
-                    ),
-                    child: SizedBox.expand(),
-                  ),
                   textColumn,
+                  Positioned(
+                    left: 0,
+                    right: 0,
+                    top: _mobileArtworkRestTop(vp) *
+                        (1 - artworkSlide.clamp(0.0, 1.0)),
+                    height: size.height,
+                    // A phone is narrower than the painting's 0.707 ratio, so
+                    // cover crops the sides and keeps the full height — the
+                    // window stays in frame, which is the point of the section.
+                    child: artwork,
+                  ),
+                  // Rides above the artwork so the credit survives the slide.
+                  Positioned(
+                    right: size.width * _AboutMetrics.padLeft,
+                    bottom: size.width * _AboutMetrics.gutter,
+                    child: const LPArtworkCaption(),
+                  ),
                 ],
               ),
       ),
@@ -283,9 +351,25 @@ class _DiscoverSection extends StatelessWidget {
   final ScrollController controller;
   final List<Widget> Function(double? maxHeight) itemBuilder;
 
+  /// How far the heading still has to travel up to reach its resting place,
+  /// as a fraction of the viewport height. 0 leaves it where the design puts
+  /// it; 1 parks it just off the bottom of the screen.
+  final double titleRise;
+
+  /// Opacity of everything that is not the heading — the cards and the credit
+  /// arrive only once the heading has landed.
+  final double contentOpacity;
+
+  /// Painted behind the band. The transition suppresses it, because the white
+  /// it fades up is the painting's own light rather than a flat fill.
+  final bool paintBackground;
+
   const _DiscoverSection({
     required this.controller,
     required this.itemBuilder,
+    this.titleRise = 0,
+    this.contentOpacity = 1,
+    this.paintBackground = true,
   });
 
   @override
@@ -301,7 +385,9 @@ class _DiscoverSection extends StatelessWidget {
       width: size.width,
       height: size.height,
       child: ColoredBox(
-        color: LPColor.platenWhite_500,
+        color: paintBackground
+            ? LPColor.platenWhite_500
+            : const Color(0x00000000),
         child: Stack(
           children: [
             Padding(
@@ -316,10 +402,13 @@ class _DiscoverSection extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Discover',
-                    style: sectionTitle.apply(
-                      const TextStyle(color: LPColor.rollerBlue_500),
+                  Transform.translate(
+                    offset: Offset(0, size.height * titleRise),
+                    child: Text(
+                      'Discover',
+                      style: sectionTitle.apply(
+                        const TextStyle(color: LPColor.rollerBlue_500),
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -330,14 +419,17 @@ class _DiscoverSection extends StatelessWidget {
                         ),
                   ),
                   Expanded(
-                    child: _Carousel(
-                      controller: controller,
-                      itemBuilder: itemBuilder,
-                      gap: size.width *
-                          vp.pick(
-                            mobile: 0.05,
-                            desktop: _DiscoverMetrics.cardGap,
-                          ),
+                    child: Opacity(
+                      opacity: contentOpacity,
+                      child: _Carousel(
+                        controller: controller,
+                        itemBuilder: itemBuilder,
+                        gap: size.width *
+                            vp.pick(
+                              mobile: 0.05,
+                              desktop: _DiscoverMetrics.cardGap,
+                            ),
+                      ),
                     ),
                   ),
                 ],
@@ -352,7 +444,10 @@ class _DiscoverSection extends StatelessWidget {
                     size.width * (_AboutMetrics.imageWidth + _AboutMetrics.gutter),
               ),
               bottom: gutter,
-              child: const LPArtworkCaption(),
+              child: Opacity(
+                opacity: contentOpacity,
+                child: const LPArtworkCaption(),
+              ),
             ),
           ],
         ),
