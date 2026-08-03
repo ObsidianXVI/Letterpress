@@ -45,31 +45,20 @@
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
 
-  <title>letterpress</title>
+  <title>Letterpress</title>
   <link rel="manifest" href="manifest.json">
-
-  <script>
-    // The value below is injected by flutter build, do not touch.
-    var serviceWorkerVersion = null;
-  </script>
-  <!-- This script adds the flutter initialization JS code -->
-  <script src="flutter.js" defer></script>
 </head>
 <body>
-  <script>
-    window.addEventListener('load', function(ev) {
-      // Download main.dart.js
-      _flutter.loader.loadEntrypoint({
-        serviceWorker: {
-          serviceWorkerVersion: serviceWorkerVersion,
-        },
-        onEntrypointLoaded: function(engineInitializer) {
-          engineInitializer.initializeEngine().then(function(appRunner) {
-            appRunner.runApp();
-          });
-        }
-      });
-    });
-  </script>
+  <!--
+    flutter_bootstrap.js is generated at build time and knows the engine
+    revision, the renderer and the entrypoint path, so it can start fetching the
+    engine without waiting for a second script to parse first.
+
+    It replaces the older flutter.js + `_flutter.loader.loadEntrypoint` pair,
+    which is deprecated and warned on every build, and which deferred the whole
+    download until the window `load` event — i.e. until every other subresource
+    had already finished.
+  -->
+  <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>

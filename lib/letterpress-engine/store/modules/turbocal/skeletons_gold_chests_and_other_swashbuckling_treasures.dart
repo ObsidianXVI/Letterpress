@@ -20,7 +20,7 @@ class SkeletonsGoldChestsAndOtherSwashbucklingTreasures extends LPModule {
                 content:
                     "After much experimenting, this is the widget tree that I deemed ideal, balancing code maintainability while also accommodating all the necessary functions that we want our calendar to have:"),
             LPImage.asset(
-              assetPath: '/images/turbocal/1-call-stack-flowchart-content.png',
+              assetPath: 'assets/images/turbocal/1-call-stack-flowchart-content.png',
               width: 700,
               height: 700,
             ),
@@ -29,7 +29,7 @@ class SkeletonsGoldChestsAndOtherSwashbucklingTreasures extends LPModule {
                     "Wait! Don't panic! Here's a visual annotation of some of the widgets to give you a better idea of what's going on."),
             LPImage.asset(
               assetPath:
-                  '/images/turbocal/2-tcinstance-hierarchy-annotation.png',
+                  'assets/images/turbocal/2-tcinstance-hierarchy-annotation.png',
               width: 700,
               height: 700,
             ),

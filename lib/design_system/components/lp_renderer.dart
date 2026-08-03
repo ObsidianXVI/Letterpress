@@ -212,8 +212,15 @@ class LPRendererState extends State<LPRenderer> {
           if (widget.article.coverImgName != null)
             Positioned.fill(
               child: Image.asset(
-                'assets/images/covers/${widget.article.coverImgName}.png',
+                'assets/images/covers/${widget.article.coverImgName}.jpg',
                 fit: BoxFit.cover,
+                // Decode at the size it will actually be drawn. Without this
+                // the full 2560px image is decoded into memory and downsampled
+                // every frame, which on a phone costs far more than the bytes.
+                cacheWidth: (vpWidth * MediaQuery.devicePixelRatioOf(context))
+                    .round()
+                    .clamp(1, 2560),
+                filterQuality: FilterQuality.medium,
                 errorBuilder: (_, __, ___) => const SizedBox.shrink(),
               ),
             ),

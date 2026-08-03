@@ -34,7 +34,7 @@ class Enter_Autonomic_Computing extends LPModule {
                     "As a last resort, I pulled up the Gartner Hype Cycle for Emerging Technologies and after poking around for a while, came across the words “autonomic computing” somewhere. My attention was piqued because I had always wondered whether there were systems in existence that could run and manage themselves without human intervention. Soon enough, I spiralled:"),
             LPImage.asset(
               assetPath:
-                  '/images/hyperion/enter_autonomic_computing/history_1.png',
+                  'assets/images/hyperion/enter_autonomic_computing/history_1.png',
               width: 500,
               height: 575,
             ),
@@ -43,7 +43,7 @@ class Enter_Autonomic_Computing extends LPModule {
                     "As fascinated as I was with the whole topic and its novelty, I looked into the scope for research and complexity overall, and I was pleased to find that it was a relatively new concept introduced in 2001, with a small collection of resources to learn from. Complexity-wise, the subject seemed to lean more towards software development than computer science, which was good because I knew there was no way I could compete with researchers holding PhDs and majors in computer science. Instead, in software development, I could try out different architectures and conduct experiments and put my coding skills to practice. Of course, there would still be theoretical aspects involved, but at least I would not have to grapple with the sheer amounts of background knowledge needed to approach this topic computer-scientifically. Anyway, after about a week, I was sold:"),
             LPImage.asset(
               assetPath:
-                  '/images/hyperion/enter_autonomic_computing/history_2.png',
+                  'assets/images/hyperion/enter_autonomic_computing/history_2.png',
               width: 500,
               height: 250,
             ),
@@ -52,7 +52,7 @@ class Enter_Autonomic_Computing extends LPModule {
                     "I also finally understood the importance of Open Science:"),
             LPImage.asset(
               assetPath:
-                  '/images/hyperion/enter_autonomic_computing/history_3.png',
+                  'assets/images/hyperion/enter_autonomic_computing/history_3.png',
               width: 500,
               height: 441,
             ),

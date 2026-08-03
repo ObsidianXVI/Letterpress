@@ -65,8 +65,9 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
+  # Only what the app actually references ships in the bundle. letterpress_1.png
+  # was declared here but never used, and cost 1.8 MB of every page load.
   assets:
-    - assets/images/letterpress_1.png
     - assets/images/covers/
     - assets/images/artworks/
     - assets/images/hyperion/enter_autonomic_computing/
