@@ -38,13 +38,14 @@ class NewslettersSpiral extends StatelessWidget {
   /// Scroll offset at which this band's top reaches the top of the viewport.
   final double startOffset;
 
-  /// Placeholder covers, until real cover artwork exists.
-  final int coverCount;
+  /// The newsletters on the ring. Defaults to whatever [ContentConfig]
+  /// publishes, which is the only place that decision should be made.
+  final List<LPNewsletter> newsletters;
 
   const NewslettersSpiral({
     required this.pageController,
     required this.startOffset,
-    this.coverCount = 9,
+    this.newsletters = ContentConfig.newsletters,
     super.key,
   });
 
@@ -63,16 +64,16 @@ class NewslettersSpiral extends StatelessWidget {
       startOffset: startOffset,
       pinnedViewports: pinnedViewports,
       builder: (BuildContext context, double progress) =>
-          _SpiralStage(progress: progress, coverCount: coverCount),
+          _SpiralStage(progress: progress, newsletters: newsletters),
     );
   }
 }
 
 class _SpiralStage extends StatelessWidget {
   final double progress;
-  final int coverCount;
+  final List<LPNewsletter> newsletters;
 
-  const _SpiralStage({required this.progress, required this.coverCount});
+  const _SpiralStage({required this.progress, required this.newsletters});
 
   /// Newsletter covers are US Letter, as the templates in the Figma file are.
   static const double coverAspect = 612 / 792;
@@ -119,8 +120,9 @@ class _SpiralStage extends StatelessWidget {
     // clockwise. Subtracting the rotation turns the ring the other way.
     final double rotation = progress * 2 * math.pi * NewslettersSpiral.revolutions;
 
-    final List<_Orbiter> orbiters = List<_Orbiter>.generate(coverCount, (int i) {
-      final double theta = (2 * math.pi * i / coverCount) - rotation;
+    final int count = newsletters.length;
+    final List<_Orbiter> orbiters = List<_Orbiter>.generate(count, (int i) {
+      final double theta = (2 * math.pi * i / count) - rotation;
       return _Orbiter(
         centre: Offset(
           centre.dx + radiusX * math.cos(theta),

@@ -18,7 +18,7 @@ class DeadMenTellNoTalesAboutCollisionResolution extends LPModule {
               LPText.hyperlink(
                 content: 'Lighthouse',
                 route:
-                    '${LPRoutes.lp_blogules}/${lh_a_formal_intro_to_lh.title.urlSafeSlug}',
+                    '${LPRoutes.lp_blogules}/${LPStore.lhAFormalIntroToLh.title.urlSafeSlug}',
               ),
               LPText.plainBody(
                   content:

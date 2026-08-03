@@ -98,15 +98,16 @@ class LetterpressAppState extends State<LetterpressApp> {
                 carouselController: postCarouselController,
                 onRevealed: startPostCarouselDrift,
                 discoverItems: (double? maxHeight) => [
-                  for (final post in LPStore.posts)
+                  for (int i = 0; i < ContentConfig.posts.length; i++)
                     PromoCard(
                       size: SizeVariant.large,
-                      article: post,
-                      description: post.description,
+                      article: ContentConfig.builtPosts[i],
+                      comingSoon: ContentConfig.posts[i].comingSoon,
+                      description: ContentConfig.posts[i].description,
                       maxHeight: maxHeight,
                       onTap: () => Navigator.pushNamed(
                         context,
-                        "${LPRoutes.lp_posts}/${post.title.urlSafeSlug}",
+                        "${LPRoutes.lp_posts}/${ContentConfig.builtPosts[i].title.urlSafeSlug}",
                       ),
                     ),
                 ],
@@ -118,16 +119,19 @@ class LetterpressAppState extends State<LetterpressApp> {
                       "Musings, insights, and personal experiences in byte-sized reads.",
                   controller: bloguleCarouselController,
                   itemBuilder: (double? maxHeight) => [
-                    for (final blogule in LPStore.blogules)
+                    for (final entry in ContentConfig.blogules)
                       PromoCard(
                         size: SizeVariant.medium,
-                        article: blogule,
-                        description: blogule.isPreviewMode
+                        article: entry.article,
+                        // Whether a piece is out yet comes from the config, not
+                        // from the artifact — publishing is a config decision.
+                        comingSoon: entry.comingSoon,
+                        description: entry.comingSoon
                             ? "COMING SOON"
-                            : blogule.publicationDate.toDateString(),
+                            : entry.article.publicationDate.toDateString(),
                         maxHeight: maxHeight,
                         onTap: () => Navigator.of(context).pushNamed(
-                          "${LPRoutes.lp_blogules}/${blogule.title.urlSafeSlug}",
+                          "${LPRoutes.lp_blogules}/${entry.article.title.urlSafeSlug}",
                         ),
                       ),
                   ],

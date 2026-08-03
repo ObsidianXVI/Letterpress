@@ -15,12 +15,18 @@ class PromoCard extends StatefulWidget {
   /// cards inside the section instead of running off the bottom of it.
   final double? maxHeight;
 
+  /// Not yet published, so the card does not open. Passed in rather than read
+  /// off the article, because whether a piece is out is a publishing decision
+  /// and lives in the content config.
+  final bool comingSoon;
+
   const PromoCard({
     required this.size,
     required this.article,
     required this.description,
     required this.onTap,
     this.maxHeight,
+    this.comingSoon = false,
     super.key,
   });
 
@@ -65,12 +71,12 @@ class PromoCardState extends State<PromoCard> {
         onExit: (_) => setState(() => hovering = false),
         child: GestureDetector(
           onTapDown: (_) => setState(() {
-            if (!widget.article.isPreviewMode) {
+            if (!widget.comingSoon) {
               pressing = true;
             }
           }),
           onTapUp: (_) => setState(() {
-            if (!widget.article.isPreviewMode) {
+            if (!widget.comingSoon) {
               pressing = false;
               widget.onTap();
             }
