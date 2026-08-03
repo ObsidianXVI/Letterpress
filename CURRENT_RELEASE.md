@@ -1,3 +1,6 @@
 # Current Release
 
-Next task: v0.7 → Feature 7.1 → Task 7.1.3 — Flutter web preview. Feature 8.4 is now complete, so resume the previously deferred preview slice as the next implementation task.
+Letterpress polish pass — the `PROMPT.md` minor-improvements list is complete.
+
+Next task: confirm the right-click context-menu behaviour with a real right-click and pick
+an option from `DECISIONS_NEEDED.md`. Nothing else is outstanding.

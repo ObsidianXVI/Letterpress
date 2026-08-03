@@ -66,7 +66,11 @@ class LPHoverableCardWidgetState extends State<LPHoverableCardWidget> {
         decoration: BoxDecoration(
           color: LPColor.inkBlue_500,
           borderRadius: BorderRadius.circular(5),
-          border: Border.all(color: LPColor.rollerBlue_500),
+          // The hover state was already being tracked and animated for, but
+          // never actually reached the decoration.
+          border: Border.all(
+            color: LPColor.rollerBlue_500.withOpacity(_hovered ? 1 : 0.5),
+          ),
         ),
         child: widget.child,
       ),

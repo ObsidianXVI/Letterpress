@@ -1,33 +1,67 @@
 # CURRENT TASK
 
 ## Release · Feature · Task
-v0.7 → Feature 7.1 (Port Forward Gateway) → Task 7.1.3
+Letterpress polish pass → "Minor improvements" (see `PROMPT.md`)
 
 ## Status
-PENDING
-
-## What was done last session
-Completed Task 8.4.4 by introducing platform-tenant bootstrap plus platform API key management routes behind normal Cortado user sessions, extending `POST /v1/sessions` and JWT claims so platform API keys can mint platform-scoped Cortado sessions without a `user_id`, and documenting the split between personal first-party auth and SaaS backend platform auth.
+COMPLETE — one item needs your verification, one needs a decision (see below).
 
 ## What was done this session
-Integrated the new auth backend flows into `demo_app` by adding first-party Firebase-to-Cortado session exchange, platform-tenant bootstrap plus platform API key minting/listing, and platform-session bootstrap with an empty `user_id` so the demo can exercise the new auth model end to end before resuming the deferred preview work. Follow-up fixes switched personal API key issue/list actions to prefer the exchanged Cortado session instead of raw Firebase tokens, added clearer messaging when the dev-only tenant-claim route is not mounted, fixed the reusable Flutter Firebase auth client to avoid `Firebase.apps` pre-init crashes on web, added top-level control-plane CORS handling so Flutter web browser requests can reach the API with auth headers, corrected Firestore tenant upserts to pass map data with `firestore.MergeAll` so first-login personal-tenant provisioning no longer crashes, filtered reserved Firebase ID-token claims out of the dev bootstrap custom-claims write so `Assign Dev Tenant` no longer fails on keys like `auth_time`, made workspace stop/delete ignore unreachable-agent flush/snapshot calls so broken never-scheduled workspaces can still be cleaned up, corrected the demo/workspace readiness path so the demo now defaults to the real Cortado workspace-agent image while the control plane only marks a workspace `RUNNING` once the pod is actually `Ready`, fixed local control-plane agent routing by reusing the pod-backed resolver and preferring live pod IPs over in-cluster service DNS so terminal, file, and idle-inspection RPCs work from the VM-hosted server process, made idle monitoring tolerate older workspace-agent images that do not yet implement `GetIdleStatus` so mixed-version local dev setups no longer spam `Unimplemented` logs, bumped the demo’s default workspace image to the newer `cortado-workspace:781d613` tag so newly provisioned demo workspaces expose the file RPCs used by `Load File` / `Save File`, made stop/delete cleanup tolerate older workspace-agent images that still do not implement `FlushUsageWAL` or `CreateSnapshot` so demo workspaces can always be de-provisioned cleanly during local compatibility testing, added automatic workspace preemption sitreps in the control plane so every Kubernetes preemption now emits the triggering event, workspace resource requests, victim-node allocation summary, top colocated pods, and cluster-wide node allocation snapshot directly into the logs, extended the cleanup ignore path to also treat gRPC `DeadlineExceeded` / `Canceled` agent errors as non-fatal so deleting previously stopped workspaces no longer fails while the agent channel is unreachable or still warming, hardened the workspace scheduling posture by introducing a `workspace-priority` Kubernetes `PriorityClass`, assigning it to all workspace pods, and giving the qdrant sidecar explicit CPU and memory limits that match its requests so the full workspace pod now runs at `Guaranteed` QoS instead of remaining an easier preemption/eviction target, added hostname topology-spread constraints plus a shared workspace workload label so new workspaces stop stacking onto the same node when another node is available, introduced explicit workspace disk sizing end to end so the control plane now persists `storageGb`, enforces a 10 GB minimum PVC size, the Flutter package serializes/deserializes storage alongside CPU and RAM, and `demo_app` now exposes editable `Storage (GB)` input, fixed the new `flutter doctor` crash path by diagnosing Kubernetes `Evicted` events on `ephemeral-storage: 1Gi` and then moving runtime cache directories onto the workspace PVC while also giving workspace pods an explicit 4 Gi ephemeral-storage budget instead of relying on the Autopilot default, fixed the follow-up temporary-directory bootstrap failure by moving runtime-directory creation into the workspace pod launch command itself so current workspace images create the redirected cache/tmp directories before `cortado-agent` starts, and replaced the stale demo workspace image default with a freshly built and pushed `cortado-workspace:20260530-1112-file-rpc` image from current agent code so newly provisioned demo workspaces finally expose the `ReadFile` / `WriteFile` RPCs expected by `Load File` and `Save File`.
-The latest fix closed a session-consistency bug where `/v1/workspaces/{id}/connect` skipped the tenant/workspace authorization enforced by the REST workspace/file routes, so stale or mismatched sessions could still attach terminal transport while `Load File` correctly returned `404`; the connect route now validates ownership before websocket upgrade, and `demo_app` clears stale workspace/session state before rebinding so re-login plus `Exchange Session` no longer leaves a ghost `RUNNING` workspace in memory.
-The latest workspace cleanup fix also stopped the local control plane from attempting stop-time snapshots when `CORTADO_SNAPSHOT_BUCKET` / `CORTADO_SNAPSHOT_PASSWORD` are not configured, so `Stop Workspace` now deprovisions normally in local/demo environments instead of failing with `snapshot repository is not configured`.
-The latest demo-state fix also handles workspace `404` responses coherently across refresh/start/stop/load/save flows by clearing the cached workspace attachment and terminal state instead of leaving the UI in a contradictory `RUNNING` + `terminal channel is not open` state when a workspace has been deleted or the current session no longer owns it.
-The latest demo follow-up also makes terminal and file actions prefer the currently attached workspace object over the raw text field, which removes another stale-ID failure mode after creating or reattaching to a workspace while the input still contains an older deleted ID.
-The latest file-routing fix also separates missing file paths from missing workspaces end to end, so agent `NotFound` responses for paths like `lib/main.dart` now surface as path/file 404s instead of being collapsed into `workspace not found`, which previously caused the demo to tear down a healthy workspace attachment after a simple missing-file read.
+Worked through the `PROMPT.md` minor-improvements list.
 
-## Remaining work this session
-Begin Task 7.1.3 for Flutter web preview: build/run preview from the workspace, detect the bound preview port, and embed the forwarded preview URL inside the demo UI.
+**Breakpoints and responsiveness.** `main.dart`'s `platformSelector` only recognised
+1200–1600 × 750–1000 as desktop and 400–590 × 600–1000 as mobile; every other viewport —
+a 1920px monitor, a 390px iPhone, any resized window — fell through to `UnknownPlatform`
+and rendered an "unsupported viewport" error page. Replaced with width-only breakpoints
+(`LPBreakpoints`, split at 900px) and retired `UnknownPlatform` entirely.
+
+**Making responsiveness actually work.** Two latent problems surfaced from that change:
+- `ResponsiveTypeface` evaluates `scaled()` in its constructor, and `LPStore` is a
+  `static final`, so every article's type was frozen at whatever viewport loaded first.
+  Type-system entries are now getters and `LPText` holds a `TextStyle Function()` recipe.
+- `scaled()` multiplies by `viewportWidth / baseWidth` unbounded. Harmless in narrow
+  bands, broken once the bands became open-ended. Added `lpScaled`, which clamps the
+  factor to 0.9–1.15.
+- `Navigator` caches the current page widget, so a root-level `setState` never reaches
+  into it. Added `LPViewport`, an inherited scope that widgets depend on directly.
+
+**Selection.** Views are wrapped in a single `LPSelectionArea`, and `LPText` renders plain
+`Text`, so a drag now carries a selection across paragraph boundaries. Verified in Chrome.
+
+**Code blocks.** Rebuilt on `re_highlight` with a `LPColor`-mapped theme, a fixed
+line-number gutter, horizontal scroll, copy button, and language/provenance header. Added
+`LPInlineCode` for inline spans.
+
+**Sticky header.** Added the leftmost square icon button opening a page-navigation menu
+(currently just Home) and a centred section breadcrumb with a depth-indented dropdown that
+jumps to any heading. Verified in Chrome.
+
+**Home page.** `Newsletters` and `Discover` shared one `ViewportSize`, so a heading, two
+long quotes and a 520px carousel competed for a single viewport height and the cards fell
+off the bottom. Sections are now sized by content.
+
+**Mobile.** Retuned the mobile type scale — `Header1` was 74px on a 390px screen and broke
+headings mid-word. `PromoCard` now clamps to the viewport width.
+
+**Incidental fixes.** Cover images were referenced as `images/covers/…` but live at
+`assets/images/covers/` and were not declared in `pubspec.yaml`, so they never loaded.
+Browser swipe-back disabled via `overscroll-behavior-x`. Hover state in `card_widget.dart`
+was tracked and animated for but never reached the decoration.
 
 ## Definition of done
-- [ ] "Run Preview" triggers `flutter build web` in the workspace and streams progress to the terminal
-- [ ] the demo waits for the preview port to bind and exposes an "Open Preview" action
-- [ ] the forwarded preview renders inside the Flutter web demo through an embedded frame
-- [ ] docs and validation cover the preview-specific flow
-
-## Next task after this one
-TBD after Task 7.1.3 completes.
+- [x] Sticky header has a leftmost square icon button with a page-navigation menu
+- [x] Selection works across paragraphs, and other text in the app is selectable
+- [x] Code blocks have line numbers, selection, syntax highlighting; inline code improved
+- [x] Sticky header shows the current section, clickable, with a jump-to dropdown
+- [x] Browser swipe-right navigation disabled
+- [x] Discover area spacing fixed; no content cut off
+- [x] Mobile experience verified at 320/390/834px
+- [x] Tests added — 32 passing via `flutter test --platform chrome`
+- [ ] Right-click context-menu behaviour confirmed by a real right-click (see below)
 
 ## Blocked on / decisions needed
-No active blockers.
+See `DECISIONS_NEEDED.md` — the right-click selection behaviour needs a real human
+right-click to verify, and there is a product decision behind it.
+
+## Next task after this one
+TBD.

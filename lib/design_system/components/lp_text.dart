@@ -2,24 +2,45 @@ part of letterpress.ds;
 
 class LPText extends LPPostComponent {
   final String content;
-  final TextStyle lpFont;
+
+  /// Resolved on every read rather than stored.
+  ///
+  /// Articles live in [LPStore], a `static final`, so every [LPText] in the
+  /// site is constructed exactly once — during the first page load. Baking a
+  /// [TextStyle] in at that moment would pin the whole site's typography to the
+  /// viewport that happened to be open then, and no amount of resizing or
+  /// rebuilding would shift it. Holding the recipe instead of the result keeps
+  /// the type responsive.
+  final TextStyle Function() _resolveStyle;
+
   final bool isClickable;
   final bool isHeader;
+
+  /// Depth of this heading in the article outline, 0 for ordinary text.
+  ///
+  /// 1 is a piece title, descending to 4 for the smallest heading. The sticky
+  /// header's section breadcrumb walks these to work out which section, and
+  /// which subsection within it, the reader is currently in.
+  final int headerLevel;
+
   final TextAlign textAlign;
   final Alignment alignment;
   final Map<String, dynamic> props = {};
+
+  TextStyle get lpFont => _resolveStyle();
 
   LPText({
     super.leftSideNotes,
     super.rightSideNotes,
     required this.content,
-    required this.lpFont,
+    required TextStyle lpFont,
     required this.isClickable,
     required this.isHeader,
     this.alignment = Alignment.topLeft,
     this.textAlign = TextAlign.left,
     super.key,
-  });
+  })  : _resolveStyle = (() => lpFont),
+        headerLevel = isHeader ? 1 : 0;
 
   LPText.mainTitle({
     super.leftSideNotes,
@@ -27,9 +48,10 @@ class LPText extends LPPostComponent {
     required this.content,
     this.alignment = Alignment.topLeft,
     this.textAlign = TextAlign.left,
-  })  : lpFont = pieceTitle.apply(),
+  })  : _resolveStyle = (() => pieceTitle.apply()),
         isClickable = false,
-        isHeader = true;
+        isHeader = true,
+        headerLevel = 1;
 
   LPText.header1({
     super.leftSideNotes,
@@ -37,9 +59,10 @@ class LPText extends LPPostComponent {
     required this.content,
     this.alignment = Alignment.topLeft,
     this.textAlign = TextAlign.left,
-  })  : lpFont = header1.apply(),
+  })  : _resolveStyle = (() => header1.apply()),
         isClickable = false,
-        isHeader = true;
+        isHeader = true,
+        headerLevel = 2;
 
   LPText.header2({
     super.leftSideNotes,
@@ -47,9 +70,10 @@ class LPText extends LPPostComponent {
     required this.content,
     this.alignment = Alignment.topLeft,
     this.textAlign = TextAlign.left,
-  })  : lpFont = header2.apply(),
+  })  : _resolveStyle = (() => header2.apply()),
         isClickable = false,
-        isHeader = true;
+        isHeader = true,
+        headerLevel = 3;
 
   LPText.header3({
     super.leftSideNotes,
@@ -57,9 +81,10 @@ class LPText extends LPPostComponent {
     required this.content,
     this.alignment = Alignment.topLeft,
     this.textAlign = TextAlign.left,
-  })  : lpFont = header3.apply(),
+  })  : _resolveStyle = (() => header3.apply()),
         isClickable = false,
-        isHeader = true;
+        isHeader = true,
+        headerLevel = 4;
 
   LPText.semanticTag1({
     super.leftSideNotes,
@@ -68,9 +93,10 @@ class LPText extends LPPostComponent {
     this.alignment = Alignment.topLeft,
     this.textAlign = TextAlign.left,
     bool isItalic = false,
-  })  : lpFont = semanticTag.apply(),
+  })  : _resolveStyle = (() => semanticTag.apply()),
         isClickable = false,
-        isHeader = false;
+        isHeader = false,
+        headerLevel = 0;
 
   LPText.plainBody({
     super.leftSideNotes,
@@ -82,16 +108,17 @@ class LPText extends LPPostComponent {
     bool isItalic = false,
     bool isBold = false,
     bool isStrikethrough = false,
-  })  : lpFont = body.apply(
-          TextStyle(
-            color: (color ?? LPColor.rollerBlue_500).withOpacity(0.85),
-            fontStyle: isItalic ? FontStyle.italic : null,
-            fontWeight: isBold ? FontWeight.w600 : null,
-            decoration: isStrikethrough ? TextDecoration.lineThrough : null,
-          ),
-        ),
+  })  : _resolveStyle = (() => body.apply(
+              TextStyle(
+                color: (color ?? LPColor.rollerBlue_500).withOpacity(0.85),
+                fontStyle: isItalic ? FontStyle.italic : null,
+                fontWeight: isBold ? FontWeight.w600 : null,
+                decoration: isStrikethrough ? TextDecoration.lineThrough : null,
+              ),
+            )),
         isClickable = false,
-        isHeader = false;
+        isHeader = false,
+        headerLevel = 0;
 
   LPText.buttonText({
     super.leftSideNotes,
@@ -100,10 +127,11 @@ class LPText extends LPPostComponent {
     this.alignment = Alignment.topLeft,
     this.textAlign = TextAlign.left,
     bool isItalic = false,
-  })  : lpFont = body
-            .apply(TextStyle(color: LPColor.rollerBlue_500.withOpacity(0.85))),
+  })  : _resolveStyle = (() => body.apply(
+            TextStyle(color: LPColor.rollerBlue_500.withOpacity(0.85)))),
         isClickable = false,
-        isHeader = false;
+        isHeader = false,
+        headerLevel = 0;
 
   LPText.verse({
     super.leftSideNotes,
@@ -112,10 +140,11 @@ class LPText extends LPPostComponent {
     this.alignment = Alignment.topLeft,
     this.textAlign = TextAlign.center,
     bool isItalic = false,
-  })  : lpFont = verseQuote.apply(
-            isItalic ? const TextStyle(fontStyle: FontStyle.italic) : null),
+  })  : _resolveStyle = (() => verseQuote.apply(
+            isItalic ? const TextStyle(fontStyle: FontStyle.italic) : null)),
         isClickable = false,
-        isHeader = false;
+        isHeader = false,
+        headerLevel = 0;
 
   LPText.codeStyle({
     required bool inline,
@@ -124,16 +153,17 @@ class LPText extends LPPostComponent {
     required this.content,
     this.alignment = Alignment.topLeft,
     this.textAlign = TextAlign.left,
-  })  : lpFont = code.apply(
-          TextStyle(
-            color: (inline ? LPColor.chaseRed_500 : LPColor.platenWhite_500)
-                .withOpacity(0.7),
-            backgroundColor:
-                LPColor.rollerBlue_500.withOpacity(inline ? 0.2 : 0),
-          ),
-        ),
+  })  : _resolveStyle = (() => code.apply(
+              TextStyle(
+                color: (inline ? LPColor.chaseRed_500 : LPColor.platenWhite_500)
+                    .withOpacity(inline ? 0.95 : 0.7),
+                backgroundColor:
+                    LPColor.rollerBlue_500.withOpacity(inline ? 0.2 : 0),
+              ),
+            )),
         isClickable = false,
-        isHeader = false;
+        isHeader = false,
+        headerLevel = 0;
 
   LPText.hyperlink({
     super.leftSideNotes,
@@ -144,13 +174,14 @@ class LPText extends LPPostComponent {
     Function? action,
     String? url,
     String? route,
-  })  : lpFont = body.apply(TextStyle(
-          color: LPColor.gripperBlue_400.withOpacity(0.8),
-          decoration: TextDecoration.underline,
-          decorationColor: LPColor.rollerBlue_500,
-        )),
+  })  : _resolveStyle = (() => body.apply(TextStyle(
+              color: LPColor.gripperBlue_400.withOpacity(0.8),
+              decoration: TextDecoration.underline,
+              decorationColor: LPColor.rollerBlue_500,
+            ))),
         isClickable = true,
-        isHeader = false {
+        isHeader = false,
+        headerLevel = 0 {
     props.addAll({
       'url': url,
       'action': action,
@@ -160,15 +191,21 @@ class LPText extends LPPostComponent {
 
   LPText.paragraphBreak()
       : content = '\n',
-        lpFont = body
-            .apply(TextStyle(color: LPColor.rollerBlue_500.withOpacity(0.85))),
+        _resolveStyle = (() => body
+            .apply(TextStyle(color: LPColor.rollerBlue_500.withOpacity(0.85)))),
         isClickable = false,
         textAlign = TextAlign.left,
         isHeader = false,
+        headerLevel = 0,
         alignment = Alignment.topLeft;
 
   @override
   Widget build(BuildContext context) {
+    // Registers this widget for viewport changes. Article components are
+    // created once and reused, so an ancestor rebuild never reaches them —
+    // without this dependency the text would never re-scale on a resize.
+    LPViewport.of(context);
+
     return Align(
       alignment: alignment,
       child: isClickable
@@ -191,7 +228,10 @@ class LPText extends LPPostComponent {
                 ),
               ),
             )
-          : SelectableText(
+          // Plain [Text], not [SelectableText]: the enclosing [LPSelectionArea]
+          // owns selection for the whole view, which is what allows a drag to
+          // continue from one paragraph into the next.
+          : Text(
               content,
               style: lpFont,
               textAlign: textAlign,
@@ -211,6 +251,8 @@ class LPTextSpan extends LPPostComponent {
 
   @override
   Widget build(BuildContext context) {
+    LPViewport.of(context);
+
     TapGestureRecognizer? gestureRecog(LPText lpText) {
       if (lpText.isClickable) {
         return TapGestureRecognizer()

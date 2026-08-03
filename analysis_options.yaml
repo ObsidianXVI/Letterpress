@@ -9,6 +9,14 @@
 # packages, and plugins designed to encourage good coding practices.
 include: package:flutter_lints/flutter.yaml
 
+analyzer:
+  exclude:
+    # MD2LP and friends are self-contained packages that happen to live inside
+    # lib/. They carry their own pubspec and analysis settings, so analysing
+    # them as part of the site reports issues against code this project does not
+    # build or ship.
+    - lib/letterpress-engine/tools/**
+
 linter:
   # The lint rules applied to this project can be customized in the
   # section below to disable rules from the `package:flutter_lints/flutter.yaml`

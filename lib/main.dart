@@ -1,11 +1,11 @@
-import 'package:web/web.dart' as web;
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:letterpress/design_system/design_system.dart';
 import 'package:letterpress/utils/utils.dart';
 import 'package:letterpress/views/lp_views.dart';
 import 'package:letterpress/letterpress-engine/store/lp_store.dart';
-import 'package:octane/octane_ds/octane_ds.dart';
+import 'package:project_redline/dimensions/dimensions.dart';
 import 'package:project_redline/multi_platform/multi_platform.dart';
 
 class LPRoutes {
@@ -14,75 +14,93 @@ class LPRoutes {
   static const String lp_blogules = '/blogules';
   static const String lp_timelapse = '/timelapse';
   static const String lp_posts = '/posts';
-  static const String unknownPlatform = '/unknown';
 }
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   Multiplatform.init(
-    platformSelector: (width, height) {
-      if (1200 <= width && width <= 1600) {
-        if (750 <= height && height <= 1000) {
-          return const DesktopPlatform();
-        }
-      } else if (400 <= width && width <= 590) {
-        if (600 <= height && height <= 1000) {
-          return const MobilePlatform();
-        }
-      }
-      return const UnknownPlatform();
-    },
+    platformSelector: LPBreakpoints.select,
     baseStyle: const TextStyle(fontFamily: 'Fraunces_Standard'),
   );
-  runApp(
-    MaterialApp(
-      debugShowCheckedModeBanner: false,
-      initialRoute: LPRoutes.lp_home, //LPRoutes.lp_home
-      routes: {
-        LPRoutes.lp_home: (_) => const LetterpressApp(),
-        if (kDebugMode)
-          LPRoutes.lp_timelapse: (_) => const LetterpressTimelapse(),
-        if (kDebugMode)
-          LPRoutes.lp_blogules: (_) => const LetterpressBlogulesView(),
-        if (kDebugMode) '/dev': (_) => const DevView(),
-        LPRoutes.unknownPlatform: (_) => Material(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 10, right: 10),
-                child: Center(
-                  child: Text(
-                    "Sorry, but this website only supports mobile and desktop viewports. Your viewport (${web.document.body?.clientWidth}x${web.document.body?.clientHeight}) does not fall into these two categories. To avoid embarassingly hideous layouts and scaling, I would rather show this pathetic error message than the actual site itself. Try viewing the website on a mobile or desktop device, and refresh the browser window.",
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
-            ),
-      }
-        ..addEntries(
-          List<MapEntry<String, Widget Function(BuildContext)>>.generate(
-            LPStore.posts.length,
-            (i) => MapEntry(
-              "${LPRoutes.lp_posts}/${LPStore.posts[i].title.urlSafeSlug}",
-              (_) => Material(
-                child: LetterpressRenderView(
-                  child: LPStore.posts[i],
-                ),
-              ),
-            ),
-          ),
-        )
-        ..addEntries(
-          List<MapEntry<String, Widget Function(BuildContext)>>.generate(
-            LPStore.blogules.length,
-            (i) => MapEntry(
-              "${LPRoutes.lp_blogules}/${LPStore.blogules[i].title.urlSafeSlug}",
-              (_) => Material(
-                child: LetterpressRenderView(
-                  child: LPStore.blogules[i],
-                ),
-              ),
-            ),
-          ),
+  runApp(const LetterpressRoot());
+}
+
+/// Builds the route table from the store.
+///
+/// Kept separate from [LetterpressRoot.build] so the map is constructed once
+/// rather than on every viewport change.
+Map<String, WidgetBuilder> _buildRoutes() {
+  return <String, WidgetBuilder>{
+    LPRoutes.lp_home: (_) => const LetterpressApp(),
+    if (kDebugMode) LPRoutes.lp_timelapse: (_) => const LetterpressTimelapse(),
+    if (kDebugMode) LPRoutes.lp_blogules: (_) => const LetterpressBlogulesView(),
+    if (kDebugMode) '/dev': (_) => const DevView(),
+  }
+    ..addEntries(
+      LPStore.posts.map(
+        (post) => MapEntry(
+          "${LPRoutes.lp_posts}/${post.title.urlSafeSlug}",
+          (_) => Material(child: LetterpressRenderView(child: post)),
         ),
-    ),
-  );
+      ),
+    )
+    ..addEntries(
+      LPStore.blogules.map(
+        (blogule) => MapEntry(
+          "${LPRoutes.lp_blogules}/${blogule.title.urlSafeSlug}",
+          (_) => Material(child: LetterpressRenderView(child: blogule)),
+        ),
+      ),
+    );
+}
+
+class LetterpressRoot extends StatefulWidget {
+  const LetterpressRoot({super.key});
+
+  @override
+  State<LetterpressRoot> createState() => LetterpressRootState();
+}
+
+class LetterpressRootState extends State<LetterpressRoot>
+    with WidgetsBindingObserver {
+  late final Map<String, WidgetBuilder> routes = _buildRoutes();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    // Flutter's own selection toolbar is suppressed on web whenever the
+    // browser's context menu is enabled, which it is by default. Leaving it
+    // enabled is what gives readers the native right-click menu — with the
+    // browser's own Copy, Search and translate entries — over article text.
+    assert(BrowserContextMenu.enabled);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  /// The viewport changes size constantly on the web: window resizes, device
+  /// rotation, browser chrome sliding in and out. Recomputing the platform here
+  /// keeps [Multiplatform.currentPlatform] honest; [LPViewport] is what
+  /// actually propagates the change down past the navigator.
+  @override
+  void didChangeMetrics() {
+    final DetectedPlatform next =
+        Multiplatform.platformSelector(Dimensions.width(), Dimensions.height());
+    setState(() => Multiplatform.currentPlatform = next);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Letterpress',
+      initialRoute: LPRoutes.lp_home,
+      builder: (context, child) => LPViewport(child: child!),
+      routes: routes,
+    );
+  }
 }

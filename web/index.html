@@ -18,7 +18,23 @@
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Letterpress — a handcrafted blog about coding, design and software engineering.">
+
+  <style>
+    /*
+      Horizontal overscroll is how browsers trigger back/forward navigation from
+      a two-finger swipe. Articles contain horizontally scrolling regions (code
+      blocks, card carousels), so reaching the end of one and continuing to
+      swipe would otherwise navigate away from the page mid-read. `none` also
+      suppresses the rubber-band effect, which the app draws over anyway.
+    */
+    html, body {
+      overscroll-behavior-x: none;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
 
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">

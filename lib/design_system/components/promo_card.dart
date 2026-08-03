@@ -26,6 +26,27 @@ class PromoCardState extends State<PromoCard> {
 
   @override
   Widget build(BuildContext context) {
+    final LPViewportData vp = LPViewport.of(context);
+
+    // Cards must never be wider than the viewport they scroll inside, or the
+    // first card alone overflows the carousel on a narrow phone.
+    final double maxCardWidth = vp.size.width - 40;
+
+    final double cardWidth = math.min(
+      maxCardWidth,
+      switch (widget.size) {
+        SizeVariant.small => vp.pick(mobile: 340.0, desktop: 438.0),
+        SizeVariant.medium => vp.pick(mobile: 400.0, desktop: 600.0),
+        SizeVariant.large => vp.pick(mobile: 440.0, desktop: 776.0),
+      },
+    );
+
+    final double cardHeight = switch (widget.size) {
+      SizeVariant.small => vp.pick(mobile: 380.0, desktop: 450.0),
+      SizeVariant.medium => vp.pick(mobile: 380.0, desktop: 450.0),
+      SizeVariant.large => vp.pick(mobile: 400.0, desktop: 520.0),
+    };
+
     return Center(
       child: MouseRegion(
         cursor: SystemMouseCursors.click,
@@ -44,34 +65,8 @@ class PromoCardState extends State<PromoCard> {
             }
           }),
           child: Container(
-            width: switch (widget.size) {
-              SizeVariant.small =>
-                Multiplatform.currentPlatform == const DesktopPlatform()
-                    ? 438
-                    : 340,
-              SizeVariant.medium =>
-                Multiplatform.currentPlatform == const DesktopPlatform()
-                    ? 600
-                    : 540,
-              SizeVariant.large =>
-                Multiplatform.currentPlatform == const DesktopPlatform()
-                    ? 776
-                    : 600,
-            },
-            height: switch (widget.size) {
-              SizeVariant.small =>
-                Multiplatform.currentPlatform == const DesktopPlatform()
-                    ? 450
-                    : 450,
-              SizeVariant.medium =>
-                Multiplatform.currentPlatform == const DesktopPlatform()
-                    ? 450
-                    : 450,
-              SizeVariant.large =>
-                Multiplatform.currentPlatform == const DesktopPlatform()
-                    ? 520
-                    : 450,
-            },
+            width: cardWidth,
+            height: cardHeight,
             decoration: BoxDecoration(
               color: LPColor.inkBlue_500,
               borderRadius: BorderRadius.circular(5),

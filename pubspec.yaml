@@ -41,6 +41,7 @@ dependencies:
   visibility_detector: ^0.4.0+2
   markdown: ^7.2.2
   web: ^1.1.0
+  re_highlight: ^0.0.3
 
 dev_dependencies:
   flutter_test:
@@ -66,6 +67,8 @@ flutter:
 
   assets:
     - assets/images/letterpress_1.png
+    - assets/images/covers/
+    - assets/images/artworks/
     - assets/images/hyperion/enter_autonomic_computing/
     - assets/images/turbocal/
 
