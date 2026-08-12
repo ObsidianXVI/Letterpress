@@ -86,18 +86,35 @@ class _SpiralStage extends StatelessWidget {
   static double scaleForDepth(double depth) =>
       minScale + (maxScale - minScale) * ((depth + 1) / 2);
 
+  /// How much of a cover may hang off the left or right edge of the screen, as
+  /// a fraction of its own width. The ring should read as continuing past the
+  /// frame, but a cover cut more than this stops being recognisable as a cover.
+  static const double maxOffscreenFraction = 0.20;
+
   @override
   Widget build(BuildContext context) {
     final LPViewportData vp = LPViewport.of(context);
     final Size size = vp.size;
 
     final double baseWidth =
-        size.width * vp.pick(mobile: 0.36, desktop: 0.18);
+        size.width * vp.pick(mobile: 0.42, desktop: 0.22);
 
-    // Wide enough that a cover at the side of the ring sits past the viewport
-    // edge, so the ring reads as continuing beyond the frame rather than as a
-    // tidy arrangement that happens to fit.
-    final double radiusX = size.width * vp.pick(mobile: 0.56, desktop: 0.52);
+    // The widest a cover gets horizontally is at the sides of the ring, where
+    // it is halfway between its near and far size.
+    final double sideWidth = baseWidth * scaleForDepth(0);
+
+    // Solve the radius from how much overhang is allowed rather than picking a
+    // fraction and checking it by eye. A cover at the side sits at
+    // `centre + radiusX`, so its outer edge lands at
+    // `width/2 + radiusX + sideWidth/2`; requiring that to exceed the viewport
+    // by no more than `maxOffscreenFraction` of the cover gives the bound
+    // below. It holds at any viewport, and it moves correctly if the covers are
+    // ever resized.
+    //
+    // Rotation only helps: a cover turned about its vertical axis paints
+    // narrower than its box, so measuring the box is the conservative case.
+    final double radiusX =
+        size.width / 2 - sideWidth * (0.5 - maxOffscreenFraction);
 
     // The ring is not centred on the viewport. The near cover is drawn larger
     // than the far one, so a centred ring leaves the near one crowding the
