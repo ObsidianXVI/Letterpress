@@ -115,6 +115,27 @@ class LPRendererState extends State<LPRenderer> {
     );
   }
 
+
+  /// Width, in device pixels, at which a cover should be decoded.
+  ///
+  /// Covers are 16:9 and fill the viewport with [BoxFit.cover], so the axis
+  /// that governs is whichever one runs short. On a portrait phone that is the
+  /// height: the image is scaled until it is tall enough, which makes it far
+  /// wider than the screen and crops the sides. Sizing off the viewport width
+  /// there would decode the visible strip at a fraction of its real scale and
+  /// look soft.
+  static int _coverDecodeWidth(LPViewportData vp, BuildContext context) {
+    const double coverAspect = 4096 / 2304;
+    final double dpr = MediaQuery.devicePixelRatioOf(context);
+    final Size size = vp.size;
+
+    final double renderedWidth = size.width / size.height >= coverAspect
+        ? size.width
+        : size.height * coverAspect;
+
+    return (renderedWidth * dpr).round().clamp(1, 4096);
+  }
+
   @override
   Widget build(BuildContext context) {
     final LPViewportData vp = LPViewport.of(context);
@@ -212,14 +233,18 @@ class LPRendererState extends State<LPRenderer> {
           if (widget.article.coverImgName != null)
             Positioned.fill(
               child: Image.asset(
-                'assets/images/covers/${widget.article.coverImgName}.jpg',
+                'assets/images/covers/${widget.article.coverImgName}.png',
                 fit: BoxFit.cover,
-                // Decode at the size it will actually be drawn. Without this
-                // the full 2560px image is decoded into memory and downsampled
-                // every frame, which on a phone costs far more than the bytes.
-                cacheWidth: (vpWidth * MediaQuery.devicePixelRatioOf(context))
-                    .round()
-                    .clamp(1, 2560),
+                // Decode at the size it will actually be drawn rather than at
+                // the source's full 4096px, which otherwise sits in memory and
+                // is downsampled every frame.
+                //
+                // The cover is 16:9 and the box is the whole viewport, so on a
+                // portrait phone `cover` scales by height and the rendered
+                // width is much larger than the screen — hence sizing off the
+                // covered width, not the viewport width, or the crop would be
+                // decoded soft.
+                cacheWidth: _coverDecodeWidth(vp, context),
                 filterQuality: FilterQuality.medium,
                 errorBuilder: (_, __, ___) => const SizedBox.shrink(),
               ),
