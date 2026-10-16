@@ -53,5 +53,7 @@ app.*.map.json
 .gemini/
 .codex/
 .agents/
+.claude/
 
 /_dev
+/demo

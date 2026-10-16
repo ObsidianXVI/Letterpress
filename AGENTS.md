@@ -1,5 +1,3 @@
-# Cortado Project Context
-
 ## Project Description
 Letterpress is my personal blogging site, where I post short articles (blogules) for small day-to-day topics, experiences, opinions, explanations, etc. Sometimes I even write longer form articles (posts) that may be written from scratch or be built from a string of blogules sequenced together. Letterpress keeps it simple and handcrafted.
 
