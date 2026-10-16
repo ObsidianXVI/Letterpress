@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:letterpress/design_system/design_system.dart';
 import 'package:letterpress/utils/utils.dart';
-import 'package:octane/octane_ds/octane_ds.dart';
 import 'package:project_redline/multi_platform/multi_platform.dart';
 
 import 'test_harness.dart';

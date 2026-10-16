@@ -13,7 +13,6 @@ import 'package:letterpress/letterpress-engine/letterpress_engine.dart';
 import 'package:letterpress/letterpress-engine/subscriptions/lp_subscriptions.dart';
 import 'package:letterpress/utils/utils.dart';
 import 'package:letterpress/main.dart';
-import 'package:octane/octane_ds/octane_ds.dart';
 import 'package:project_redline/multi_platform/multi_platform.dart';
 import 'package:project_redline/project_redline.dart';
 import 'package:re_highlight/re_highlight.dart';
@@ -38,6 +37,7 @@ import 'package:re_highlight/languages/yaml.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 part './color_system.dart';
+part './card_style.dart';
 part './lp_viewport.dart';
 part 'type_system.dart';
 part './card_widget.dart';

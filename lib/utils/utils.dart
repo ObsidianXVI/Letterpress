@@ -1,7 +1,6 @@
 library letterpress.utils;
 
 import 'package:flutter/material.dart';
-import 'package:octane/octane_ds/octane_ds.dart';
 import 'package:project_redline/multi_platform/multi_platform.dart';
 
 /// Viewport thresholds that decide which layout the site renders.
@@ -25,6 +24,18 @@ class LPBreakpoints {
           desktopMinWidth
       ? const MobilePlatform()
       : const DesktopPlatform();
+}
+
+/// The desktop layout, designed against a 1440 × 835 viewport.
+///
+/// Hoisted from Octane's design system, which Letterpress no longer depends on.
+class DesktopPlatform extends DetectedPlatform {
+  const DesktopPlatform() : super('desktop', baseWidth: 1440, baseHeight: 835);
+}
+
+/// The mobile layout, designed against a 418 × 748 viewport.
+class MobilePlatform extends DetectedPlatform {
+  const MobilePlatform() : super('mobile', baseWidth: 418, baseHeight: 748);
 }
 
 class DimensionTools {

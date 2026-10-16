@@ -7,8 +7,6 @@ import 'package:letterpress/design_system/design_system.dart';
 import 'package:letterpress/letterpress-engine/store/lp_store.dart';
 import 'package:letterpress/utils/utils.dart';
 import 'package:letterpress/main.dart';
-import 'package:octane/octane_ds/octane_ds.dart'
-    hide ViewScaffold, ViewScaffoldState, HeroTitle, heroTitle;
 import 'package:letterpress/letterpress-engine/subscriptions/lp_subscriptions.dart';
 import 'package:project_redline/multi_platform/multi_platform.dart';
 
